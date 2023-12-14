@@ -76,16 +76,10 @@ Rectangle {
             spacing:            _margin
             visible:            transectAreaDefinitionComplete && !_missionItem.wizardMode
 
-            TransectStyleComplexItemTabBar {
-                id:                 tabBar
-                Layout.fillWidth:   true
-            }
-
             // Grid tab
             ColumnLayout {
                 Layout.fillWidth:   true
                 spacing:            _margin
-                visible:            tabBar.currentIndex === 0
 
                 QGCLabel {
                     Layout.fillWidth:   true
@@ -137,106 +131,7 @@ Rectangle {
                 }
             } // Grid Column
 
-            // Camera Tab
-            CameraCalcCamera {
-                Layout.fillWidth:   true
-                visible:            tabBar.currentIndex === 1
-                cameraCalc:         _missionItem.cameraCalc
-            }
 
-            // Terrain Tab
-            TransectStyleComplexItemTerrainFollow {
-                Layout.fillWidth:   true
-                spacing:            _margin
-                visible:            tabBar.currentIndex === 2
-                missionItem:        _missionItem
-            }
-
-            // Presets Tab
-            ColumnLayout {
-                Layout.fillWidth:   true
-                spacing:            _margin
-                visible:            tabBar.currentIndex === 3
-
-                QGCLabel {
-                    Layout.fillWidth:   true
-                    text:               qsTr("Presets")
-                    wrapMode:           Text.WordWrap
-                }
-
-                QGCComboBox {
-                    id:                 presetCombo
-                    Layout.fillWidth:   true
-                    model:              _missionItem.presetNames
-                }
-
-                RowLayout {
-                    Layout.fillWidth:   true
-
-                    QGCButton {
-                        Layout.fillWidth:   true
-                        text:               qsTr("Apply Preset")
-                        enabled:            _missionItem.presetNames.length != 0
-                        onClicked:          _missionItem.loadPreset(presetCombo.textAt(presetCombo.currentIndex))
-                    }
-
-                    QGCButton {
-                        Layout.fillWidth:   true
-                        text:               qsTr("Delete Preset")
-                        enabled:            _missionItem.presetNames.length != 0
-                        onClicked:          deletePresetDialog.createObject(mainWindow, { presetName: presetCombo.textAt(presetCombo.currentIndex) }).open()
-
-                        Component {
-                            id: deletePresetDialog
-
-                            QGCSimpleMessageDialog {
-                                title:      qsTr("Delete Preset")
-                                text:       qsTr("Are you sure you want to delete '%1' preset?").arg(presetName)
-                                buttons:    StandardButton.Yes | StandardButton.No
-
-                                property string presetName
-
-                                onAccepted: { _missionItem.deletePreset(presetName) }
-                            }
-                        }
-                    }
-                }
-
-                Item { height: ScreenTools.defaultFontPixelHeight; width: 1 }
-
-                QGCButton {
-                    Layout.alignment:   Qt.AlignCenter
-                    Layout.fillWidth:   true
-                    text:               qsTr("Save Settings As New Preset")
-                    onClicked:          savePresetDialog.createObject(mainWindow).open()
-                }
-
-                SectionHeader {
-                    id:                 presectsTransectValuesHeader
-                    Layout.fillWidth:   true
-                    text:               transectValuesHeaderName
-                    visible:            !!presetsTransectValuesComponent
-                }
-
-                Loader {
-                    Layout.fillWidth:   true
-                    visible:            presectsTransectValuesHeader.checked && !!presetsTransectValuesComponent
-                    sourceComponent:    presetsTransectValuesComponent
-
-                    property bool forPresets: true
-                }
-
-                SectionHeader {
-                    id:                 presetsStatsHeader
-                    Layout.fillWidth:   true
-                    text:               qsTr("Statistics")
-                }
-
-                TransectStyleComplexItemStats {
-                    Layout.fillWidth:   true
-                    visible:            presetsStatsHeader.checked
-                }
-            } // Main editing column
         } // Top level  Column
 
         Component {

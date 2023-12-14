@@ -23,7 +23,7 @@
     "shortDesc": "Video RTSP Url",
     "longDesc":  "RTSP url address and port to bind to for video stream. Example: rtsp://192.168.42.1:554/live",
     "type":             "string",
-    "default":     ""
+    "default":     "192.168.144.25:8554"
 },
 {
     "name":             "tcpUrl",
@@ -79,7 +79,7 @@
     "type":             "uint32",
     "enumStrings":      "mkv,mov,mp4",
     "enumValues":       "0,1,2",
-    "default":     0
+    "default":     2
 },
 {
     "name":             "maxVideoSize",

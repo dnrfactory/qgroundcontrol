@@ -20,43 +20,45 @@ import QGroundControl.ScreenTools   1.0
 
 Button {
     id:                 button
-    height:             ScreenTools.defaultFontPixelHeight * 3
-    leftPadding:        _horizontalMargin
-    rightPadding:       _horizontalMargin
-    checkable:          false
+    height:             parent.height
+    width:              height
+    checkable:          true
 
     property bool logo: false
 
-    property real _horizontalMargin: ScreenTools.defaultFontPixelWidth
+    readonly property real _mainToolBarButtonIconHeight: ScreenTools.toolbarHeight - ScreenTools.defaultFontPixelWidth * 3.5 - _mainToolBarButtonSpacing // mainToolBarButtonIconHeight :    52
+    readonly property real _mainToolBarButtonSpacing: 5                                                                                                 // _mainToolBarButtonSpacing :       5
+    readonly property real _mainToolBarButtonFontSize: ScreenTools.defaultFontPixelWidth * 1.5                                                          // _mainToolBarButtonFontSize :     12
 
-    onCheckedChanged: checkable = false
+    onCheckedChanged: checkable = true
 
     background: Rectangle {
         anchors.fill:   parent
-        color:          button.checked ? qgcPal.buttonHighlight : Qt.rgba(0,0,0,0)
+        color:  button.checked ? qgcPal.customMainToolBarButton : Qt.rgba(0,0,0,0)
         border.color:   "red"
         border.width:   QGroundControl.corePlugin.showTouchAreas ? 3 : 0
+	radius: ScreenTools.defaultFontPixelWidth
     }
 
-    contentItem: Row {
-        spacing:                ScreenTools.defaultFontPixelWidth
-        anchors.verticalCenter: button.verticalCenter
+    contentItem: Column {
+        spacing:                _mainToolBarButtonSpacing
+        anchors.centerIn:       parent
         QGCColoredImage {
             id:                     _icon
-            height:                 ScreenTools.defaultFontPixelHeight * 2
-            width:                  height
-            sourceSize.height:      parent.height
+            height:                 _mainToolBarButtonIconHeight
+            width:                  _mainToolBarButtonIconHeight
             fillMode:               Image.PreserveAspectFit
             color:                  logo ? "transparent" : (button.checked ? qgcPal.buttonHighlightText : qgcPal.buttonText)
             source:                 button.icon.source
-            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter:   parent.horizontalCenter
         }
         Label {
             id:                     _label
             visible:                text !== ""
             text:                   button.text
-            color:                  button.checked ? qgcPal.buttonHighlightText : qgcPal.buttonText
-            anchors.verticalCenter: parent.verticalCenter
+            font.pixelSize:         _mainToolBarButtonFontSize
+            color:                  qgcPal.buttonText
+            anchors.horizontalCenter: parent.horizontalCenter
         }
     }
 }

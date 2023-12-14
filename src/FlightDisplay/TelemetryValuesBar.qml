@@ -16,98 +16,24 @@ import QGroundControl.Vehicle       1.0
 import QGroundControl.Controls      1.0
 import QGroundControl.Palette       1.0
 
-Rectangle {
+Item {
     id:                 telemetryPanel
-    height:             telemetryLayout.height + (_toolsMargin * 2)
-    width:              telemetryLayout.width + (_toolsMargin * 2)
-    color:              qgcPal.window
-    radius:             ScreenTools.defaultFontPixelWidth / 2
+    height:             _bottomPanelHeight
+    width:              _bottomPanelWidth * 1.5
 
-    property bool       bottomMode: true
-
-    DeadMouseArea { anchors.fill: parent }
+    Rectangle {
+        anchors.fill:           parent
+        color:                  qgcPal.window
+        opacity:                0.8
+        radius:                 _bottomPanelRadious
+    }
 
     ColumnLayout {
-        id:                 telemetryLayout
-        anchors.margins:    _toolsMargin
-        anchors.bottom:     parent.bottom
-        anchors.left:       parent.left
-
-         RowLayout {
-            visible: mouseArea.containsMouse || valueArea.settingsUnlocked
-
-            QGCColoredImage {
-                source:             "/res/layout-bottom.svg"
-                mipmap:             true
-                width:              ScreenTools.minTouchPixels * 0.75
-                height:             width
-                sourceSize.width:   width
-                color:              qgcPal.text
-                fillMode:           Image.PreserveAspectFit
-                visible:            !bottomMode
-
-                QGCMouseArea {
-                    fillItem:   parent
-                    onClicked:  bottomMode = true
-                }
-            }
-
-            QGCColoredImage {
-                source:             "/res/layout-right.svg"
-                mipmap:             true
-                width:              ScreenTools.minTouchPixels * 0.75
-                height:             width
-                sourceSize.width:   width
-                color:              qgcPal.text
-                fillMode:           Image.PreserveAspectFit
-                visible:            bottomMode
-
-                QGCMouseArea {
-                    fillItem:   parent
-                    onClicked:  bottomMode = false
-                }
-            }
-
-            QGCColoredImage {
-                source:             valueArea.settingsUnlocked ? "/res/LockOpen.svg" : "/res/pencil.svg"
-                mipmap:             true
-                width:              ScreenTools.minTouchPixels * 0.75
-                height:             width
-                sourceSize.width:   width
-                color:              qgcPal.text
-                fillMode:           Image.PreserveAspectFit
-
-                QGCMouseArea {
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    cursorShape:  Qt.PointingHandCursor
-                    onClicked:    valueArea.settingsUnlocked = !valueArea.settingsUnlocked
-                }
-            }
-        }
-
-        QGCMouseArea {
-            id:                         mouseArea
-            x:                          telemetryLayout.x
-            y:                          telemetryLayout.y
-            width:                      telemetryLayout.width
-            height:                     telemetryLayout.height
-            hoverEnabled:               !ScreenTools.isMobile
-            propagateComposedEvents:    true
-
-            onClicked: {
-                if (ScreenTools.isMobile && !valueArea.settingsUnlocked) {
-                    valueArea.settingsUnlocked = true
-                    mouse.accepted = true
-                } else {
-                    mouse.accepted = false
-                }
-            }
-        }
+        id:                     telemetryLayout
+        anchors.centerIn:       parent
 
         HorizontalFactValueGrid {
             id:                     valueArea
-            userSettingsGroup:      telemetryBarUserSettingsGroup
             defaultSettingsGroup:   telemetryBarDefaultSettingsGroup
         }
     }

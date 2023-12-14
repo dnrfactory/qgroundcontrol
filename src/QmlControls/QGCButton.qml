@@ -70,6 +70,7 @@ Button {
             antialiasing:           true
             text:                   control.text
             font.pointSize:         pointSize
+            font.bold:              true
             font.family:            ScreenTools.normalFontFamily
             color:                  _showHighlight ?
                                         qgcPal.buttonHighlightText :

@@ -59,6 +59,22 @@ Item {
     property real   _fullItemZorder:    0
     property real   _pipItemZorder:     QGroundControl.zOrderWidgets
 
+
+    readonly property real  _bottomPanelWidth:          ScreenTools.defaultFontPixelWidth * 35                  // Width        : 280
+    readonly property real  _bottomPanelHeight:         ScreenTools.defaultFontPixelWidth * 30                  // Height       : 240
+
+    readonly property real  _bottomPanelButtonWidth:    _bottomPanelWidth - (_bottomPanelMargin * 2)            // Width        : 248
+    readonly property real  _bottomPanelButtonHeight:   (_bottomPanelHeight - (_bottomPanelTopPadding * 5))/4   // Height       : 35
+
+    readonly property real  _bottomPanelMargin:         ScreenTools.defaultFontPixelWidth * 2                  // Margin       : 16
+
+    readonly property real  _bottomPanelLeftPadding:    ScreenTools.defaultFontPixelWidth * 2                 // LeftPadding  : 16
+    readonly property real  _bottomPanelTopPadding:     ScreenTools.defaultFontPixelWidth * 2.5                 // TopPadding   : 20
+
+    readonly property real  _bottomPanelRadious:        ScreenTools.defaultFontPixelWidth * 1.25                // Radious      : 10
+
+
+
     function _calcCenterViewPort() {
         var newToolInset = Qt.rect(0, 0, width, height)
         toolstrip.adjustToolInset(newToolInset)
@@ -78,7 +94,8 @@ Item {
         anchors.top:            parent.top
         anchors.bottom:         parent.bottom
         anchors.left:           parent.left
-        anchors.right:          guidedValueSlider.visible ? guidedValueSlider.left : parent.right
+//        anchors.right:          guidedValueSlider.visible ? guidedValueSlider.left : parent.right
+        anchors.right:          parent.right
         z:                      _fullItemZorder + 1
         parentToolInsets:       _toolInsets
         mapControl:             _mapControl
@@ -164,8 +181,10 @@ Item {
 
     QGCPipOverlay {
         id:                     _pipOverlay
-        anchors.left:           parent.left
-        anchors.bottom:         parent.bottom
+        x:                      parent.x + _bottomPanelMargin
+        y:                      parent.y + parent.height - _bottomPanelHeight - _bottomPanelMargin * 2 - _pipOverlay.height
+//        anchors.left:           parent.left
+//        anchors.bottom:         parent.bottom
         anchors.margins:        _toolsMargin
         item1IsFullSettingsKey: "MainFlyWindowIsMap"
         item1:                  mapControl

@@ -132,10 +132,10 @@ DECLARE_SETTINGSFACT_NO_FUNC(UnitsSettings, speedUnits)
         metaData->setShortDescription("Speed units");
         metaData->setEnumInfo(enumStrings, enumValues);
 
-        SpeedUnits defaultSpeedUnit = SpeedUnitsMetersPerSecond;
+        SpeedUnits defaultSpeedUnit = SpeedUnitsKnots;
         switch(QLocale::system().measurementSystem()) {
             case QLocale::MetricSystem: {
-                defaultSpeedUnit = SpeedUnitsMetersPerSecond;
+                defaultSpeedUnit = SpeedUnitsKnots;
             } break;
             case QLocale::ImperialUSSystem:
             case QLocale::ImperialUKSystem:

@@ -109,6 +109,8 @@ public:
     Q_PROPERTY(double               minAMSLAltitude                 MEMBER _minAMSLAltitude             NOTIFY minAMSLAltitudeChanged)          ///< Minimum altitude associated with this mission. Used to calculate percentages for terrain status.
     Q_PROPERTY(double               maxAMSLAltitude                 MEMBER _maxAMSLAltitude             NOTIFY maxAMSLAltitudeChanged)          ///< Maximum altitude associated with this mission. Used to calculate percentages for terrain status.
 
+    Q_PROPERTY(double               vehicleSpeed                    READ vehicleSpeed                   NOTIFY vehicleSpeedChanged)
+
     Q_PROPERTY(QGroundControlQmlGlobal::AltMode globalAltitudeMode         READ globalAltitudeMode         WRITE setGlobalAltitudeMode NOTIFY globalAltitudeModeChanged)
     Q_PROPERTY(QGroundControlQmlGlobal::AltMode globalAltitudeModeDefault  READ globalAltitudeModeDefault  NOTIFY globalAltitudeModeChanged)                               ///< Default to use for newly created items
 
@@ -254,6 +256,8 @@ public:
 
     bool isEmpty                    (void) const;
 
+    double  vehicleSpeed              (void) const { return _missionFlightStatus.vehicleSpeed; }
+
     QGroundControlQmlGlobal::AltMode globalAltitudeMode(void);
     QGroundControlQmlGlobal::AltMode globalAltitudeModeDefault(void);
     void setGlobalAltitudeMode(QGroundControlQmlGlobal::AltMode altMode);
@@ -298,6 +302,8 @@ signals:
     void _recalcMissionFlightStatusSignal   (void);
     void _recalcFlightPathSegmentsSignal    (void);
     void globalAltitudeModeChanged          (void);
+
+    void vehicleSpeedChanged                (double vehicleSpeed);
 
 private slots:
     void _newMissionItemsAvailableFromVehicle   (bool removeAllRequested);

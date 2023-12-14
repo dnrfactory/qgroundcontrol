@@ -106,6 +106,7 @@ Rectangle {
         FactTextField {
             fact:               QGroundControl.settingsManager.appSettings.defaultMissionItemAltitude
             Layout.fillWidth:   true
+	    enabled:            true
         }
 
         GridLayout {

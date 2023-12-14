@@ -59,6 +59,11 @@
         <file alias="GripperRelease.svg">resources/GripperRelease.svg</file>
         <file alias="GripperGrab.svg">resources/GripperGrab.svg</file>
         <file>resources/icons/qgroundcontrol.ico</file>
+        <file alias="icon_Sail.svg">resources/icon_Sail.svg</file>
+        <file alias="icon_SailPlan.svg">resources/icon_SailPlan.svg</file>
+        <file alias="icon_Setting.svg">resources/icon_Setting.svg</file>
+        <file alias="icon_Control.svg">resources/icon_Control.svg</file>
+        <file alias="Logo_USV">resources/Logo_USV.png</file>
     </qresource>
     <qresource prefix="/res/firmware">
         <file alias="3drradio.png">resources/firmware/3drradio.png</file>

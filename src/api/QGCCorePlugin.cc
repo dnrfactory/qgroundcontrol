@@ -293,78 +293,72 @@ void QGCCorePlugin::factValueGridCreateDefaultSettings(const QString& defaultSet
 {
     HorizontalFactValueGrid factValueGrid(defaultSettingsGroup);
 
-    bool        includeFWValues = factValueGrid.vehicleClass() == QGCMAVLink::VehicleClassFixedWing || factValueGrid.vehicleClass() == QGCMAVLink::VehicleClassVTOL || factValueGrid.vehicleClass() == QGCMAVLink::VehicleClassAirship;
-
     factValueGrid.setFontSize(FactValueGrid::LargeFontSize);
 
     factValueGrid.appendColumn();
     factValueGrid.appendColumn();
-    factValueGrid.appendColumn();
-    if (includeFWValues) {
-        factValueGrid.appendColumn();
-    }
+
+    factValueGrid.appendRow();
+    factValueGrid.appendRow();
+    factValueGrid.appendRow();
     factValueGrid.appendRow();
 
     int                 rowIndex    = 0;
     QmlObjectListModel* column      = factValueGrid.columns()->value<QmlObjectListModel*>(0);
-
     InstrumentValueData* value = column->value<InstrumentValueData*>(rowIndex++);
-    value->setFact("Vehicle", "AltitudeRelative");
-    value->setIcon("arrow-thick-up.svg");
-    value->setText(value->fact()->shortDescription());
+
+    value->setFact("gps", "count");
+    value->setText(QString::fromLocal8Bit("GPS").toUtf8());
+    value->setShowUnits(true);
+
+    value = column->value<InstrumentValueData*>(rowIndex++);
+    value->setFact("gps", "lat");
+    value->setText(QString::fromLocal8Bit("위도").toUtf8());
+    value->setShowUnits(true);
+
+    value = column->value<InstrumentValueData*>(rowIndex++);
+    value->setFact("gps", "lon");
+    value->setText(QString::fromLocal8Bit("경도").toUtf8());
     value->setShowUnits(true);
 
     value = column->value<InstrumentValueData*>(rowIndex++);
     value->setFact("Vehicle", "DistanceToHome");
-    value->setIcon("bookmark copy 3.svg");
-    value->setText(value->fact()->shortDescription());
+    value->setText(QString::fromLocal8Bit("홈포인트").toUtf8());
+    value->setShowUnits(true);
+
+    value = column->value<InstrumentValueData*>(rowIndex++);
+    value->setFact("Vehicle", "DistanceToGCS");
+    value->setText(QString::fromLocal8Bit("GCS").toUtf8());
     value->setShowUnits(true);
 
     rowIndex    = 0;
     column      = factValueGrid.columns()->value<QmlObjectListModel*>(1);
 
     value = column->value<InstrumentValueData*>(rowIndex++);
-    value->setFact("Vehicle", "ClimbRate");
-    value->setIcon("arrow-simple-up.svg");
-    value->setText(value->fact()->shortDescription());
+    value->setFact("gps", "lock");
+    value->setText(QString::fromLocal8Bit("lock").toUtf8());
     value->setShowUnits(true);
 
     value = column->value<InstrumentValueData*>(rowIndex++);
-    value->setFact("Vehicle", "GroundSpeed");
-    value->setIcon("arrow-simple-right.svg");
-    value->setText(value->fact()->shortDescription());
+    value->setFact("battery0", "voltage");
+    value->setText(QString::fromLocal8Bit("전압").toUtf8());
     value->setShowUnits(true);
 
-
-    if (includeFWValues) {
-        rowIndex    = 0;
-        column      = factValueGrid.columns()->value<QmlObjectListModel*>(2);
-
-        value = column->value<InstrumentValueData*>(rowIndex++);
-        value->setFact("Vehicle", "AirSpeed");
-        value->setText("AirSpd");
-        value->setShowUnits(true);
-
-        value = column->value<InstrumentValueData*>(rowIndex++);
-        value->setFact("Vehicle", "ThrottlePct");
-        value->setText("Thr");
-        value->setShowUnits(true);
-    }
-
-    rowIndex    = 0;
-    column      = factValueGrid.columns()->value<QmlObjectListModel*>(includeFWValues ? 3 : 2);
-
     value = column->value<InstrumentValueData*>(rowIndex++);
-    value->setFact("Vehicle", "FlightTime");
-    value->setIcon("timer.svg");
-    value->setText(value->fact()->shortDescription());
-    value->setShowUnits(false);
-
-    value = column->value<InstrumentValueData*>(rowIndex++);
-    value->setFact("Vehicle", "FlightDistance");
-    value->setIcon("travel-walk.svg");
-    value->setText(value->fact()->shortDescription());
+    value->setFact("Vehicle", "flightTime");
+    value->setText(QString::fromLocal8Bit("운항시간").toUtf8());
     value->setShowUnits(true);
+
+    value = column->value<InstrumentValueData*>(rowIndex++);
+    value->setFact("Vehicle", "ThrottlePct");
+    value->setText(QString::fromLocal8Bit("추진력").toUtf8());
+    value->setShowUnits(true);
+
+    value = column->value<InstrumentValueData*>(rowIndex++);
+    value->setFact("Vehicle", "AirSpeed");
+    value->setText(QString::fromLocal8Bit("운항속도").toUtf8());
+    value->setShowUnits(true);
+
 }
 
 QQmlApplicationEngine* QGCCorePlugin::createQmlApplicationEngine(QObject* parent)

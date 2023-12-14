@@ -319,7 +319,7 @@ ApplicationWindow {
                         text:               qsTr("Analyze Tools")
                         imageResource:      "/qmlimages/Analyze.svg"
                         imageColor:         qgcPal.text
-                        visible:            QGroundControl.corePlugin.showAdvancedUI
+                        visible:            true
                         onClicked: {
                             if (!mainWindow.preventViewSwitch()) {
                                 toolSelectDialog.close()
@@ -351,7 +351,7 @@ ApplicationWindow {
 
                         QGCLabel {
                             id:                     versionLabel
-                            text:                   qsTr("%1 Version").arg(QGroundControl.appName)
+                            text:                   qsTr("%1 Version %2").arg(QGroundControl.appName).arg(QGroundControl.qgcVersion)
                             font.pointSize:         ScreenTools.smallFontPointSize
                             wrapMode:               QGCLabel.WordWrap
                             Layout.maximumWidth:    parent.width
@@ -365,57 +365,11 @@ ApplicationWindow {
                             Layout.maximumWidth:    parent.width
                             Layout.alignment:       Qt.AlignHCenter
 
-                            QGCMouseArea {
-                                id:                 easterEggMouseArea
-                                anchors.topMargin:  -versionLabel.height
+                            MouseArea{
                                 anchors.fill:       parent
 
-                                onClicked: {
-                                    if (mouse.modifiers & Qt.ControlModifier) {
-                                        QGroundControl.corePlugin.showTouchAreas = !QGroundControl.corePlugin.showTouchAreas
-                                        showTouchAreasNotification.open()
-                                    } else if (ScreenTools.isMobile || mouse.modifiers & Qt.ShiftModifier) {
-                                        if(!QGroundControl.corePlugin.showAdvancedUI) {
-                                            advancedModeOnConfirmation.open()
-                                        } else {
-                                            advancedModeOffConfirmation.open()
-                                        }
-                                    }
-                                }
-
-                                // This allows you to change this on mobile
-                                onPressAndHold: {
-                                    QGroundControl.corePlugin.showTouchAreas = !QGroundControl.corePlugin.showTouchAreas
-                                    showTouchAreasNotification.open()
-                                }
-
-                                MessageDialog {
-                                    id:                 showTouchAreasNotification
-                                    title:              qsTr("Debug Touch Areas")
-                                    text:               qsTr("Touch Area display toggled")
-                                    standardButtons:    StandardButton.Ok
-                                }
-
-                                MessageDialog {
-                                    id:                 advancedModeOnConfirmation
-                                    title:              qsTr("Advanced Mode")
-                                    text:               QGroundControl.corePlugin.showAdvancedUIMessage
-                                    standardButtons:    StandardButton.Yes | StandardButton.No
-                                    onYes: {
-                                        QGroundControl.corePlugin.showAdvancedUI = true
-                                        advancedModeOnConfirmation.close()
-                                    }
-                                }
-
-                                MessageDialog {
-                                    id:                 advancedModeOffConfirmation
-                                    title:              qsTr("Advanced Mode")
-                                    text:               qsTr("Turn off Advanced Mode?")
-                                    standardButtons:    StandardButton.Yes | StandardButton.No
-                                    onYes: {
-                                        QGroundControl.corePlugin.showAdvancedUI = false
-                                        advancedModeOffConfirmation.close()
-                                    }
+                                onClicked:{
+                                    QGroundControl.corePlugin.showAdvancedUI = true
                                 }
                             }
                         }
@@ -425,6 +379,32 @@ ApplicationWindow {
         }
     }
 
+    Rectangle{
+        height: parent.height
+        width: parent.width
+        anchors.centerIn: parent
+        color: "transparent"
+        z:QGroundControl.zOrderTopMost + 100
+
+        QGCLabel{
+            text: "초기화 및 연결 중"
+            font.pointSize: 80
+            font.bold: true
+            color:"#161C41"
+            anchors.centerIn: parent
+            visible: globals.activeVehicle && !globals.activeVehicle.initialConnectComplete
+
+            PropertyAnimation on opacity {
+                easing.type:    Easing.Linear
+                from:           0.5
+                to:             1
+                loops:          Animation.Infinite
+                running:        true
+                alwaysRunToEnd: true
+                duration:       2000
+            }
+        }
+    }
 
     FlyView {
         id:             flightView

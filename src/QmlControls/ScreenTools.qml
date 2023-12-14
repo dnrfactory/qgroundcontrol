@@ -150,7 +150,7 @@ Item {
             // If using physical sizing takes up too much of the vertical real estate fall back to font based sizing
             minTouchPixels      = defaultFontPixelHeight * 3
         }
-        toolbarHeight           = isMobile ? minTouchPixels : defaultFontPixelHeight * 3
+        toolbarHeight           = isMobile ? minTouchPixels : defaultFontPixelHeight * 3 * 1.5
         toolbarHeight           = toolbarHeight * QGroundControl.corePlugin.options.toolbarHeightMultiplier
     }
 

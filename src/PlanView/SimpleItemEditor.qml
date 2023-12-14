@@ -176,6 +176,7 @@ Rectangle {
                     id:                 altField
                     Layout.fillWidth:   true
                     fact:               missionItem.altitude
+                    enabled :           true
                 }
 
                 QGCLabel {

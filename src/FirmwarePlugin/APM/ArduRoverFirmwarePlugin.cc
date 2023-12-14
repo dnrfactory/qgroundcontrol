@@ -36,16 +36,16 @@ ArduRoverFirmwarePlugin::ArduRoverFirmwarePlugin(void)
 {
     setSupportedModes({
         APMRoverMode(APMRoverMode::MANUAL       ,true),
-        APMRoverMode(APMRoverMode::ACRO         ,true),
-        APMRoverMode(APMRoverMode::STEERING     ,true),
-        APMRoverMode(APMRoverMode::HOLD         ,true),
+        APMRoverMode(APMRoverMode::ACRO         ,false),
+        APMRoverMode(APMRoverMode::STEERING     ,false),
+        APMRoverMode(APMRoverMode::HOLD         ,false),
         APMRoverMode(APMRoverMode::LOITER       ,true),
         APMRoverMode(APMRoverMode::FOLLOW       ,true),
-        APMRoverMode(APMRoverMode::SIMPLE       ,true),
+        APMRoverMode(APMRoverMode::SIMPLE       ,false),
         APMRoverMode(APMRoverMode::AUTO         ,true),
-        APMRoverMode(APMRoverMode::RTL          ,true),
-        APMRoverMode(APMRoverMode::SMART_RTL    ,true),
-        APMRoverMode(APMRoverMode::GUIDED       ,true),
+        APMRoverMode(APMRoverMode::RTL          ,false),
+        APMRoverMode(APMRoverMode::SMART_RTL    ,false),
+        APMRoverMode(APMRoverMode::GUIDED       ,false),
         APMRoverMode(APMRoverMode::INITIALIZING ,false),
     });
 

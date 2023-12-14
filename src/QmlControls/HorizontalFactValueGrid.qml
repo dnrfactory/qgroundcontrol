@@ -45,13 +45,14 @@ T.HorizontalFactValueGrid {
                 spacing:    ScreenTools.defaultFontPixelWidth * 1.25
 
                 Repeater {
+                    id : parnetsrepeater
                     model: _root.columns
 
                     GridLayout {
                         rows:           object.count
                         columns:        2
-                        rowSpacing:     0
-                        columnSpacing:  ScreenTools.defaultFontPixelWidth / 4
+                        rowSpacing:     ScreenTools.defaultFontPixelWidth * 2.5                 // TopPadding   : 20
+                        columnSpacing:  ScreenTools.defaultFontPixelWidth * 2                 // LeftPadding  : 16
                         flow:           GridLayout.TopToBottom
 
                         Repeater {
@@ -89,104 +90,18 @@ T.HorizontalFactValueGrid {
 
                                 property real lastContentWidth
 
+                                // 20221215/ add margin between columns
+                                Layout.rightMargin: valueRepeater._index === 0 ? ScreenTools.defaultFontPixelWidth * 6 : 0
+
                                 Component.onCompleted:  {
                                     valueRepeater.maxWidth = Math.max(valueRepeater.maxWidth, contentWidth)
                                     lastContentWidth = contentWidth
-                                }
-
-                                onContentWidthChanged: {
-                                    valueRepeater.maxWidth = Math.max(valueRepeater.maxWidth, contentWidth)
-                                    lastContentWidth = contentWidth
-                                    var currentTime = new Date().getTime()
-                                    if (currentTime - valueRepeater.lastCheck > 30 * 1000) {
-                                        valueRepeater.lastCheck = currentTime
-                                        valueRepeater.recalcWidth()
-                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-
-            ColumnLayout {
-                Layout.bottomMargin:    1
-                Layout.fillHeight:      true
-                Layout.preferredWidth:  ScreenTools.minTouchPixels / 2
-                spacing:                1
-                visible:                settingsUnlocked
-                enabled:                settingsUnlocked
-
-                QGCButton {
-                    Layout.fillHeight:      true
-                    Layout.preferredHeight: ScreenTools.minTouchPixels
-                    Layout.preferredWidth:  parent.width
-                    text:                   qsTr("+")
-                    enabled:                (_root.width + (2 * (_rowButtonWidth + _margins))) < screen.width
-                    onClicked:              appendColumn()
-                }
-
-                QGCButton {
-                    Layout.fillHeight:      true
-                    Layout.preferredHeight: ScreenTools.minTouchPixels
-                    Layout.preferredWidth:  parent.width
-                    text:                   qsTr("-")
-                    enabled:                _root.columns.count > 1
-                    onClicked:              deleteLastColumn()
-                }
-            }
         }
-
-        RowLayout {
-            Layout.preferredHeight: ScreenTools.minTouchPixels / 2
-            Layout.fillWidth:       true
-            spacing:                1
-            visible:                settingsUnlocked
-            enabled:                settingsUnlocked
-
-            QGCButton {
-                Layout.fillWidth:       true
-                Layout.preferredHeight: parent.height
-                text:                   qsTr("+")
-                enabled:                (_root.height + (2 * (_rowButtonHeight + _margins))) < (screen.height - ScreenTools.toolbarHeight)
-                onClicked:              appendRow()
-            }
-
-            QGCButton {
-                Layout.fillWidth:       true
-                Layout.preferredHeight: parent.height
-                text:                   qsTr("-")
-                enabled:                _root.rowCount > 1
-                onClicked:              deleteLastRow()
-            }
-        }
-    }
-
-    QGCMouseArea {
-        x:          labelValueColumnLayout.x
-        y:          labelValueColumnLayout.y
-        width:      labelValueColumnLayout.width
-        height:     labelValueColumnLayout.height
-        visible:    settingsUnlocked
-        cursorShape:Qt.PointingHandCursor
-
-        property var mappedLabelValueColumnLayoutPosition: _root.mapFromItem(labelValueColumnLayout, labelValueColumnLayout.x, labelValueColumnLayout.y)
-
-        onClicked: {
-            var columnGridLayoutItem = labelValueColumnLayout.childAt(mouse.x, mouse.y)
-            //console.log(mouse.x, mouse.y, columnGridLayoutItem)
-            var mappedMouse = labelValueColumnLayout.mapToItem(columnGridLayoutItem, mouse.x, mouse.y)
-            var labelOrDataItem = columnGridLayoutItem.childAt(mappedMouse.x, mappedMouse.y)
-            //console.log(mappedMouse.x, mappedMouse.y, labelOrDataItem, labelOrDataItem ? labelOrDataItem.instrumentValueData : "null", labelOrDataItem && labelOrDataItem.parent ? labelOrDataItem.parent.instrumentValueData : "null")
-            if (labelOrDataItem && labelOrDataItem.instrumentValueData !== undefined) {
-                valueEditDialog.createObject(mainWindow, { instrumentValueData: labelOrDataItem.instrumentValueData }).open()
-            }
-        }
-    }
-
-    Component {
-        id: valueEditDialog
-
-        InstrumentValueEditDialog { }
     }
 }

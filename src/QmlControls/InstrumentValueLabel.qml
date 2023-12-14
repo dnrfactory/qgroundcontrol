@@ -76,10 +76,11 @@ ColumnLayout {
     QGCLabel {
         Layout.alignment:   _verticalOrientation ? Qt.AlignHCenter : Qt.AlignVCenter
         height:             _tightHeight
-        font.pointSize:     ScreenTools.smallFontPointSize
+        font.pointSize:     ScreenTools.mediumFontPointSize
         text:               instrumentValueData.text
         color:              _color
         opacity:            instrumentValueData.currentOpacity
+	font.bold:          true
         visible:            !_iconVisible
     }
 }

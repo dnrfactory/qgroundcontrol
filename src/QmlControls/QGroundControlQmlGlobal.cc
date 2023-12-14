@@ -21,8 +21,8 @@ const char* QGroundControlQmlGlobal::_flightMapPositionLatitudeSettingsKey =    
 const char* QGroundControlQmlGlobal::_flightMapPositionLongitudeSettingsKey =   "Longitude";
 const char* QGroundControlQmlGlobal::_flightMapZoomSettingsKey =                "FlightMapZoom";
 
-QGeoCoordinate   QGroundControlQmlGlobal::_coord = QGeoCoordinate(0.0,0.0);
-double           QGroundControlQmlGlobal::_zoom = 2;
+QGeoCoordinate   QGroundControlQmlGlobal::_coord = QGeoCoordinate(35.23060826,128.87036671);
+double           QGroundControlQmlGlobal::_zoom = 19;
 
 QGroundControlQmlGlobal::QGroundControlQmlGlobal(QGCApplication* app, QGCToolbox* toolbox)
     : QGCTool               (app, toolbox)
@@ -262,11 +262,6 @@ void QGroundControlQmlGlobal::setFlightMapZoom(double zoom)
 QString QGroundControlQmlGlobal::qgcVersion(void) const
 {
     QString versionStr = qgcApp()->applicationVersion();
-#ifdef __androidArm32__
-    versionStr += QStringLiteral(" %1").arg(tr("32 bit"));
-#elif __androidArm64__
-    versionStr += QStringLiteral(" %1").arg(tr("64 bit"));
-#endif
     return versionStr;
 }
 

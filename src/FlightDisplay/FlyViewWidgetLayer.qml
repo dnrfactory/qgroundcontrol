@@ -48,20 +48,72 @@ Item {
     property real   _rightPanelWidth:       ScreenTools.defaultFontPixelWidth * 30
     property alias  _gripperMenu:           gripperOptions
 
+    function formatMessage(message) {
+        message = message.replace(new RegExp("<#E>", "g"), "color: " + qgcPal.warningText + "; font: " + (ScreenTools.defaultFontPointSize.toFixed(0) - 1) + "pt monospace;");
+        message = message.replace(new RegExp("<#I>", "g"), "color: " + qgcPal.warningText + "; font: " + (ScreenTools.defaultFontPointSize.toFixed(0) - 1) + "pt monospace;");
+        message = message.replace(new RegExp("<#N>", "g"), "color: " + "black" + "; font: " + (ScreenTools.defaultFontPointSize.toFixed(0) - 1) + "pt monospace;");
+        return message;
+    }
+
+
+    //---------------------------
+
+    property string _sailMode:              _activeVehicle ? _activeVehicle.flightMode : ""
+    property bool   _communicationLost:     _activeVehicle ? _activeVehicle.vehicleLinkManager.communicationLost : false
+    property color  _statusTextColor:       "white"
+    property real   _statusTextFontSize:    ScreenTools.mediumFontPointSize
+
+    function checkMode(){
+        switch(_sailMode){
+        case "Manual":
+            manualButton.checked = true
+            break;
+        case "Auto":
+            autoButton.checked = true;
+            break;
+        case "Loiter":
+            loiterButton.checked = true;
+            break;
+        default:
+            manualButton.checked = false;
+            autoButton.checked = false;
+            loiterButton.checked = false;
+
+            break;
+        }
+    }
+
+    on_SailModeChanged: {
+        checkMode();
+    }
+
+    on_ActiveVehicleChanged: {
+        _activeVehicle ? switchCirle.state = "leftOff" : switchCirle.state = "disActiveVehicle"
+    }
+
+    property bool   _vehicleArmed:          _activeVehicle ? _activeVehicle.armed  : false
+    on_VehicleArmedChanged: {
+        _vehicleArmed ? switchCirle.state = "rightOn" : switchCirle.state = "leftOff"
+    }
+
+    function showPanel() {
+        panelLoader.setSource()
+    }
+
+    //---------------------------
+
     QGCToolInsets {
         id:                     _totalToolInsets
-        leftEdgeTopInset:       toolStrip.leftEdgeTopInset
-        leftEdgeCenterInset:    parentToolInsets.leftEdgeCenterInset
-        leftEdgeBottomInset:    virtualJoystickMultiTouch.visible ? virtualJoystickMultiTouch.leftEdgeBottomInset : parentToolInsets.leftEdgeBottomInset
-        rightEdgeTopInset:      instrumentPanel.rightEdgeTopInset
-        rightEdgeCenterInset:   (telemetryPanel.rightEdgeCenterInset > photoVideoControl.rightEdgeCenterInset) ? telemetryPanel.rightEdgeCenterInset : photoVideoControl.rightEdgeCenterInset
-        rightEdgeBottomInset:   virtualJoystickMultiTouch.visible ? virtualJoystickMultiTouch.rightEdgeBottomInset : parentToolInsets.rightEdgeBottomInset
-        topEdgeLeftInset:       toolStrip.topEdgeLeftInset
-        topEdgeCenterInset:     mapScale.topEdgeCenterInset
-        topEdgeRightInset:      instrumentPanel.topEdgeRightInset
-        bottomEdgeLeftInset:    virtualJoystickMultiTouch.visible ? virtualJoystickMultiTouch.bottomEdgeLeftInset : parentToolInsets.bottomEdgeLeftInset
-        bottomEdgeCenterInset:  telemetryPanel.bottomEdgeCenterInset
-        bottomEdgeRightInset:   virtualJoystickMultiTouch.visible ? virtualJoystickMultiTouch.bottomEdgeRightInset : parentToolInsets.bottomEdgeRightInset
+        leftEdgeBottomInset:    parentToolInsets.leftEdgeBottomInset
+        rightEdgeTopInset:      parentToolInsets.rightEdgeTopInset
+        rightEdgeCenterInset:   parentToolInsets.rightEdgeCenterInset
+        rightEdgeBottomInset:   parentToolInsets.rightEdgeBottomInset
+        topEdgeLeftInset:       parentToolInsets.topEdgeLeftInset
+        topEdgeCenterInset:     parentToolInsets.topEdgeCenterInset
+        topEdgeRightInset:      parentToolInsets.topEdgeRightInset
+        bottomEdgeLeftInset:    parentToolInsets.bottomEdgeLeftInset
+        bottomEdgeCenterInset:  mapScale.topEdgeCenterInset
+        bottomEdgeRightInset:   0
     }
 
     FlyViewMissionCompleteDialog {
@@ -115,131 +167,524 @@ Item {
         guidedValueSlider:          _guidedValueSlider
     }
 
-    FlyViewInstrumentPanel {
-        id:                         instrumentPanel
-        anchors.margins:            _toolsMargin
-        anchors.top:                multiVehiclePanelSelector.visible ? multiVehiclePanelSelector.bottom : parent.top
-        anchors.right:              parent.right
-        width:                      _rightPanelWidth
-        spacing:                    _toolsMargin
-        visible:                    QGroundControl.corePlugin.options.flyView.showInstrumentPanel && multiVehiclePanelSelector.showSingleVehiclePanel
-        availableHeight:            parent.height - y - _toolsMargin
-
-        property real rightEdgeTopInset: visible ? parent.width - x : 0
-        property real topEdgeRightInset: visible ? y + height : 0
+    Rectangle {
+        id:                     bottomPanel
+        width:                  parent.width
+        height:                 _bottomPanelHeight + _bottomPanelMargin * 2
+        anchors.bottom:         parent.bottom
+        color: "transparent"
+        DeadMouseArea {
+            anchors.fill:   parent
+        }
     }
 
-    PhotoVideoControl {
-        id:                     photoVideoControl
-        anchors.margins:        _toolsMargin
-        anchors.right:          parent.right
-        width:                  _rightPanelWidth
+    Row {
+        anchors.centerIn:       bottomPanel
+        spacing:               _bottomPanelLeftPadding
 
-        property real rightEdgeCenterInset: visible ? parent.width - x : 0
+        TelemetryValuesBar {
+            id:                 telemetryPanel
+        }
 
-        state:                  _verticalCenter ? "verticalCenter" : "topAnchor"
-        states: [
-            State {
-                name: "verticalCenter"
-                AnchorChanges {
-                    target:                 photoVideoControl
-                    anchors.top:            undefined
-                    anchors.verticalCenter: _root.verticalCenter
+        Rectangle {
+            id:                 customWeatherPanel
+            height:             _bottomPanelHeight
+            width:              _bottomPanelWidth
+            color:              "transparent"
+            
+            Rectangle{
+                anchors.fill:       parent
+                color:              qgcPal.window
+                opacity:            0.8
+                radius:             _bottomPanelRadious
+            }
+        }
+
+        Rectangle {
+            id:                     customArmPanel
+            height:                 _bottomPanelHeight
+            width:                  (_bottomPanelWidth/2 - 4)
+            color:                  "transparent"
+
+            Rectangle{
+                anchors.fill:       parent
+                color:              qgcPal.window
+                opacity:            0.8
+                radius:             _bottomPanelRadious
+            }
+
+            Column {
+                anchors.fill:       parent
+                spacing:            _bottomPanelTopPadding/2
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.margins:    _bottomPanelMargin
+
+                QGCLabel{
+                    id :                        customStatusLabel
+                    text:                       customMainStatusText()
+//                    font.pointSize:             ScreenTools.defaultFontPointSize
+                    font.pointSize:             _statusTextFontSize
+                    font.bold :                 true
+                    color:                      _statusTextColor
+                    anchors.horizontalCenter:   parent.horizontalCenter
+
+
+                    property string _commLostText:      qsTr("Communication Lost")
+                    property string _readyToSailText:   qsTr("Ready To Sail")
+                    property string _notReadyToSailText: qsTr("Not Ready")
+                    property string _disconnectedText:  qsTr("Disconnected")
+                    property string _armedText:         qsTr("Armed")
+                    property string _sailingText:       qsTr("Sailing")
+                    property string _waitingText:       qsTr("Waiting")
+
+                    function customMainStatusText() {
+                        if (_activeVehicle) {
+                            if (_communicationLost) {
+                                _statusTextColor = "red"
+                                _statusTextFontSize = ScreenTools.defaultFontPointSize
+                                return customStatusLabel._commLostText
+                            }
+                            if (_activeVehicle.armed) {
+                                _statusTextColor = "green"
+                                _statusTextFontSize = ScreenTools.mediumFontPointSize
+                                if (_activeVehicle.flying) {
+                                    return customStatusLabel._sailingText
+                                } else if (_activeVehicle.landing) {
+                                    return customStatusLabel._waitingText
+                                } else {
+                                    return customStatusLabel._armedText
+                                }
+                            } else {
+                                _statusTextFontSize = ScreenTools.mediumFontPointSize
+                                if (_activeVehicle.readyToFlyAvailable) {
+                                    if (_activeVehicle.readyToFly) {
+                                        _statusTextColor = "green"
+                                        return customStatusLabel._readyToSailText
+                                    } else {
+                                        _statusTextColor = "yellow"
+                                        return customStatusLabel._notReadyToSailText
+                                    }
+                                } else {
+                                    // Best we can do is determine readiness based on AutoPilot component setup and health indicators from SYS_STATUS
+                                    if (_activeVehicle.allSensorsHealthy && _activeVehicle.autopilot.setupComplete) {
+                                        _statusTextColor = "green"
+                                        return customStatusLabel._readyToSailText
+                                    } else {
+                                        _statusTextColor = "yellow"
+                                        return customStatusLabel._notReadyToSailText
+                                    }
+                                }
+                            }
+                        } else {
+                            _statusTextColor = "gray"
+                            _statusTextFontSize = ScreenTools.mediumFontPointSize
+                            return customStatusLabel._disconnectedText
+                        }
+                    }
                 }
-            },
-            State {
-                name: "topAnchor"
-                AnchorChanges {
-                    target:                 photoVideoControl
-                    anchors.verticalCenter: undefined
-                    anchors.top:            instrumentPanel.bottom
+
+                Rectangle{
+                    id: armswitch
+                    color: "transparent"
+                    width: parent.width * 0.9
+                    height: width / 2
+                    anchors.horizontalCenter:   parent.horizontalCenter
+                    enabled: _activeVehicle
+
+                    Rectangle{
+                        id:roundRectangle
+                        width: parent.width * 0.8
+                        height:parent.height * 0.5
+                        radius: height
+                        color: "white"
+                        anchors.centerIn: parent
+
+                        QGCLabel{
+                            text:           qsTr("ON")
+                            font.pointSize: ScreenTools.mediumFontPointSize
+                            font.bold :     true
+                            color : switchCirle.state == "disActiveVehicle" ? "gray" : "black"
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.leftMargin: 7
+                        }
+
+                        QGCLabel{
+                            text:           qsTr("OFF")
+                            font.pointSize: ScreenTools.mediumFontPointSize
+                            font.bold :     true
+                            color : switchCirle.state == "disActiveVehicle" ? "gray" : "black"
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.rightMargin: 7
+                        }
+                    }
+
+                    Rectangle{
+                        id: switchCirle
+                        width: parent.height
+                        height:width
+                        radius: height
+                        anchors.verticalCenter: parent.verticalCenter
+                        state : "leftOff"
+
+                        states:[
+
+                            State {
+                                name: "disActiveVehicle"
+                                PropertyChanges {
+                                    target: switchCirle;
+                                    color: "gray";
+                                }
+                                AnchorChanges{
+                                    target: switchCirle;
+                                    anchors.left: parent.left
+                                }
+                            },
+                            State {
+                                name: "leftOff"
+                                PropertyChanges {
+                                    target: switchCirle;
+                                    color: "red";
+                                }
+                                AnchorChanges{
+                                    target: switchCirle;
+                                    anchors.left: parent.left
+                                }
+                            },
+                            State {
+                                name: "rightOn"
+                                PropertyChanges {
+                                    target: switchCirle;
+                                    color: "#00DC30";
+                                }
+                                AnchorChanges{
+                                    target: switchCirle;
+                                    anchors.right: parent.right
+                                }
+                            }
+                        ]
+                    }
+
+                    MouseArea{
+                        anchors.fill: parent
+
+                        readonly property int actionArm:                        4
+                        readonly property int actionDisarm:                     5
+                        readonly property int actionStartMission:               12
+                        readonly property int actionResumeMission:              14
+
+                        hoverEnabled : true
+                        cursorShape: Qt.PointingHandCursor
+
+                        onClicked: {
+                             switchCirle.state == "leftOff" ? _guidedController.executeAction(actionArm) : _guidedController.executeAction(actionDisarm)
+                        }
+                    }
+                }
+
+                QGCLabel{
+                    text:           qsTr("수신 감도")
+                    font.pointSize: ScreenTools.mediumFontPointSize
+                    font.bold :     true
+                    anchors.horizontalCenter:   parent.horizontalCenter
+                }
+
+                QGCLabel{
+                    id:             rssiValue
+                    text:           _activeVehicle ? (_activeVehicle.rcRSSI + " " + "%") : 0
+                    font.pointSize: ScreenTools.mediumFontPointSize
+                    font.bold :     true
+                    anchors.horizontalCenter:   parent.horizontalCenter
+                }
+
+                QGCLabel{
+                    text:           qsTr("배터리 잔량")
+                    font.pointSize: ScreenTools.mediumFontPointSize
+                    font.bold :     true
+                    anchors.horizontalCenter:   parent.horizontalCenter
+                }
+
+                QGCLabel{
+                    property var    _batteryGroup:                  globals.activeVehicle && globals.activeVehicle.batteries.count ? globals.activeVehicle.batteries.get(0) : undefined
+                    property var    _batteryValue:                  _batteryGroup ? _batteryGroup.percentRemaining.value : 0
+                    property var    _batPercentRemaining:           isNaN(_batteryValue) ? 0 : _batteryValue
+
+                    id:             batteryValue
+                    text:           _batPercentRemaining !== 0 ? _batPercentRemaining + " " + _batteryGroup.percentRemaining.units : 0
+
+                    font.pointSize: ScreenTools.mediumFontPointSize
+                    font.bold :     true
+                    anchors.horizontalCenter:   parent.horizontalCenter
                 }
             }
-        ]
+        }            
 
-        property bool _verticalCenter: !QGroundControl.settingsManager.flyViewSettings.alternateInstrumentPanel.rawValue
-    }
+        FlyViewInstrumentPanel {
+            id:                         instrumentPanel
+            anchors.margins:            _bottomPanelMargin
+            width:                      _bottomPanelHeight / 2
+            visible:                    QGroundControl.corePlugin.options.flyView.showInstrumentPanel && multiVehiclePanelSelector.showSingleVehiclePanel
+            availableHeight:            parent.height - y - _toolsMargin
 
-    TelemetryValuesBar {
-        id:                 telemetryPanel
-        x:                  recalcXPosition()
-        anchors.margins:    _toolsMargin
+            property real rightEdgeTopInset: visible ? parent.width - x : 0
+            property real topEdgeRightInset: visible ? y + height : 0
+        }
 
-        property real bottomEdgeCenterInset: 0
-        property real rightEdgeCenterInset: 0
+        Column {
+            spacing: _bottomPanelMargin
 
-        // States for custom layout support
-        states: [
-            State {
-                name: "bottom"
-                when: telemetryPanel.bottomMode
+            Rectangle {
+                id:                     customModePanel
+                height:                 67
+                width:                  _bottomPanelWidth * 2 + 12
+                color:                  "transparent"
 
-                AnchorChanges {
-                    target: telemetryPanel
-                    anchors.top: undefined
-                    anchors.bottom: parent.bottom
-                    anchors.right: undefined
-                    anchors.verticalCenter: undefined
+                Rectangle{
+                    anchors.fill:       parent
+                    color:              qgcPal.window
+                    opacity:            0.8
+                    radius:             _bottomPanelRadious
                 }
 
-                PropertyChanges {
-                    target: telemetryPanel
-                    x: recalcXPosition()
-                    bottomEdgeCenterInset: visible ? parent.height-y : 0
-                    rightEdgeCenterInset: 0
-                }
-            },
+                Row {
+                    anchors.fill:       parent
+                    spacing:            _bottomPanelLeftPadding
+                    anchors.margins:    _bottomPanelMargin
 
-            State {
-                name: "right-video"
-                when: !telemetryPanel.bottomMode && photoVideoControl.visible
+                    QGCLabel {
+                        id : modeLabel
+                        text: "운항모드"
+                        anchors.verticalCenter: parent.verticalCenter
+                        font.pointSize:     ScreenTools.mediumFontPointSize
+                    }
 
-                AnchorChanges {
-                    target: telemetryPanel
-                    anchors.top: photoVideoControl.bottom
-                    anchors.bottom: undefined
-                    anchors.right: parent.right
-                    anchors.verticalCenter: undefined
-                }
-                PropertyChanges {
-                    target: telemetryPanel
-                    bottomEdgeCenterInset: 0
-                    rightEdgeCenterInset: visible ? parent.width - x : 0
-                }
-            },
+                    Rectangle {
+                        id : buttonWarp
+                        width : parent.width - modeLabel.width - _bottomPanelMargin
+                        height: parent.height
+                        anchors.leftMargin: _bottomPanelMargin
+                        color: "transparent"
 
-            State {
-                name: "right-novideo"
-                when: !telemetryPanel.bottomMode && !photoVideoControl.visible
+                        Row {
+                            anchors.fill:       parent
+                            spacing: _bottomPanelLeftPadding
 
-                AnchorChanges {
-                    target: telemetryPanel
-                    anchors.top: undefined
-                    anchors.bottom: undefined
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-                PropertyChanges {
-                    target: telemetryPanel
-                    bottomEdgeCenterInset: 0
-                    rightEdgeCenterInset: visible ? parent.width - x : 0
+                            ButtonGroup {
+                                id : modeButtonGroup
+                            }
+
+                            QGCButton {
+                                id:                 manualButton
+                                width :             (buttonWarp.width - _bottomPanelLeftPadding * 2)/3
+                                height :            buttonWarp.height
+                                backRadius :        height
+
+                                text:               "Manual"
+                                pointSize :         ScreenTools.mediumFontPointSize
+
+                                ButtonGroup.group:  modeButtonGroup
+                                enabled :           _activeVehicle
+
+                                onClicked: {
+                                    _activeVehicle.flightMode = manualButton.text
+                                }
+                            }
+
+                            QGCButton {
+                                id:                 autoButton
+                                width :             (buttonWarp.width - _bottomPanelLeftPadding * 2)/3
+                                height :            buttonWarp.height
+                                backRadius :        height
+
+                                text:               "Auto"
+                                pointSize :         ScreenTools.mediumFontPointSize
+
+                                ButtonGroup.group:  modeButtonGroup
+                                enabled :           _activeVehicle
+
+                                onClicked: {
+                                    _activeVehicle.flightMode = autoButton.text
+                                }
+                            }
+
+                            QGCButton {
+                                id:                 loiterButton
+                                width :             (buttonWarp.width - _bottomPanelLeftPadding * 2)/3
+                                height :            buttonWarp.height
+                                backRadius :        height
+
+                                text:               "Loiter"
+                                pointSize :         ScreenTools.mediumFontPointSize
+
+                                ButtonGroup.group:  modeButtonGroup
+                                enabled :           _activeVehicle
+
+                                onClicked: {
+                                    _activeVehicle.flightMode = loiterButton.text
+                                }
+                            }
+                        }
+                    }
                 }
             }
-        ]
 
-        function recalcXPosition() {
-            // First try centered
-            var halfRootWidth   = _root.width / 2
-            var halfPanelWidth  = telemetryPanel.width / 2
-            var leftX           = (halfRootWidth - halfPanelWidth) - _toolsMargin
-            var rightX          = (halfRootWidth + halfPanelWidth) + _toolsMargin
-            if (leftX >= parentToolInsets.leftEdgeBottomInset || rightX <= parentToolInsets.rightEdgeBottomInset ) {
-                // It will fit in the horizontalCenter
-                return halfRootWidth - halfPanelWidth
-            } else {
-                // Anchor to left edge
-                return parentToolInsets.leftEdgeBottomInset + _toolsMargin
+            Rectangle {
+                id:                     customStatusInformPanel
+                height:                 157
+
+                width:                  _bottomPanelWidth * 2 + 12
+                color:                  "transparent"
+
+                Rectangle {
+                    anchors.fill:       parent
+                    color:              qgcPal.window
+                    opacity:            0.8
+                    radius:             _bottomPanelRadious
+                }
+
+
+                Column {
+                    anchors.fill: parent
+                    anchors.margins: _bottomPanelMargin
+                    spacing: 10
+
+                    Row {
+                        spacing: _bottomPanelLeftPadding
+
+                        QGCLabel {
+                            text: "센서정보"
+                            font.pointSize:     ScreenTools.mediumFontPointSize
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.topMargin: _bottomPanelMargin
+                        }
+
+                        Grid {
+                            columns:                    3
+                            rowSpacing:                 0
+                            columnSpacing:              _bottomPanelLeftPadding
+
+                            //_activeVehicle.sysStatusSensorInfo.sensorNames :
+                            //[ AHRS, Pre-Arm Check, Gyro, Accelerometer, Magnetometer,
+                            //  Absolute pressure, Battery, Angular rate control, Attitude stabilization, Yaw position,
+                            //  X/Y position control, Motor outputs / control, GeoFence, Logging ]
+                            ListModel {
+                               id: sensorNames
+                               ListElement{name: "AHRS";                    index: 0; }
+                               ListElement{name: "Pre-Arm Check";           index: 1; }
+                               ListElement{name: "Gyro";                    index: 2; }
+                               ListElement{name: "Accelerometer";           index: 3; }
+                               ListElement{name: "Magnetometer";            index: 4; }
+                               ListElement{name: "Angular rate control";    index: 7; }
+                            }
+
+                            Repeater {
+                                model :sensorNames
+
+                                QGCLabel {
+                                    text:           name
+                                    font.pointSize: ScreenTools.mediumFontPointSize
+                                    color:          !_activeVehicle || (_activeVehicle.sysStatusSensorInfo.sensorStatus[index] === "Disabled" ||
+                                                                        (_activeVehicle.sysStatusSensorInfo.sensorStatus[index] === "비활성화" ))?
+                                                    "gray" :  (_activeVehicle.sysStatusSensorInfo.sensorStatus[index] === "Normal" ||
+                                                               _activeVehicle.sysStatusSensorInfo.sensorStatus[index] === "보통") ? "#00DC30" : "red"
+                                }
+                            }
+                        }
+                    }
+
+                    Rectangle {
+                        id:                     customMessagesPanel
+                        height:                 68
+                        width:                  customStatusInformPanel.width - (_bottomPanelLeftPadding * 2)
+                        color:                  "white"
+
+                        Item {
+                            id:                     customMessages
+                            anchors.fill:           parent
+
+                            Connections {
+                                target: _activeVehicle
+                                onNewFormattedMessage :{
+                                    messageText.append(formatMessage(formattedMessage))
+
+                                    //-- Hack to scroll to last message
+                                    //-- Hack to scroll down
+                                    messageFlick.flick(0,-500)
+                                }
+                            }
+
+                            QGCLabel {
+                                anchors.centerIn:   parent
+                                text:               qsTr("No Messages")
+                                visible:            messageText.length === 0
+                                color:              "black"
+                            }
+
+                            QGCFlickable {
+                                id:                 messageFlick
+                                anchors.margins:    ScreenTools.defaultFontPixelHeight/2
+                                anchors.fill:       parent
+                                contentHeight:      messageText.height
+                                contentWidth:       messageText.width
+                                pixelAligned:       true
+                                indicatorColor :    "black"
+
+                                MouseArea {
+                                    anchors.fill: parent
+                                }
+
+                                TextEdit {
+                                    id:             messageText
+                                    readOnly:       true
+                                    textFormat:     TextEdit.RichText
+                                }
+                            }
+                        }
+                    }
+                }
             }
+        }
+
+        Rectangle {
+            id:                     customServoOutPutPanel
+            height:                 _bottomPanelHeight
+
+            width:                  _bottomPanelWidth
+            color:                  "transparent"
+
+            visible: QGroundControl.multiVehicleManager.parameterReadyVehicleAvailable
+
+            Rectangle{
+                anchors.fill:       parent
+                color:              qgcPal.window
+                opacity:            0.8
+                radius:             _bottomPanelRadious
+            }
+
+            Connections {
+                target: QGroundControl.multiVehicleManager
+
+                onParameterReadyVehicleAvailableChanged: {
+//                    console.log("Connections // onParameterReadyVehicleAvailableChanged")
+                    if (QGroundControl.multiVehicleManager.parameterReadyVehicleAvailable) {
+                        panelLoader.setSource("qrc:/qml/QGroundControl/Controls/ServoOutPutDialog.qml")
+                    }else{
+                        panelLoader.setSource("")
+                    }
+                }
+            }
+
+            Loader {
+                id:             panelLoader
+                anchors.fill:   parent
+                anchors.margins: _bottomPanelMargin
+
+                function setSource(source) {
+                    panelLoader.source = source
+                }
+            }
+
         }
     }
 
@@ -268,23 +713,6 @@ Item {
         property real rightEdgeBottomInset: visible ? bottomEdgeRightInset + width/18 - ScreenTools.defaultFontPixelHeight*2 : 0
     }
 
-    FlyViewToolStrip {
-        id:                     toolStrip
-        anchors.leftMargin:     _toolsMargin + parentToolInsets.leftEdgeCenterInset
-        anchors.topMargin:      _toolsMargin + parentToolInsets.topEdgeLeftInset
-        anchors.left:           parent.left
-        anchors.top:            parent.top
-        z:                      QGroundControl.zOrderWidgets
-        maxHeight:              parent.height - y - parentToolInsets.bottomEdgeLeftInset - _toolsMargin
-        visible:                !QGroundControl.videoManager.fullScreen
-
-        onDisplayPreFlightChecklist: preFlightChecklistPopup.createObject(mainWindow).open()
-
-
-        property real topEdgeLeftInset: visible ? y + height : 0
-        property real leftEdgeTopInset: visible ? x + width : 0
-    }
-
     GripperMenu {
         id: gripperOptions
     }
@@ -297,10 +725,10 @@ Item {
     MapScale {
         id:                 mapScale
         anchors.margins:    _toolsMargin
-        anchors.left:       toolStrip.right
+        anchors.left:       parent.left
         anchors.top:        parent.top
         mapControl:         _mapControl
-        buttonsOnLeft:      false
+        buttonsOnLeft:      true
         visible:            !ScreenTools.isTinyScreen && QGroundControl.corePlugin.options.flyView.showMapScale && mapControl.pipState.state === mapControl.pipState.fullState
 
         property real topEdgeCenterInset: visible ? y + height : 0

@@ -126,6 +126,7 @@ Column {
             fact:                       cameraCalc.distanceToSurface
             altitudeMode:               cameraCalc.distanceMode
             Layout.fillWidth:           true
+            enabled : false
         }
 
         QGCLabel { text: frontalDistanceLabel }

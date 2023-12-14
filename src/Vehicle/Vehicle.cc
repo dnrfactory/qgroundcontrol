@@ -3660,6 +3660,11 @@ void Vehicle::motorTest(int motor, int percent, int timeoutSecs, bool showError)
     sendMavCommand(_defaultComponentId, MAV_CMD_DO_MOTOR_TEST, showError, motor, MOTOR_TEST_THROTTLE_PERCENT, percent, timeoutSecs, 0, MOTOR_TEST_ORDER_BOARD);
 }
 
+void Vehicle::setServo(int channel, int pwm, bool showError)
+{
+    sendMavCommand(_defaultComponentId, MAV_CMD_DO_SET_SERVO, showError, channel, pwm,  0, 0, 0, 0, 0);
+}
+
 QString Vehicle::brandImageIndoor() const
 {
     return _firmwarePlugin->brandImageIndoor(this);

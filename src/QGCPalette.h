@@ -153,6 +153,8 @@ public:
     DEFINE_QGC_COLOR(toolStripFGColor,              setToolStripFGColor)
     DEFINE_QGC_COLOR(toolStripHoverColor,           setToolStripHoverColor)
 
+    DEFINE_QGC_COLOR(customMainToolBarButton,       setcustomMainToolBarButton)
+
      QGCPalette(QObject* parent = nullptr);
     ~QGCPalette();
 

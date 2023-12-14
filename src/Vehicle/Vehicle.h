@@ -433,6 +433,12 @@ public:
     ///     @param timeoutSec Disabled motor after this amount of time
     Q_INVOKABLE void motorTest(int motor, int percent, int timeoutSecs, bool showError);
 
+    // Do Set Servo
+    // 20230403
+    ///     @param servo number, 1-based
+    ///     @param pqm, 1000-1500-1900
+    Q_INVOKABLE void setServo(int channel, int pwm, bool showError);
+
     enum PIDTuningTelemetryMode {
         ModeDisabled,
         ModeRateAndAttitude,

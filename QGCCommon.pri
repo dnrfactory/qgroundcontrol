@@ -164,38 +164,38 @@ StableBuild {
 }
 
 # Set the QGC version from git
-APP_VERSION_STR = vUnknown
-VERSION         = 0.0.0   # Marker to indicate out-of-tree build
+APP_VERSION_STR = 1.0.0
+VERSION         = 1.0.0   # Marker to indicate out-of-tree build
 MAC_VERSION     = 0.0.0
 MAC_BUILD       = 0
-exists ($$PWD/.git) {
-    GIT_DESCRIBE = $$system(git --git-dir $$PWD/.git --work-tree $$PWD describe --always --tags)
-    GIT_BRANCH   = $$system(git --git-dir $$PWD/.git --work-tree $$PWD rev-parse --abbrev-ref HEAD)
-    GIT_HASH     = $$system(git --git-dir $$PWD/.git --work-tree $$PWD rev-parse --short HEAD)
-    GIT_TIME     = $$system(git --git-dir $$PWD/.git --work-tree $$PWD show --oneline --format=\"%ci\" -s HEAD)
+#exists ($$PWD/.git) {
+#    GIT_DESCRIBE = $$system(git --git-dir $$PWD/.git --work-tree $$PWD describe --always --tags)
+#    GIT_BRANCH   = $$system(git --git-dir $$PWD/.git --work-tree $$PWD rev-parse --abbrev-ref HEAD)
+#    GIT_HASH     = $$system(git --git-dir $$PWD/.git --work-tree $$PWD rev-parse --short HEAD)
+#    GIT_TIME     = $$system(git --git-dir $$PWD/.git --work-tree $$PWD show --oneline --format=\"%ci\" -s HEAD)
 
-    message(GIT_DESCRIBE $${GIT_DESCRIBE})
+#    message(GIT_DESCRIBE $${GIT_DESCRIBE})
 
-    # Pull the version info from the last annotated version tag. Format: v#.#.#
-    contains(GIT_DESCRIBE, ^v[0-9]+.[0-9]+.[0-9]+.*) {
-        APP_VERSION_STR = $${GIT_DESCRIBE}
-        VERSION         = $$replace(GIT_DESCRIBE, "v", "")
-        VERSION         = $$replace(VERSION, "-", ".")
-        VERSION         = $$section(VERSION, ".", 0, 3)
-    }
+#    # Pull the version info from the last annotated version tag. Format: v#.#.#
+#    contains(GIT_DESCRIBE, ^v[0-9]+.[0-9]+.[0-9]+.*) {
+#        APP_VERSION_STR = $${GIT_DESCRIBE}
+#        VERSION         = $$replace(GIT_DESCRIBE, "v", "")
+#        VERSION         = $$replace(VERSION, "-", ".")
+#        VERSION         = $$section(VERSION, ".", 0, 3)
+#    }
 
-    DailyBuild {
-        APP_VERSION_STR = "Daily $${GIT_BRANCH}:$${GIT_HASH} $${GIT_TIME}"
-    }
+#    DailyBuild {
+#        APP_VERSION_STR = "Daily $${GIT_BRANCH}:$${GIT_HASH} $${GIT_TIME}"
+#    }
 
-    message(QGroundControl APP_VERSION_STR VERSION $${APP_VERSION_STR} $${VERSION})
+#    message(QGroundControl APP_VERSION_STR VERSION $${APP_VERSION_STR} $${VERSION})
 
-    MacBuild {
-        MAC_VERSION  = $$section(VERSION, ".", 0, 2)
-        MAC_BUILD    = $$section(VERSION, ".", 3, 3)
-        message(QGroundControl MAC_VERSION MAC_BUILD $${MAC_VERSION} $${MAC_BUILD})
-    }
-}
+#    MacBuild {
+#        MAC_VERSION  = $$section(VERSION, ".", 0, 2)
+#        MAC_BUILD    = $$section(VERSION, ".", 3, 3)
+#        message(QGroundControl MAC_VERSION MAC_BUILD $${MAC_VERSION} $${MAC_BUILD})
+#    }
+#}
 DEFINES += APP_VERSION_STR=\"\\\"$$APP_VERSION_STR\\\"\"
 
 AndroidBuild {
