@@ -3,7 +3,7 @@ message("Adding Custom Plugin")
 #-- Version control
 #   Major and minor versions are defined here (manually)
 
-CUSTOM_QGC_VER_MAJOR = 0
+CUSTOM_QGC_VER_MAJOR = 1
 CUSTOM_QGC_VER_MINOR = 0
 CUSTOM_QGC_VER_FIRST_BUILD = 0
 
@@ -34,19 +34,19 @@ CONFIG  += QGC_DISABLE_PX4_PLUGIN_FACTORY
 DEFINES += CUSTOMHEADER=\"\\\"CustomPlugin.h\\\"\"
 DEFINES += CUSTOMCLASS=CustomPlugin
 
-TARGET   = CustomQGroundControl
-DEFINES += QGC_APPLICATION_NAME='"\\\"Custom QGroundControl\\\""'
+TARGET   = SailAssistantForBeyond
+DEFINES += QGC_APPLICATION_NAME='"\\\"Sail Assistant For Beyond\\\""'
 
-DEFINES += QGC_ORG_NAME=\"\\\"qgroundcontrol.org\\\"\"
-DEFINES += QGC_ORG_DOMAIN=\"\\\"org.qgroundcontrol\\\"\"
+DEFINES += QGC_ORG_NAME=\"\\\"dnrfactory\\\"\"
+DEFINES += QGC_ORG_DOMAIN=\"\\\"dnrfactory.com\\\"\"
 
-QGC_APP_NAME        = "Custom QGroundControl"
-QGC_BINARY_NAME     = "CustomQGroundControl"
-QGC_ORG_NAME        = "Custom"
-QGC_ORG_DOMAIN      = "org.custom"
-QGC_ANDROID_PACKAGE = "org.custom.qgroundcontrol"
-QGC_APP_DESCRIPTION = "Custom QGroundControl"
-QGC_APP_COPYRIGHT   = "Copyright (C) 2020 QGroundControl Development Team. All rights reserved."
+QGC_APP_NAME        = "Sail Assistant For Beyond"
+QGC_BINARY_NAME     = "SailAssistantForBeyond"
+QGC_ORG_NAME        = "dnrfactory"
+QGC_ORG_DOMAIN      = "com.dnrfactory"
+QGC_ANDROID_PACKAGE = "com.dnrfactory.SailAssistantForBeyond"
+QGC_APP_DESCRIPTION = "Open source ground control app provided by DnRFactory dev team"
+QGC_APP_COPYRIGHT   = "Copyright (C) 2023 DnRFactory Development Team. All rights reserved."
 
 # Our own, custom resources
 RESOURCES += \
