@@ -47,6 +47,10 @@ QGC_ORG_DOMAIN      = "com.dnrfactory"
 QGC_ANDROID_PACKAGE = "com.dnrfactory.SailAssistantForBeyond"
 QGC_APP_DESCRIPTION = "Open source ground control app provided by DnRFactory dev team"
 QGC_APP_COPYRIGHT   = "Copyright (C) 2023 DnRFactory Development Team. All rights reserved."
+	
+WindowsBuild {
+    RC_ICONS = $$PWD/res/icons/sailassistantforbeyond.ico
+}
 
 # Our own, custom resources
 RESOURCES += \
