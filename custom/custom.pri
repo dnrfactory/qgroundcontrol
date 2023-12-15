@@ -35,12 +35,12 @@ DEFINES += CUSTOMHEADER=\"\\\"CustomPlugin.h\\\"\"
 DEFINES += CUSTOMCLASS=CustomPlugin
 
 TARGET   = SailAssistantForBeyond
-DEFINES += QGC_APPLICATION_NAME='"\\\"Sail Assistant For Beyond\\\""'
+DEFINES += QGC_APPLICATION_NAME='"\\\"Sail Assistant For Beyond_\\\""'
 
 DEFINES += QGC_ORG_NAME=\"\\\"dnrfactory\\\"\"
 DEFINES += QGC_ORG_DOMAIN=\"\\\"dnrfactory.com\\\"\"
 
-QGC_APP_NAME        = "Sail Assistant For Beyond"
+QGC_APP_NAME        = "Sail Assistant For Beyond_"
 QGC_BINARY_NAME     = "SailAssistantForBeyond"
 QGC_ORG_NAME        = "dnrfactory"
 QGC_ORG_DOMAIN      = "com.dnrfactory"
