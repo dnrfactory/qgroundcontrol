@@ -18,6 +18,7 @@ import QGroundControl.Palette               1.0
 import QGroundControl.MultiVehicleManager   1.0
 import QGroundControl.ScreenTools           1.0
 import QGroundControl.Controllers           1.0
+import Custom.Widgets                       1.0
 
 Rectangle {
     id:     _root
@@ -75,7 +76,7 @@ Rectangle {
             id :toolbarButtonGroup
         }
 
-        QGCToolBarButton {
+        CustomToolBarButton {
             id:                     sailviewButton
             Layout.preferredHeight: parent.height
             Layout.preferredWidth:  parent.height
@@ -88,7 +89,7 @@ Rectangle {
             onClicked:              mainWindow.showFlyView()
         }
 
-        QGCToolBarButton {
+        CustomToolBarButton {
             id:                     planviewButton
             Layout.preferredHeight: parent.height
             Layout.preferredWidth:  parent.height
@@ -99,7 +100,7 @@ Rectangle {
             onClicked:              mainWindow.showPlanView()
         }
 
-        QGCToolBarButton {
+        CustomToolBarButton {
             id:                     settingButton
             Layout.preferredHeight: parent.height
             Layout.preferredWidth:  parent.height
@@ -114,7 +115,7 @@ Rectangle {
             onClicked: mainWindow.showToolSelectDialog()
         }
 
-        QGCButton {
+        CustomToolBarButton {
             id:                 disconnectButton
             text:               qsTr("Disconnect")
             onClicked:          _activeVehicle.closeVehicle()
