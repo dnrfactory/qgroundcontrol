@@ -32,6 +32,8 @@ public:
     // Overrides from CustomFlyViewOptions
     bool                    showInstrumentPanel         (void) const final;
     bool                    showMultiVehicleList        (void) const final;
+	bool    				showToolStrip         		(void) const final;
+	bool    				showTelemetryValueBar       (void) const final;
 };
 
 class CustomOptions : public QGCOptions

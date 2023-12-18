@@ -44,6 +44,16 @@ bool CustomFlyViewOptions::showInstrumentPanel(void) const
     return false;
 }
 
+bool CustomFlyViewOptions::showToolStrip(void) const
+{
+    return false;
+}
+
+bool CustomFlyViewOptions::showTelemetryValueBar(void) const
+{
+    return false;
+}
+
 CustomOptions::CustomOptions(CustomPlugin*, QObject* parent)
     : QGCOptions(parent)
 {
