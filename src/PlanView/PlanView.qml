@@ -502,6 +502,7 @@ Item {
             z:                  QGroundControl.zOrderWidgets
             maxHeight:          parent.height - toolStrip.y
             title:              qsTr("Plan")
+            visible:           QGroundControl.corePlugin.options.planView.showToolStrip
 
             readonly property int flyButtonIndex:       0
             readonly property int fileButtonIndex:      1
@@ -752,7 +753,9 @@ Item {
             anchors.bottom:     parent.bottom
             height:             ScreenTools.defaultFontPixelHeight * 7
             missionController:  _missionController
-            visible:            _internalVisible && _editingLayer === _layerMission && QGroundControl.corePlugin.options.showMissionStatus
+            visible:            _internalVisible && _editingLayer === _layerMission
+                                && QGroundControl.corePlugin.options.showMissionStatus
+                                && QGroundControl.corePlugin.options.planView.showTerrainStatus
 
             onSetCurrentSeqNum: _missionController.setCurrentPlanViewSeqNum(seqNum, true)
 

@@ -54,6 +54,22 @@ bool CustomFlyViewOptions::showTelemetryValueBar(void) const
     return false;
 }
 
+CustomPlanViewOptions::CustomPlanViewOptions(CustomOptions* options, QObject* parent)
+    : QGCPlanViewOptions(options, parent)
+{
+
+}
+
+bool CustomPlanViewOptions::showToolStrip(void) const
+{
+    return false;
+}
+
+bool CustomPlanViewOptions::showTerrainStatus(void) const
+{
+    return false;
+}
+
 CustomOptions::CustomOptions(CustomPlugin*, QObject* parent)
     : QGCOptions(parent)
 {
@@ -65,6 +81,14 @@ QGCFlyViewOptions* CustomOptions::flyViewOptions(void)
         _flyViewOptions = new CustomFlyViewOptions(this, this);
     }
     return _flyViewOptions;
+}
+
+QGCPlanViewOptions* CustomOptions::planViewOptions(void)
+{
+    if (!_planViewOptions) {
+        _planViewOptions = new CustomPlanViewOptions(this, this);
+    }
+    return _planViewOptions;
 }
 
 // Firmware upgrade page is only shown in Advanced Mode.

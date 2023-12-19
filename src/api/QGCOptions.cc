@@ -39,7 +39,22 @@ QGCFlyViewOptions* QGCOptions::flyViewOptions(void)
     return _defaultFlyViewOptions;
 }
 
+QGCPlanViewOptions* QGCOptions::planViewOptions(void)
+{
+    if (!_defaultPlanViewOptions) {
+        _defaultPlanViewOptions = new QGCPlanViewOptions(this);
+    }
+    return _defaultPlanViewOptions;
+}
+
 QGCFlyViewOptions::QGCFlyViewOptions(QGCOptions* options, QObject* parent)
+    : QObject   (parent)
+    , _options  (options)
+{
+    QQmlEngine::setObjectOwnership(this, QQmlEngine::CppOwnership);
+}
+
+QGCPlanViewOptions::QGCPlanViewOptions(QGCOptions* options, QObject* parent)
     : QObject   (parent)
     , _options  (options)
 {

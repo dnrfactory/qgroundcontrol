@@ -36,6 +36,15 @@ public:
 	bool    				showTelemetryValueBar       (void) const final;
 };
 
+class CustomPlanViewOptions : public QGCPlanViewOptions
+{
+public:
+    CustomPlanViewOptions(CustomOptions* options, QObject* parent = nullptr);
+
+    bool    				showToolStrip       (void) const final;
+	bool    				showTerrainStatus  (void) const final;
+};
+
 class CustomOptions : public QGCOptions
 {
 public:
@@ -45,9 +54,11 @@ public:
     bool                    wifiReliableForCalibration  (void) const final;
     bool                    showFirmwareUpgrade         (void) const final;
     QGCFlyViewOptions*      flyViewOptions(void) final;
+	QGCPlanViewOptions*     planViewOptions(void) final;
 
 private:
     CustomFlyViewOptions* _flyViewOptions = nullptr;
+	CustomPlanViewOptions* _planViewOptions = nullptr;
 };
 
 class CustomPlugin : public QGCCorePlugin
