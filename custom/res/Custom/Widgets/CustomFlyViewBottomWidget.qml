@@ -128,215 +128,24 @@ Item {
         Column {
             spacing: _bottomPanelMargin
 
-            Rectangle {
+            CustomFlyModePanel {
                 id:                     customModePanel
                 height:                 67
                 width:                  _bottomPanelWidth * 2 + 12
-                color:                  "transparent"
+                radius:                 _bottomPanelRadious
 
-                Rectangle{
-                    anchors.fill:       parent
-                    color:              qgcPal.window
-                    opacity:            0.8
-                    radius:             _bottomPanelRadious
-                }
-
-                Row {
-                    anchors.fill:       parent
-                    spacing:            _bottomPanelLeftPadding
-                    anchors.margins:    _bottomPanelMargin
-
-                    QGCLabel {
-                        id : modeLabel
-                        text: "운항모드"
-                        anchors.verticalCenter: parent.verticalCenter
-                        font.pointSize:     ScreenTools.mediumFontPointSize
-                    }
-
-                    Rectangle {
-                        id : buttonWarp
-                        width : parent.width - modeLabel.width - _bottomPanelMargin
-                        height: parent.height
-                        anchors.leftMargin: _bottomPanelMargin
-                        color: "transparent"
-
-                        Row {
-                            anchors.fill:       parent
-                            spacing: _bottomPanelLeftPadding
-
-                            ButtonGroup {
-                                id : modeButtonGroup
-                            }
-
-                            QGCButton {
-                                id:                 manualButton
-                                width :             (buttonWarp.width - _bottomPanelLeftPadding * 2)/3
-                                height :            buttonWarp.height
-                                backRadius :        height
-
-                                text:               "Manual"
-                                pointSize :         ScreenTools.mediumFontPointSize
-
-                                ButtonGroup.group:  modeButtonGroup
-                                enabled :           _activeVehicle
-
-                                onClicked: {
-                                    _activeVehicle.flightMode = manualButton.text
-                                }
-                            }
-
-                            QGCButton {
-                                id:                 autoButton
-                                width :             (buttonWarp.width - _bottomPanelLeftPadding * 2)/3
-                                height :            buttonWarp.height
-                                backRadius :        height
-
-                                text:               "Auto"
-                                pointSize :         ScreenTools.mediumFontPointSize
-
-                                ButtonGroup.group:  modeButtonGroup
-                                enabled :           _activeVehicle
-
-                                onClicked: {
-                                    _activeVehicle.flightMode = autoButton.text
-                                }
-                            }
-
-                            QGCButton {
-                                id:                 loiterButton
-                                width :             (buttonWarp.width - _bottomPanelLeftPadding * 2)/3
-                                height :            buttonWarp.height
-                                backRadius :        height
-
-                                text:               "Loiter"
-                                pointSize :         ScreenTools.mediumFontPointSize
-
-                                ButtonGroup.group:  modeButtonGroup
-                                enabled :           _activeVehicle
-
-                                onClicked: {
-                                    _activeVehicle.flightMode = loiterButton.text
-                                }
-                            }
-                        }
-                    }
-                }
+                _bottomPanelLeftPadding: _root._bottomPanelLeftPadding
+                _bottomPanelMargin: _root._bottomPanelMargin
             }
 
-            Rectangle {
+            CustomFlyStatusInfoPanel {
                 id:                     customStatusInformPanel
                 height:                 157
-
                 width:                  _bottomPanelWidth * 2 + 12
-                color:                  "transparent"
 
-                Rectangle {
-                    anchors.fill:       parent
-                    color:              qgcPal.window
-                    opacity:            0.8
-                    radius:             _bottomPanelRadious
-                }
-
-
-                Column {
-                    anchors.fill: parent
-                    anchors.margins: _bottomPanelMargin
-                    spacing: 10
-
-                    Row {
-                        spacing: _bottomPanelLeftPadding
-
-                        QGCLabel {
-                            text: "센서정보"
-                            font.pointSize:     ScreenTools.mediumFontPointSize
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.topMargin: _bottomPanelMargin
-                        }
-
-                        Grid {
-                            columns:                    3
-                            rowSpacing:                 0
-                            columnSpacing:              _bottomPanelLeftPadding
-
-                            //_activeVehicle.sysStatusSensorInfo.sensorNames :
-                            //[ AHRS, Pre-Arm Check, Gyro, Accelerometer, Magnetometer,
-                            //  Absolute pressure, Battery, Angular rate control, Attitude stabilization, Yaw position,
-                            //  X/Y position control, Motor outputs / control, GeoFence, Logging ]
-                            ListModel {
-                               id: sensorNames
-                               ListElement{name: "AHRS";                    index: 0; }
-                               ListElement{name: "Pre-Arm Check";           index: 1; }
-                               ListElement{name: "Gyro";                    index: 2; }
-                               ListElement{name: "Accelerometer";           index: 3; }
-                               ListElement{name: "Magnetometer";            index: 4; }
-                               ListElement{name: "Angular rate control";    index: 7; }
-                            }
-
-                            Repeater {
-                                model :sensorNames
-
-                                QGCLabel {
-                                    text:           name
-                                    font.pointSize: ScreenTools.mediumFontPointSize
-                                    color:          !_activeVehicle || (_activeVehicle.sysStatusSensorInfo.sensorStatus[index] === "Disabled" ||
-                                                                        (_activeVehicle.sysStatusSensorInfo.sensorStatus[index] === "비활성화" ))?
-                                                    "gray" :  (_activeVehicle.sysStatusSensorInfo.sensorStatus[index] === "Normal" ||
-                                                               _activeVehicle.sysStatusSensorInfo.sensorStatus[index] === "보통") ? "#00DC30" : "red"
-                                }
-                            }
-                        }
-                    }
-
-                    Rectangle {
-                        id:                     customMessagesPanel
-                        height:                 68
-                        width:                  customStatusInformPanel.width - (_bottomPanelLeftPadding * 2)
-                        color:                  "white"
-
-                        Item {
-                            id:                     customMessages
-                            anchors.fill:           parent
-
-                            Connections {
-                                target: _activeVehicle
-                                onNewFormattedMessage :{
-                                    messageText.append(formatMessage(formattedMessage))
-
-                                    //-- Hack to scroll to last message
-                                    //-- Hack to scroll down
-                                    messageFlick.flick(0,-500)
-                                }
-                            }
-
-                            QGCLabel {
-                                anchors.centerIn:   parent
-                                text:               qsTr("No Messages")
-                                visible:            messageText.length === 0
-                                color:              "black"
-                            }
-
-                            QGCFlickable {
-                                id:                 messageFlick
-                                anchors.margins:    ScreenTools.defaultFontPixelHeight/2
-                                anchors.fill:       parent
-                                contentHeight:      messageText.height
-                                contentWidth:       messageText.width
-                                pixelAligned:       true
-                                indicatorColor :    "black"
-
-                                MouseArea {
-                                    anchors.fill: parent
-                                }
-
-                                TextEdit {
-                                    id:             messageText
-                                    readOnly:       true
-                                    textFormat:     TextEdit.RichText
-                                }
-                            }
-                        }
-                    }
-                }
+                _bottomPanelLeftPadding: _root._bottomPanelLeftPadding
+                _bottomPanelMargin: _root._bottomPanelMargin
+                _bottomPanelRadious: _root._bottomPanelRadious
             }
         }
 

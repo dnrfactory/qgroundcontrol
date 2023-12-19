@@ -35,7 +35,9 @@
         <file alias="Custom/Widgets/CustomVehicleButton.qml">res/Custom/Widgets/CustomVehicleButton.qml</file>
 		<file alias="Custom/Widgets/CustomFlyViewBottomWidget.qml">res/Custom/Widgets/CustomFlyViewBottomWidget.qml</file>
         <file alias="Custom/Widgets/CustomWeatherPanel.qml">res/Custom/Widgets/CustomWeatherPanel.qml</file>
-        <file alias="Custom/Widgets/CustomArmPanel.qml">res/Custom/Widgets/CustomArmPanel.qml</file>		
+        <file alias="Custom/Widgets/CustomArmPanel.qml">res/Custom/Widgets/CustomArmPanel.qml</file>
+        <file alias="Custom/Widgets/CustomFlyModePanel.qml">res/Custom/Widgets/CustomFlyModePanel.qml</file>
+        <file alias="Custom/Widgets/CustomFlyStatusInfoPanel.qml">res/Custom/Widgets/CustomFlyStatusInfoPanel.qml</file>
         <file alias="Custom/Widgets/qmldir">res/Custom/Widgets/qmldir</file>
     </qresource>
     <qresource prefix="/qml">
