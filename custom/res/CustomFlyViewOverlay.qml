@@ -26,6 +26,7 @@ import QGroundControl.FlightMap     1.0
 import QGroundControl.Palette       1.0
 import QGroundControl.ScreenTools   1.0
 import QGroundControl.Vehicle       1.0
+import Custom.Widgets               1.0
 
 // To implement a custom overlay copy this code to your own control in your custom code source. Then override the
 // FlyViewCustomLayer.qml resource with your own qml. See the custom example and documentation for details.
@@ -51,5 +52,9 @@ Item {
         bottomEdgeLeftInset:    parentToolInsets.bottomEdgeLeftInset
         bottomEdgeCenterInset:  parentToolInsets.bottomEdgeCenterInset
         bottomEdgeRightInset:   parentToolInsets.bottomEdgeRightInset
+    }
+
+    CustomFlyViewBottomWidget {
+        anchors.fill:         parent
     }
 }

@@ -50,17 +50,17 @@ Item {
 
     QGCToolInsets {
         id:                     _totalToolInsets
-        leftEdgeTopInset:       toolStrip.leftEdgeTopInset
+        leftEdgeTopInset:       toolStrip.visible ? toolStrip.leftEdgeTopInset : parentToolInsets.leftEdgeTopInset
         leftEdgeCenterInset:    parentToolInsets.leftEdgeCenterInset
         leftEdgeBottomInset:    virtualJoystickMultiTouch.visible ? virtualJoystickMultiTouch.leftEdgeBottomInset : parentToolInsets.leftEdgeBottomInset
-        rightEdgeTopInset:      instrumentPanel.rightEdgeTopInset
+        rightEdgeTopInset:      instrumentPanel.visible ? instrumentPanel.rightEdgeTopInset : parentToolInsets.rightEdgeTopInset
         rightEdgeCenterInset:   (telemetryPanel.rightEdgeCenterInset > photoVideoControl.rightEdgeCenterInset) ? telemetryPanel.rightEdgeCenterInset : photoVideoControl.rightEdgeCenterInset
         rightEdgeBottomInset:   virtualJoystickMultiTouch.visible ? virtualJoystickMultiTouch.rightEdgeBottomInset : parentToolInsets.rightEdgeBottomInset
-        topEdgeLeftInset:       toolStrip.topEdgeLeftInset
+        topEdgeLeftInset:       toolStrip.visible ? toolStrip.topEdgeLeftInset : parentToolInsets.topEdgeLeftInset
         topEdgeCenterInset:     mapScale.topEdgeCenterInset
-        topEdgeRightInset:      instrumentPanel.topEdgeRightInset
+        topEdgeRightInset:      instrumentPanel.visible ? instrumentPanel.topEdgeRightInset : parentToolInsets.topEdgeRightInset
         bottomEdgeLeftInset:    virtualJoystickMultiTouch.visible ? virtualJoystickMultiTouch.bottomEdgeLeftInset : parentToolInsets.bottomEdgeLeftInset
-        bottomEdgeCenterInset:  telemetryPanel.bottomEdgeCenterInset
+        bottomEdgeCenterInset:  telemetryPanel.visible ? telemetryPanel.bottomEdgeCenterInset : parentToolInsets.bottomEdgeCenterInset
         bottomEdgeRightInset:   virtualJoystickMultiTouch.visible ? virtualJoystickMultiTouch.bottomEdgeRightInset : parentToolInsets.bottomEdgeRightInset
     }
 
