@@ -78,15 +78,6 @@ Item {
 
     on_SailModeChanged: {
         checkMode();
-    }
-
-    on_ActiveVehicleChanged: {
-        _activeVehicle ? switchCirle.state = "leftOff" : switchCirle.state = "disActiveVehicle"
-    }
-
-    property bool   _vehicleArmed:          _activeVehicle ? _activeVehicle.armed  : false
-    on_VehicleArmedChanged: {
-        _vehicleArmed ? switchCirle.state = "rightOn" : switchCirle.state = "leftOff"
     }    
 
     Item {
@@ -107,238 +98,21 @@ Item {
             id:                 telemetryPanel
         }
 
-        Rectangle {
+        CustomWeatherPanel {
             id:                 customWeatherPanel
             height:             _bottomPanelHeight
             width:              _bottomPanelWidth
-            color:              "transparent"
-            
-            Rectangle{
-                anchors.fill:       parent
-                color:              qgcPal.window
-                opacity:            0.8
-                radius:             _bottomPanelRadious
-            }
+            radius:             _bottomPanelRadious
         }
 
-        Rectangle {
-            id:                     customArmPanel
-            height:                 _bottomPanelHeight
-            width:                  (_bottomPanelWidth/2 - 4)
-            color:                  "transparent"
+        CustomArmPanel {
+            id:                 customArmPanel
+            height:             _bottomPanelHeight
+            width:              (_bottomPanelWidth/2 - 4)
+            radius:             _bottomPanelRadious
 
-            Rectangle{
-                anchors.fill:       parent
-                color:              qgcPal.window
-                opacity:            0.8
-                radius:             _bottomPanelRadious
-            }
-
-            Column {
-                anchors.fill:       parent
-                spacing:            _bottomPanelTopPadding/2
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.margins:    _bottomPanelMargin
-
-                QGCLabel{
-                    id :                        customStatusLabel
-                    text:                       customMainStatusText()
-//                    font.pointSize:             ScreenTools.defaultFontPointSize
-                    font.pointSize:             _statusTextFontSize
-                    font.bold :                 true
-                    color:                      _statusTextColor
-                    anchors.horizontalCenter:   parent.horizontalCenter
-
-
-                    property string _commLostText:      qsTr("Communication Lost")
-                    property string _readyToSailText:   qsTr("Ready To Sail")
-                    property string _notReadyToSailText: qsTr("Not Ready")
-                    property string _disconnectedText:  qsTr("Disconnected")
-                    property string _armedText:         qsTr("Armed")
-                    property string _sailingText:       qsTr("Sailing")
-                    property string _waitingText:       qsTr("Waiting")
-
-                    function customMainStatusText() {
-                        if (_activeVehicle) {
-                            if (_communicationLost) {
-                                _statusTextColor = "red"
-                                _statusTextFontSize = ScreenTools.defaultFontPointSize
-                                return customStatusLabel._commLostText
-                            }
-                            if (_activeVehicle.armed) {
-                                _statusTextColor = "green"
-                                _statusTextFontSize = ScreenTools.mediumFontPointSize
-                                if (_activeVehicle.flying) {
-                                    return customStatusLabel._sailingText
-                                } else if (_activeVehicle.landing) {
-                                    return customStatusLabel._waitingText
-                                } else {
-                                    return customStatusLabel._armedText
-                                }
-                            } else {
-                                _statusTextFontSize = ScreenTools.mediumFontPointSize
-                                if (_activeVehicle.readyToFlyAvailable) {
-                                    if (_activeVehicle.readyToFly) {
-                                        _statusTextColor = "green"
-                                        return customStatusLabel._readyToSailText
-                                    } else {
-                                        _statusTextColor = "yellow"
-                                        return customStatusLabel._notReadyToSailText
-                                    }
-                                } else {
-                                    // Best we can do is determine readiness based on AutoPilot component setup and health indicators from SYS_STATUS
-                                    if (_activeVehicle.allSensorsHealthy && _activeVehicle.autopilot.setupComplete) {
-                                        _statusTextColor = "green"
-                                        return customStatusLabel._readyToSailText
-                                    } else {
-                                        _statusTextColor = "yellow"
-                                        return customStatusLabel._notReadyToSailText
-                                    }
-                                }
-                            }
-                        } else {
-                            _statusTextColor = "gray"
-                            _statusTextFontSize = ScreenTools.mediumFontPointSize
-                            return customStatusLabel._disconnectedText
-                        }
-                    }
-                }
-
-                Rectangle{
-                    id: armswitch
-                    color: "transparent"
-                    width: parent.width * 0.9
-                    height: width / 2
-                    anchors.horizontalCenter:   parent.horizontalCenter
-                    enabled: _activeVehicle
-
-                    Rectangle{
-                        id:roundRectangle
-                        width: parent.width * 0.8
-                        height:parent.height * 0.5
-                        radius: height
-                        color: "white"
-                        anchors.centerIn: parent
-
-                        QGCLabel{
-                            text:           qsTr("ON")
-                            font.pointSize: ScreenTools.mediumFontPointSize
-                            font.bold :     true
-                            color : switchCirle.state == "disActiveVehicle" ? "gray" : "black"
-                            anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.leftMargin: 7
-                        }
-
-                        QGCLabel{
-                            text:           qsTr("OFF")
-                            font.pointSize: ScreenTools.mediumFontPointSize
-                            font.bold :     true
-                            color : switchCirle.state == "disActiveVehicle" ? "gray" : "black"
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.rightMargin: 7
-                        }
-                    }
-
-                    Rectangle{
-                        id: switchCirle
-                        width: parent.height
-                        height:width
-                        radius: height
-                        anchors.verticalCenter: parent.verticalCenter
-                        state : "leftOff"
-
-                        states:[
-
-                            State {
-                                name: "disActiveVehicle"
-                                PropertyChanges {
-                                    target: switchCirle;
-                                    color: "gray";
-                                }
-                                AnchorChanges{
-                                    target: switchCirle;
-                                    anchors.left: parent.left
-                                }
-                            },
-                            State {
-                                name: "leftOff"
-                                PropertyChanges {
-                                    target: switchCirle;
-                                    color: "red";
-                                }
-                                AnchorChanges{
-                                    target: switchCirle;
-                                    anchors.left: parent.left
-                                }
-                            },
-                            State {
-                                name: "rightOn"
-                                PropertyChanges {
-                                    target: switchCirle;
-                                    color: "#00DC30";
-                                }
-                                AnchorChanges{
-                                    target: switchCirle;
-                                    anchors.right: parent.right
-                                }
-                            }
-                        ]
-                    }
-
-                    MouseArea{
-                        anchors.fill: parent
-
-                        readonly property int actionArm:                        4
-                        readonly property int actionDisarm:                     5
-                        readonly property int actionStartMission:               12
-                        readonly property int actionResumeMission:              14
-
-                        hoverEnabled : true
-                        cursorShape: Qt.PointingHandCursor
-
-                        onClicked: {
-                             switchCirle.state == "leftOff" ? _guidedController.executeAction(actionArm) : _guidedController.executeAction(actionDisarm)
-                        }
-                    }
-                }
-
-                QGCLabel{
-                    text:           qsTr("수신 감도")
-                    font.pointSize: ScreenTools.mediumFontPointSize
-                    font.bold :     true
-                    anchors.horizontalCenter:   parent.horizontalCenter
-                }
-
-                QGCLabel{
-                    id:             rssiValue
-                    text:           _activeVehicle ? (_activeVehicle.rcRSSI + " " + "%") : 0
-                    font.pointSize: ScreenTools.mediumFontPointSize
-                    font.bold :     true
-                    anchors.horizontalCenter:   parent.horizontalCenter
-                }
-
-                QGCLabel{
-                    text:           qsTr("배터리 잔량")
-                    font.pointSize: ScreenTools.mediumFontPointSize
-                    font.bold :     true
-                    anchors.horizontalCenter:   parent.horizontalCenter
-                }
-
-                QGCLabel{
-                    property var    _batteryGroup:                  globals.activeVehicle && globals.activeVehicle.batteries.count ? globals.activeVehicle.batteries.get(0) : undefined
-                    property var    _batteryValue:                  _batteryGroup ? _batteryGroup.percentRemaining.value : 0
-                    property var    _batPercentRemaining:           isNaN(_batteryValue) ? 0 : _batteryValue
-
-                    id:             batteryValue
-                    text:           _batPercentRemaining !== 0 ? _batPercentRemaining + " " + _batteryGroup.percentRemaining.units : 0
-
-                    font.pointSize: ScreenTools.mediumFontPointSize
-                    font.bold :     true
-                    anchors.horizontalCenter:   parent.horizontalCenter
-                }
-            }
+            _bottomPanelTopPadding: _root._bottomPanelTopPadding
+            _bottomPanelMargin: _root._bottomPanelMargin
         }
 
         FlyViewInstrumentPanel {
