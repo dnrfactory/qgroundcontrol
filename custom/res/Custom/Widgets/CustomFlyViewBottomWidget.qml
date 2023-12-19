@@ -94,8 +94,11 @@ Item {
         anchors.centerIn:       bottomPanel
         spacing:               _bottomPanelLeftPadding
 
-        TelemetryValuesBar {
+        CustomTelemetryValuePanel {
             id:                 telemetryPanel
+            height:             _bottomPanelHeight
+            width:              _bottomPanelWidth * 1.5
+            radius:             _bottomPanelRadious
         }
 
         CustomWeatherPanel {
