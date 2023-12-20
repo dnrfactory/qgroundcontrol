@@ -778,6 +778,10 @@ Item {
             terrainButtonChecked:   terrainStatus.visible
             onTerrainButtonClicked: terrainStatus.toggleVisible()
         }
+
+        PlanViewCustomLayer {
+            anchors.fill: parent
+        }
     }
 
     function showLoadFromFileOverwritePrompt(title) {
