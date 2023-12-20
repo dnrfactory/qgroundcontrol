@@ -363,6 +363,8 @@ Item {
                     coordinate.longitude = coordinate.longitude.toFixed(_decimalPlaces)
                     coordinate.altitude = coordinate.altitude.toFixed(_decimalPlaces)
 
+                    console.log("flightMap clicked _editingLayer: " + _editingLayer)
+
                     switch (_editingLayer) {
                     case _layerMission:
                         if (addWaypointRallyPointAction.checked) {
@@ -645,15 +647,7 @@ Item {
                     Component.onCompleted: currentIndex = 0
                     QGCTabButton {
                         text:       qsTr("Mission")
-                    }
-                    QGCTabButton {
-                        text:       qsTr("Fence")
-                        enabled:    _geoFenceController.supported
-                    }
-                    QGCTabButton {
-                        text:       qsTr("Rally")
-                        enabled:    _rallyPointController.supported
-                    }
+                    }                    
                 }
             }
             //-------------------------------------------------------
@@ -770,8 +764,8 @@ Item {
         MapScale {
             id:                     mapScale
             anchors.margins:        _toolsMargin
-            anchors.bottom:         terrainStatus.visible ? terrainStatus.top : parent.bottom
-            anchors.left:           toolStrip.y + toolStrip.height + _toolsMargin > mapScale.y ? toolStrip.right: parent.left
+            anchors.top:            parent.top
+            anchors.left:           parent.left
             mapControl:             editorMap
             buttonsOnLeft:          true
             terrainButtonVisible:   _editingLayer === _layerMission
@@ -781,6 +775,10 @@ Item {
 
         PlanViewCustomLayer {
             planView: _root
+            wayPointChecked: addWaypointRallyPointAction.checked
+            onWayPointCheckedChanged: {
+                addWaypointRallyPointAction.checked = wayPointChecked
+            }
         }
     }
 

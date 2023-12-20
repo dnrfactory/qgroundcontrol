@@ -7,11 +7,16 @@
  *
  ****************************************************************************/
 
-import QtQuick          2.3
+#pragma once
 
-Item {
-    id: _root
+#include "PlanCreator.h"
 
-    property var planView
-    property bool wayPointChecked: false
-}
+class WayPointPlanCreator : public PlanCreator
+{
+    Q_OBJECT
+    
+public:
+    WayPointPlanCreator(PlanMasterController* planMasterController, QObject* parent = nullptr);
+
+    Q_INVOKABLE void createPlan(const QGeoCoordinate& mapCenterCoord) final;
+};

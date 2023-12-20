@@ -48,7 +48,7 @@ Item {
 
     function _addInteractiveVisuals() {
         if (_objMgrInteractiveVisuals.empty) {
-            _objMgrInteractiveVisuals.createObjects([ dragHandlesComponent, splitHandlesComponent, toolbarComponent ], mapControl)
+            _objMgrInteractiveVisuals.createObjects([ dragHandlesComponent, splitHandlesComponent ], mapControl)
         }
     }
 

@@ -24,12 +24,12 @@ import QGroundControl.FactControls      1.0
 import QGroundControl.Palette           1.0
 import QGroundControl.Controllers       1.0
 import QGroundControl.ShapeFileHelper   1.0
-import Custom.Widgets                   1.0
 
 Item {
     id: _root
 
     property var planView
+    property bool wayPointChecked: false
 
     height:                 _bottomPanelHeight + _bottomPanelMargin * 2
     anchors.left:           parent.left
@@ -217,7 +217,7 @@ Item {
     on_CurrentPlanChanged: {
         console.log("on_CurrentPlanChanged")
 
-        addWaypointRallyPointAction.checked = false
+        wayPointChecked = false
         tracingButton.checked = false
 
         if(_corridorSail <= _currentPlan){
@@ -264,6 +264,21 @@ Item {
         }
     }
 
+    Component {
+        id: clearVehicleMissionDialog
+        QGCSimpleMessageDialog {
+	    title:      ""
+            text:       qsTr("Are you sure you want to remove all mission items and clear the mission from the vehicle?")
+            buttons:    StandardButton.Yes | StandardButton.No
+
+            onAccepted: {
+                _planMasterController.removeAllFromVehicle()
+                _missionController.setCurrentPlanViewSeqNum(0, true)
+                wayPointChecked = false                
+            }
+        }
+    }
+
     Row {
         anchors.centerIn: _root
         spacing: _bottomPanelLeftPadding
@@ -298,7 +313,7 @@ Item {
 
                     ListModel {
                         id: planPanelNames
-                       ListElement{name: qsTr("?? ???")}
+                       ListElement{name: qsTr("Init Plan")}
                         ListElement{name: qsTr("WayPoint Sail")}
                         ListElement{name: qsTr("Corridor Sail")}
                         ListElement{name: qsTr("Grid Sail")}
@@ -321,14 +336,12 @@ Item {
                                 _selectdownload = false
 
                                 if(model.index === _initPlan){
-                                    console.log("if(model.index === _initPlan)")
                                     planButtons.itemAt(_waypointSail).checked = false
                                     planButtons.itemAt(_corridorSail).checked = false
                                     planButtons.itemAt(_gridSail).checked = false
                                 }
 
                                 if (_planMasterController.containsItems) {
-                                    console.log("00")
                                     createPlanRemoveAllPromptDialogMapCenter = _mapCenter()
                                     createPlanRemoveAllPromptDialogPlanCreator = object
                                     clickPlanIndex = model.index
@@ -337,7 +350,6 @@ Item {
                                     _currentPlan = clickPlanIndex
 
                                 } else {
-                                    console.log("11")
                                     object.createPlan(_mapCenter())
                                     _currentPlan = model.index
                                 }
@@ -390,13 +402,13 @@ Item {
                         Layout.preferredHeight: _bottomPanelButtonHeight
                         backRadius:             _bottomPanelButtonHeight
                         enabled :                _currentPlan == _waypointSail || _currentPlan == _corridorSail || _currentPlan == _gridSail
-                        checked :               false
+                        checked :               wayPointChecked
 
                         MouseArea{
                             anchors.fill: parent
                             onClicked: {
-                                if(addWaypointRallyPointAction.checked === true){
-                                    addWaypointRallyPointAction.checked = false
+                                if(wayPointChecked === true){
+                                    wayPointChecked = false
 
                                 }else{
                                     if (isScan() && _mapPolys.traceMode) {
@@ -406,7 +418,7 @@ Item {
                                         _mapPolys.traceMode = false
                                         tracingButton.checked = false
                                     }
-                                    addWaypointRallyPointAction.checked = true
+                                    wayPointChecked = true
                                 }
                             }
                         }
@@ -432,7 +444,7 @@ Item {
                                     _mapPolys.traceMode = false
                                     tracingButton.checked = false
                                 }else{
-                                    addWaypointRallyPointAction.checked = false
+                                    wayPointChecked = false
 
                                     _saveCurrentVertices()
                                     _currentPlan === _gridSail ? _circleMode = false : ""
@@ -454,7 +466,7 @@ Item {
                         enabled :               _scanIndex === _missionController.currentPlanViewVIIndex && _gridSail === _currentPlan
 
                         onClicked: {
-                            addWaypointRallyPointAction.checked = false
+                            wayPointChecked = false
                             tracingButton.checked = false
                             _mapPolys.traceMode = false
                             _resetCircle()

@@ -1768,6 +1768,8 @@ void MissionController::_recalcMissionFlightStatus()
     emit minAMSLAltitudeChanged         (_minAMSLAltitude);
     emit maxAMSLAltitudeChanged         (_maxAMSLAltitude);
 
+    emit vehicleSpeedChanged            (_missionFlightStatus.vehicleSpeed);
+
     // Walk the list again calculating altitude percentages
     double altRange = _maxAMSLAltitude - _minAMSLAltitude;
     for (int i=0; i<_visualItems->count(); i++) {

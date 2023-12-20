@@ -152,7 +152,6 @@ Item {
     function _handleInteractiveChanged() {
         if (interactive) {
             addEditingVisuals()
-            addToolbarVisuals()
         } else {
             mapPolygon.traceMode = false
             removeEditingVisuals()
