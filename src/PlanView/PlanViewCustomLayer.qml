@@ -11,4 +11,6 @@ import QtQuick          2.3
 
 Item {
     id: _root
+
+    property var planView
 }

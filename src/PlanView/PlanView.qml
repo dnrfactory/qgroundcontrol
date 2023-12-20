@@ -780,7 +780,7 @@ Item {
         }
 
         PlanViewCustomLayer {
-            anchors.fill: parent
+            planView: _root
         }
     }
 
