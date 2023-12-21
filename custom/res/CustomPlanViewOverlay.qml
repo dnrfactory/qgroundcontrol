@@ -91,8 +91,6 @@ Item {
 
     property var createPlanRemoveAllPromptDialogMapCenter
     property var createPlanRemoveAllPromptDialogPlanCreator
-
-    property int clickPlanIndex : 0
     
 
     function getScanIndex(){
@@ -313,7 +311,7 @@ Item {
 
                     ListModel {
                         id: planPanelNames
-                       ListElement{name: qsTr("Init Plan")}
+                        ListElement{name: qsTr("Init Plan")}
                         ListElement{name: qsTr("WayPoint Sail")}
                         ListElement{name: qsTr("Corridor Sail")}
                         ListElement{name: qsTr("Grid Sail")}
@@ -344,16 +342,12 @@ Item {
                                 if (_planMasterController.containsItems) {
                                     createPlanRemoveAllPromptDialogMapCenter = _mapCenter()
                                     createPlanRemoveAllPromptDialogPlanCreator = object
-                                    clickPlanIndex = model.index
 
                                     createPlanRemoveAllPromptDialogPlanCreator.createPlan(createPlanRemoveAllPromptDialogMapCenter)
-                                    _currentPlan = clickPlanIndex
-
                                 } else {
                                     object.createPlan(_mapCenter())
-                                    _currentPlan = model.index
                                 }
-                                console.log("model.index: " + model.index)
+                                _currentPlan = model.index
                             }
 
                             function _mapCenter() {
