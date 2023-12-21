@@ -548,7 +548,7 @@ Item {
                             enabled:            !_planMasterController.offline && !_planMasterController.syncInProgress
 
                             onClicked: {
-                                mainWindow.showComponentDialog(clearVehicleMissionDialog, text, mainWindow.showDialogDefaultWidth, StandardButton.Yes | StandardButton.Cancel)
+                                clearVehicleMissionDialog.createObject(mainWindow).open()
                             }
                         }
 
@@ -686,7 +686,7 @@ Item {
                                 duration:       1000
                             }
                         }
-                }
+                    }
 
                     QGCButton {
                         text:               qsTr("임무 불러오기")
@@ -701,7 +701,7 @@ Item {
                             if (_planMasterController.dirty) {
                                 console.log("임무 불러오기")
                                 console.log(_planMasterController.dirty)
-                                mainWindow.showComponentDialog(syncLoadFromFileOverwrite, columnholder._overwriteText, mainWindow.showDialogDefaultWidth, StandardButton.Yes | StandardButton.Cancel)
+                                syncLoadFromFileOverwrite.createObject(mainWindow).open()
                             } else {
 
                                 _planMasterController.loadFromSelectedFile()
