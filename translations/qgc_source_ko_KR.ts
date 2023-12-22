@@ -12743,7 +12743,7 @@ Note that this will also completely reset everything, including UAVCAN nodes, al
     <message>
       <location filename="../src/MissionManager/PlanMasterController.cc" line="594"/>
       <source>Plan Files (*.%1)</source>
-      <translation>계획 파일 (*.*)</translation>
+      <translation>계획 파일 (*.%1)</translation>
     </message>
   </context>
   <context>
