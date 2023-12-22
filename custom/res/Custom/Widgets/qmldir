@@ -1,0 +1,9 @@
+Module Custom.Widgets
+
+CustomToolBarButton     1.0     CustomToolBarButton.qml
+CustomFlyViewBottomWidget 1.0   CustomFlyViewBottomWidget.qml
+CustomWeatherPanel      1.0     CustomWeatherPanel.qml
+CustomArmPanel          1.0     CustomArmPanel.qml
+CustomFlyModePanel      1.0     CustomFlyModePanel.qml
+CustomFlyStatusInfoPanel 1.0    CustomFlyStatusInfoPanel.qml
+CustomTelemetryValuePanel 1.0   CustomTelemetryValuePanel.qml

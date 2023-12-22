@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="custom/img">        
+        <file alias="CustomAppIcon.png">res/Images/CustomAppIcon.png</file>
+    </qresource>
+	<qresource prefix="/res/custom/img">
+		<file alias="icon_Sail.svg">res/imgs/icon_Sail.svg</file>
+        <file alias="icon_SailPlan.svg">res/imgs/icon_SailPlan.svg</file>
+        <file alias="icon_Setting.svg">res/imgs/icon_Setting.svg</file>
+        <file alias="icon_Control.svg">res/imgs/icon_Control.svg</file>
+        <file alias="Logo_USV">res/imgs/Logo_USV.png</file>
+	</qresource>
+    <qresource prefix="Custom/Widgets">        
+        <file alias="Custom/Widgets/CustomToolBarButton.qml">res/Custom/Widgets/CustomToolBarButton.qml</file>
+        <file alias="Custom/Widgets/CustomFlyViewBottomWidget.qml">res/Custom/Widgets/CustomFlyViewBottomWidget.qml</file>
+        <file alias="Custom/Widgets/CustomWeatherPanel.qml">res/Custom/Widgets/CustomWeatherPanel.qml</file>
+        <file alias="Custom/Widgets/CustomArmPanel.qml">res/Custom/Widgets/CustomArmPanel.qml</file>
+        <file alias="Custom/Widgets/CustomFlyModePanel.qml">res/Custom/Widgets/CustomFlyModePanel.qml</file>
+        <file alias="Custom/Widgets/CustomFlyStatusInfoPanel.qml">res/Custom/Widgets/CustomFlyStatusInfoPanel.qml</file>
+		<file alias="Custom/Widgets/CustomTelemetryValuePanel.qml">res/Custom/Widgets/CustomTelemetryValuePanel.qml</file>
+        <file alias="Custom/Widgets/qmldir">res/Custom/Widgets/qmldir</file>
+    </qresource>
+    <qresource prefix="/qml">
+        <file alias="QGroundControl/FlightDisplay/FlyViewCustomLayer.qml">res/CustomFlyViewOverlay.qml</file>
+        <file alias="PlanViewCustomLayer.qml">res/CustomPlanViewOverlay.qml</file>
+		<file alias="QGroundControl/Controls/MainToolBar.qml">res/CustomMainToolBar.qml</file>
+    </qresource>
+</RCC>

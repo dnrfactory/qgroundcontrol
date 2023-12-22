@@ -25,6 +25,8 @@ public:
     Q_PROPERTY(bool                     showMultiVehicleList            READ showMultiVehicleList           CONSTANT)
     Q_PROPERTY(bool                     showInstrumentPanel             READ showInstrumentPanel            CONSTANT)
     Q_PROPERTY(bool                     showMapScale                    READ showMapScale                   CONSTANT)
+    Q_PROPERTY(bool                     showToolStrip                   READ showToolStrip                  CONSTANT)
+    Q_PROPERTY(bool                     showTelemetryValueBar           READ showTelemetryValueBar          CONSTANT)
     Q_PROPERTY(bool                     guidedBarShowEmergencyStop      READ guidedBarShowEmergencyStop     NOTIFY guidedBarShowEmergencyStopChanged)
     Q_PROPERTY(bool                     guidedBarShowOrbit              READ guidedBarShowOrbit             NOTIFY guidedBarShowOrbitChanged)
     Q_PROPERTY(bool                     guidedBarShowROI                READ guidedBarShowROI               NOTIFY guidedBarShowROIChanged)
@@ -33,9 +35,11 @@ protected:
     virtual bool    showMultiVehicleList        () const { return true; }
     virtual bool    showMapScale                () const { return true; }
     virtual bool    showInstrumentPanel         () const { return true; }
+	virtual bool    showToolStrip         () const { return true; }
+	virtual bool    showTelemetryValueBar         () const { return true; }
     virtual bool    guidedBarShowEmergencyStop  () const { return true; }
     virtual bool    guidedBarShowOrbit          () const { return true; }
-    virtual bool    guidedBarShowROI            () const { return true; }
+    virtual bool    guidedBarShowROI            () const { return true; }	
 
     QGCOptions* _options;
 
@@ -43,6 +47,22 @@ signals:
     void guidedBarShowEmergencyStopChanged      (bool show);
     void guidedBarShowOrbitChanged              (bool show);
     void guidedBarShowROIChanged                (bool show);
+};
+
+class QGCPlanViewOptions : public QObject
+{
+    Q_OBJECT
+public:
+    QGCPlanViewOptions(QGCOptions* options, QObject* parent = nullptr);
+
+	Q_PROPERTY(bool                     showToolStrip            READ showToolStrip           CONSTANT)
+    Q_PROPERTY(bool                     showTerrainStatus        READ showTerrainStatus      CONSTANT)
+
+protected:
+    virtual bool    showToolStrip() const { return true; }
+    virtual bool    showTerrainStatus() const { return true; }
+
+	QGCOptions* _options;
 };
 
 class QGCOptions : public QObject
@@ -83,6 +103,7 @@ public:
     Q_PROPERTY(bool                     allowJoystickSelection          READ allowJoystickSelection         NOTIFY allowJoystickSelectionChanged)
 
     Q_PROPERTY(QGCFlyViewOptions*       flyView                         READ flyViewOptions                 CONSTANT)
+    Q_PROPERTY(QGCPlanViewOptions*      planView                        READ planViewOptions                CONSTANT)
 
     /// Should QGC hide its settings menu and colapse it into one single menu (Settings and Vehicle Setup)?
     /// @return true if QGC should consolidate both menus into one.
@@ -147,6 +168,7 @@ public:
     virtual float   devicePixelDensity              () const { return 0.0f; }
 
     virtual QGCFlyViewOptions* flyViewOptions       ();
+	virtual QGCPlanViewOptions* planViewOptions       ();	
 
 signals:
     void showSensorCalibrationCompassChanged    (bool show);
@@ -167,4 +189,5 @@ signals:
 
 protected:
     QGCFlyViewOptions* _defaultFlyViewOptions = nullptr;
+	QGCPlanViewOptions* _defaultPlanViewOptions = nullptr;
 };
