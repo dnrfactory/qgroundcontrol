@@ -710,7 +710,8 @@ Item {
                     }
 
                     QGCButton {
-                        text:               qsTr("다른 이름으로 임무 저장")
+                        //text:               qsTr("다른 이름으로 임무 저장")
+                        text: "test"
                         pointSize:              ScreenTools.mediumFontPointSize
                         Layout.preferredWidth:  _bottomPanelButtonWidth
                         Layout.preferredHeight: _bottomPanelButtonHeight
@@ -718,7 +719,9 @@ Item {
 
                         enabled:            !_planMasterController.syncInProgress && _planMasterController.containsItems
                         onClicked: {
+                            console.log("save file onClicked")
                             _planMasterController.saveToSelectedFile()
+                            console.log("save file onClicked 22")
                         }
                     }
                 }
