@@ -50,17 +50,17 @@ Item {
 
     QGCToolInsets {
         id:                     _totalToolInsets
-        leftEdgeTopInset:       toolStrip.leftEdgeTopInset
+        leftEdgeTopInset:       toolStrip.visible ? toolStrip.leftEdgeTopInset : parentToolInsets.leftEdgeTopInset
         leftEdgeCenterInset:    parentToolInsets.leftEdgeCenterInset
         leftEdgeBottomInset:    virtualJoystickMultiTouch.visible ? virtualJoystickMultiTouch.leftEdgeBottomInset : parentToolInsets.leftEdgeBottomInset
-        rightEdgeTopInset:      instrumentPanel.rightEdgeTopInset
+        rightEdgeTopInset:      instrumentPanel.visible ? instrumentPanel.rightEdgeTopInset : parentToolInsets.rightEdgeTopInset
         rightEdgeCenterInset:   (telemetryPanel.rightEdgeCenterInset > photoVideoControl.rightEdgeCenterInset) ? telemetryPanel.rightEdgeCenterInset : photoVideoControl.rightEdgeCenterInset
         rightEdgeBottomInset:   virtualJoystickMultiTouch.visible ? virtualJoystickMultiTouch.rightEdgeBottomInset : parentToolInsets.rightEdgeBottomInset
-        topEdgeLeftInset:       toolStrip.topEdgeLeftInset
+        topEdgeLeftInset:       toolStrip.visible ? toolStrip.topEdgeLeftInset : parentToolInsets.topEdgeLeftInset
         topEdgeCenterInset:     mapScale.topEdgeCenterInset
-        topEdgeRightInset:      instrumentPanel.topEdgeRightInset
+        topEdgeRightInset:      instrumentPanel.visible ? instrumentPanel.topEdgeRightInset : parentToolInsets.topEdgeRightInset
         bottomEdgeLeftInset:    virtualJoystickMultiTouch.visible ? virtualJoystickMultiTouch.bottomEdgeLeftInset : parentToolInsets.bottomEdgeLeftInset
-        bottomEdgeCenterInset:  telemetryPanel.bottomEdgeCenterInset
+        bottomEdgeCenterInset:  telemetryPanel.visible ? telemetryPanel.bottomEdgeCenterInset : parentToolInsets.bottomEdgeCenterInset
         bottomEdgeRightInset:   virtualJoystickMultiTouch.visible ? virtualJoystickMultiTouch.bottomEdgeRightInset : parentToolInsets.bottomEdgeRightInset
     }
 
@@ -164,6 +164,7 @@ Item {
         id:                 telemetryPanel
         x:                  recalcXPosition()
         anchors.margins:    _toolsMargin
+        visible: QGroundControl.corePlugin.options.flyView.showTelemetryValueBar
 
         property real bottomEdgeCenterInset: 0
         property real rightEdgeCenterInset: 0
@@ -276,7 +277,7 @@ Item {
         anchors.top:            parent.top
         z:                      QGroundControl.zOrderWidgets
         maxHeight:              parent.height - y - parentToolInsets.bottomEdgeLeftInset - _toolsMargin
-        visible:                !QGroundControl.videoManager.fullScreen
+        visible:                !QGroundControl.videoManager.fullScreen && QGroundControl.corePlugin.options.flyView.showToolStrip
 
         onDisplayPreFlightChecklist: preFlightChecklistPopup.createObject(mainWindow).open()
 
@@ -297,10 +298,10 @@ Item {
     MapScale {
         id:                 mapScale
         anchors.margins:    _toolsMargin
-        anchors.left:       toolStrip.right
+        anchors.left:       toolStrip.visible ? toolStrip.right : parent.left
         anchors.top:        parent.top
         mapControl:         _mapControl
-        buttonsOnLeft:      false
+        buttonsOnLeft:      true
         visible:            !ScreenTools.isTinyScreen && QGroundControl.corePlugin.options.flyView.showMapScale && mapControl.pipState.state === mapControl.pipState.fullState
 
         property real topEdgeCenterInset: visible ? y + height : 0
