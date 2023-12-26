@@ -21,6 +21,7 @@ Button {
     property real   backRadius:     0
     property real   heightFactor:   0.5
     property string iconSource
+    property real iconSourceScale: 1
 
     property alias wrapMode:            text.wrapMode
     property alias horizontalAlignment: text.horizontalAlignment
@@ -52,7 +53,7 @@ Button {
         QGCColoredImage {
             id:                     icon
             source:                 control.iconSource
-            height:                 source === "" ? 0 : text.height
+            height:                 source === "" ? 0 : text.height * iconSourceScale
             width:                  height
             color:                  text.color
             fillMode:               Image.PreserveAspectFit

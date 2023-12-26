@@ -68,7 +68,9 @@ Rectangle {
                     width :             (buttonWrap.width - _bottomPanelLeftPadding * 2)/3
                     height :            buttonWrap.height
                     backRadius :        height
-
+                    iconSource: "/res/custom/img/FlightModeButtonManual"
+                    iconSourceScale: 1.5
+                    iconLeft: true
                     text:               "Manual"
                     pointSize :         ScreenTools.mediumFontPointSize
 
@@ -85,7 +87,9 @@ Rectangle {
                     width :             (buttonWrap.width - _bottomPanelLeftPadding * 2)/3
                     height :            buttonWrap.height
                     backRadius :        height
-
+                    iconSource: "/res/custom/img/FlightModeButtonAuto"
+                    iconSourceScale: 1.5
+                    iconLeft: true
                     text:               "Auto"
                     pointSize :         ScreenTools.mediumFontPointSize
 
@@ -102,7 +106,9 @@ Rectangle {
                     width :             (buttonWrap.width - _bottomPanelLeftPadding * 2)/3
                     height :            buttonWrap.height
                     backRadius :        height
-
+                    iconSource: "/res/custom/img/FlightModeButtonLoiter"
+                    iconSourceScale: 1.5
+                    iconLeft: true
                     text:               "Loiter"
                     pointSize :         ScreenTools.mediumFontPointSize
 

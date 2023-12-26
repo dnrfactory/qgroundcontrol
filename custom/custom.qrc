@@ -8,6 +8,9 @@
         <file alias="icon_Setting.svg">res/imgs/icon_Setting.svg</file>
         <file alias="icon_Control.svg">res/imgs/icon_Control.svg</file>
         <file alias="Logo_USV">res/imgs/Logo_USV.png</file>
+		<file alias="FlightModeButtonManual.svg">res/imgs/FlightModeButtonManual.svg</file>
+		<file alias="FlightModeButtonAuto.svg">res/imgs/FlightModeButtonAuto.svg</file>
+		<file alias="FlightModeButtonLoiter.svg">res/imgs/FlightModeButtonLoiter.svg</file>
 	</qresource>
     <qresource prefix="Custom/Widgets">        
         <file alias="Custom/Widgets/CustomToolBarButton.qml">res/Custom/Widgets/CustomToolBarButton.qml</file>
