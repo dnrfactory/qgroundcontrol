@@ -88,14 +88,7 @@ Item {
         DeadMouseArea {
             anchors.fill:       parent
         }
-    }
-
-    Rectangle {
-        anchors.fill: bottomPanel
-        color: "green"
-        opacity: 0.5
-        radius: _bottomPanelRadious
-    }
+    }    
 
     QGCTabBar {
         id: layerTabBar

@@ -19,73 +19,56 @@ import QGroundControl.Palette       1.0
 import QGroundControl.ScreenTools   1.0
 
 Row {
-    readonly property real  _bottomPanelWidth:          ScreenTools.defaultFontPixelWidth * 35                  // Width        : 280
-    readonly property real  _bottomPanelHeight:         ScreenTools.defaultFontPixelWidth * 30                  // Height       : 240
+    id: root
 
-    readonly property real  _bottomPanelMargin:         ScreenTools.defaultFontPixelWidth * 2                  // Margin       : 16
+    readonly property real panelMargin: 2
 
-    readonly property real  _bottomPanelLeftPadding:    ScreenTools.defaultFontPixelWidth * 2                 // LeftPadding  : 16
-    readonly property real  _bottomPanelTopPadding:     ScreenTools.defaultFontPixelWidth * 2.5                 // TopPadding   : 20
+    spacing: 0
 
-    readonly property real  _bottomPanelRadious:        ScreenTools.defaultFontPixelWidth * 1.25
-
-    spacing: _bottomPanelLeftPadding
-    
     CustomTelemetryValuePanel {
-        id:                 telemetryPanel
-        height:             _bottomPanelHeight
-        width:              _bottomPanelWidth * 1.5
-        radius:             _bottomPanelRadious
+        id: telemetryPanel
+        height: parent.height
+        width: parent.width * 0.2 - panelMargin
     }
-
+    Rectangle { width: panelMargin; height: parent.height; color: "white"; opacity: 0.8 }
     CustomWeatherPanel {
-        id:                 customWeatherPanel
-        height:             _bottomPanelHeight
-        width:              _bottomPanelWidth
-        radius:             _bottomPanelRadious
+        id: customWeatherPanel
+        height: parent.height
+        width: parent.width * 0.2 - panelMargin
     }
-
+    Rectangle { width: panelMargin; height: parent.height; color: "white"; opacity: 0.8 }
     CustomArmPanel {
-        id:                 customArmPanel
-        height:             _bottomPanelHeight
-        width:              (_bottomPanelWidth/2 - 4)
-        radius:             _bottomPanelRadious
-
-        _bottomPanelTopPadding: _root._bottomPanelTopPadding
-        _bottomPanelMargin: _root._bottomPanelMargin
+        id: customArmPanel
+        height: parent.height
+        width: parent.width * 0.1 - panelMargin
     }
-
-    FlyViewInstrumentPanel {
-        id:                         instrumentPanel
-        anchors.margins:            _bottomPanelMargin
-        width:                      _bottomPanelHeight / 2
-        availableHeight:            parent.height - y - _toolsMargin
-
-        property real rightEdgeTopInset: visible ? parent.width - x : 0
-        property real topEdgeRightInset: visible ? y + height : 0
+    Rectangle { width: panelMargin; height: parent.height; color: "white"; opacity: 0.8 }
+    Rectangle {
+        id: instrumentPanel
+        width: parent.width * 0.1 - panelMargin
+        height: parent.height
+        color: qgcPal.window
+        opacity: 0.8
+        
+        FlyViewInstrumentPanel {            
+            anchors.centerIn: parent
+            width: 0.5 * parent.height
+        }
     }
-
+    Rectangle { width: panelMargin; height: parent.height; color: "white"; opacity: 0.8 }
     Column {
-        spacing: _bottomPanelMargin
+        spacing: 0
 
         CustomFlyModePanel {
-            id:                     customModePanel
-            height:                 67
-            width:                  _bottomPanelWidth * 2 + 12
-            radius:                 _bottomPanelRadious
-
-            _bottomPanelLeftPadding: _root._bottomPanelLeftPadding
-            _bottomPanelMargin: _root._bottomPanelMargin
+            id: customModePanel
+            height: root.height * 0.3 - panelMargin
+            width: root.width * 0.4
         }
-
-        CustomFlyStatusInfoPanel {
-            id:                     customStatusInformPanel
-            height:                 157
-            width:                  _bottomPanelWidth * 2 + 12
-
-            _bottomPanelLeftPadding: _root._bottomPanelLeftPadding
-            _bottomPanelMargin: _root._bottomPanelMargin
-            _bottomPanelRadious: _root._bottomPanelRadious
+        Rectangle { width: root.width * 0.4; height: panelMargin; color: "white"; opacity: 0.8 }
+        Rectangle {
+            height: root.height * 0.7
+            width: root.width * 0.4
+            color: "blue"
         }
     }
 }

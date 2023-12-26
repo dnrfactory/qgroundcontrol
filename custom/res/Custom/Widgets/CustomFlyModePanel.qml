@@ -30,8 +30,8 @@ import QGroundControl.Vehicle       1.0
 Rectangle {
     id:                     root
 
-    property real _bottomPanelLeftPadding
-    property real _bottomPanelMargin
+    property real _bottomPanelLeftPadding: 16
+    property real _bottomPanelMargin: 20
     property var    _activeVehicle:         QGroundControl.multiVehicleManager.activeVehicle
     
     color:                  qgcPal.window

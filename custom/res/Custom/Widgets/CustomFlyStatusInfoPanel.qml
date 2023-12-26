@@ -38,8 +38,7 @@ Item {
     Rectangle {
         anchors.fill:       parent
         color:              qgcPal.window
-        opacity:            0.8
-        radius:             _bottomPanelRadious
+        opacity:            0.8        
     }
 
     Column {
