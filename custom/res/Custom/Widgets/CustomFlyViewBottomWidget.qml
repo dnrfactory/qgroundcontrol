@@ -90,107 +90,46 @@ Item {
         }
     }
 
-    Row {
-        anchors.centerIn:       bottomPanel
-        spacing:               _bottomPanelLeftPadding
+    Rectangle {
+        anchors.fill: bottomPanel
+        color: "green"
+        opacity: 0.5
+        radius: _bottomPanelRadious
+    }
 
-        CustomTelemetryValuePanel {
-            id:                 telemetryPanel
-            height:             _bottomPanelHeight
-            width:              _bottomPanelWidth * 1.5
-            radius:             _bottomPanelRadious
+    QGCTabBar {
+        id: layerTabBar
+        anchors.left: bottomPanel.left
+        anchors.bottom: bottomPanel.top
+        width: 0.2 * parent.width
+        Component.onCompleted: currentIndex = 0
+        QGCTabButton {
+            text:       qsTr("Plan control")
         }
-
-        CustomWeatherPanel {
-            id:                 customWeatherPanel
-            height:             _bottomPanelHeight
-            width:              _bottomPanelWidth
-            radius:             _bottomPanelRadious
+        QGCTabButton {
+            text:       qsTr("Plan status")
         }
-
-        CustomArmPanel {
-            id:                 customArmPanel
-            height:             _bottomPanelHeight
-            width:              (_bottomPanelWidth/2 - 4)
-            radius:             _bottomPanelRadious
-
-            _bottomPanelTopPadding: _root._bottomPanelTopPadding
-            _bottomPanelMargin: _root._bottomPanelMargin
+        QGCTabButton {
+            text:       qsTr("Plan history")
         }
+    }
 
-        FlyViewInstrumentPanel {
-            id:                         instrumentPanel
-            anchors.margins:            _bottomPanelMargin
-            width:                      _bottomPanelHeight / 2
-            availableHeight:            parent.height - y - _toolsMargin
-
-            property real rightEdgeTopInset: visible ? parent.width - x : 0
-            property real topEdgeRightInset: visible ? y + height : 0
+    StackLayout {
+        anchors.fill: bottomPanel
+        currentIndex: layerTabBar.currentIndex
+        CustomFlyViewPlanControlWidget {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
         }
-
-        Column {
-            spacing: _bottomPanelMargin
-
-            CustomFlyModePanel {
-                id:                     customModePanel
-                height:                 67
-                width:                  _bottomPanelWidth * 2 + 12
-                radius:                 _bottomPanelRadious
-
-                _bottomPanelLeftPadding: _root._bottomPanelLeftPadding
-                _bottomPanelMargin: _root._bottomPanelMargin
-            }
-
-            CustomFlyStatusInfoPanel {
-                id:                     customStatusInformPanel
-                height:                 157
-                width:                  _bottomPanelWidth * 2 + 12
-
-                _bottomPanelLeftPadding: _root._bottomPanelLeftPadding
-                _bottomPanelMargin: _root._bottomPanelMargin
-                _bottomPanelRadious: _root._bottomPanelRadious
-            }
-        }
-
         Rectangle {
-            id:                     customServoOutPutPanel
-            height:                 _bottomPanelHeight
-
-            width:                  _bottomPanelWidth
-            color:                  "transparent"
-
-            visible: QGroundControl.multiVehicleManager.parameterReadyVehicleAvailable
-
-            Rectangle{
-                anchors.fill:       parent
-                color:              qgcPal.window
-                opacity:            0.8
-                radius:             _bottomPanelRadious
-            }
-
-            Connections {
-                target: QGroundControl.multiVehicleManager
-
-                onParameterReadyVehicleAvailableChanged: {
-//                    console.log("Connections // onParameterReadyVehicleAvailableChanged")
-                    if (QGroundControl.multiVehicleManager.parameterReadyVehicleAvailable) {
-                        panelLoader.setSource("qrc:/qml/QGroundControl/Controls/ServoOutPutDialog.qml")
-                    }else{
-                        panelLoader.setSource("")
-                    }
-                }
-            }
-
-            Loader {
-                id:             panelLoader
-                anchors.fill:   parent
-                anchors.margins: _bottomPanelMargin
-
-                function setSource(source) {
-                    panelLoader.source = source
-                }
-            }
-
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            color: "red"
+        }
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            color: "blue"
         }
     }    
 }

@@ -7,3 +7,4 @@ CustomArmPanel          1.0     CustomArmPanel.qml
 CustomFlyModePanel      1.0     CustomFlyModePanel.qml
 CustomFlyStatusInfoPanel 1.0    CustomFlyStatusInfoPanel.qml
 CustomTelemetryValuePanel 1.0   CustomTelemetryValuePanel.qml
+CustomFlyViewPlanControlWidget 1.0 CustomFlyViewPlanControlWidget.qml

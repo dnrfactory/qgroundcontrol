@@ -17,6 +17,7 @@
         <file alias="Custom/Widgets/CustomFlyModePanel.qml">res/Custom/Widgets/CustomFlyModePanel.qml</file>
         <file alias="Custom/Widgets/CustomFlyStatusInfoPanel.qml">res/Custom/Widgets/CustomFlyStatusInfoPanel.qml</file>
 		<file alias="Custom/Widgets/CustomTelemetryValuePanel.qml">res/Custom/Widgets/CustomTelemetryValuePanel.qml</file>
+		<file alias="Custom/Widgets/CustomFlyViewPlanControlWidget.qml">res/Custom/Widgets/CustomFlyViewPlanControlWidget.qml</file>
         <file alias="Custom/Widgets/qmldir">res/Custom/Widgets/qmldir</file>
     </qresource>
     <qresource prefix="/qml">
