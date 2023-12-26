@@ -27,7 +27,8 @@ public:
     Q_PROPERTY(bool                     showMapScale                    READ showMapScale                   CONSTANT)
     Q_PROPERTY(bool                     showToolStrip                   READ showToolStrip                  CONSTANT)
     Q_PROPERTY(bool                     showTelemetryValueBar           READ showTelemetryValueBar          CONSTANT)
-    Q_PROPERTY(bool                     guidedBarShowEmergencyStop      READ guidedBarShowEmergencyStop     NOTIFY guidedBarShowEmergencyStopChanged)
+    Q_PROPERTY(bool                     showPhotoVideoControl           READ showPhotoVideoControl          CONSTANT)
+	Q_PROPERTY(bool                     guidedBarShowEmergencyStop      READ guidedBarShowEmergencyStop     NOTIFY guidedBarShowEmergencyStopChanged)
     Q_PROPERTY(bool                     guidedBarShowOrbit              READ guidedBarShowOrbit             NOTIFY guidedBarShowOrbitChanged)
     Q_PROPERTY(bool                     guidedBarShowROI                READ guidedBarShowROI               NOTIFY guidedBarShowROIChanged)
 
@@ -37,6 +38,7 @@ protected:
     virtual bool    showInstrumentPanel         () const { return true; }
 	virtual bool    showToolStrip         () const { return true; }
 	virtual bool    showTelemetryValueBar         () const { return true; }
+	virtual bool    showPhotoVideoControl         () const { return true; }
     virtual bool    guidedBarShowEmergencyStop  () const { return true; }
     virtual bool    guidedBarShowOrbit          () const { return true; }
     virtual bool    guidedBarShowROI            () const { return true; }	

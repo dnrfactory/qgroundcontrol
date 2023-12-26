@@ -34,6 +34,7 @@ public:
     bool                    showMultiVehicleList        (void) const final;
 	bool    				showToolStrip         		(void) const final;
 	bool    				showTelemetryValueBar       (void) const final;
+	bool    				showPhotoVideoControl       (void) const final;
 };
 
 class CustomPlanViewOptions : public QGCPlanViewOptions

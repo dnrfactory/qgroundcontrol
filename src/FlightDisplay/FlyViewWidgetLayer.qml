@@ -134,6 +134,7 @@ Item {
         anchors.margins:        _toolsMargin
         anchors.right:          parent.right
         width:                  _rightPanelWidth
+        visible: QGroundControl.corePlugin.options.flyView.showPhotoVideoControl
 
         property real rightEdgeCenterInset: visible ? parent.width - x : 0
 

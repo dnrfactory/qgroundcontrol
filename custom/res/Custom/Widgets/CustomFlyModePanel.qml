@@ -44,17 +44,16 @@ Rectangle {
 
         QGCLabel {
             id : modeLabel
-            text: "운항모드"
+            text: qsTr("Flight Mode")
             anchors.verticalCenter: parent.verticalCenter
             font.pointSize:     ScreenTools.mediumFontPointSize
         }
 
-        Rectangle {
-            id : buttonWarp
+        Item {
+            id : buttonWrap
             width : parent.width - modeLabel.width - _bottomPanelMargin
             height: parent.height
-            anchors.leftMargin: _bottomPanelMargin
-            color: "transparent"
+            anchors.leftMargin: _bottomPanelMargin            
 
             Row {
                 anchors.fill:       parent
@@ -66,8 +65,8 @@ Rectangle {
 
                 QGCButton {
                     id:                 manualButton
-                    width :             (buttonWarp.width - _bottomPanelLeftPadding * 2)/3
-                    height :            buttonWarp.height
+                    width :             (buttonWrap.width - _bottomPanelLeftPadding * 2)/3
+                    height :            buttonWrap.height
                     backRadius :        height
 
                     text:               "Manual"
@@ -83,8 +82,8 @@ Rectangle {
 
                 QGCButton {
                     id:                 autoButton
-                    width :             (buttonWarp.width - _bottomPanelLeftPadding * 2)/3
-                    height :            buttonWarp.height
+                    width :             (buttonWrap.width - _bottomPanelLeftPadding * 2)/3
+                    height :            buttonWrap.height
                     backRadius :        height
 
                     text:               "Auto"
@@ -100,8 +99,8 @@ Rectangle {
 
                 QGCButton {
                     id:                 loiterButton
-                    width :             (buttonWarp.width - _bottomPanelLeftPadding * 2)/3
-                    height :            buttonWarp.height
+                    width :             (buttonWrap.width - _bottomPanelLeftPadding * 2)/3
+                    height :            buttonWrap.height
                     backRadius :        height
 
                     text:               "Loiter"

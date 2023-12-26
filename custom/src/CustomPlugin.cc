@@ -54,6 +54,11 @@ bool CustomFlyViewOptions::showTelemetryValueBar(void) const
     return false;
 }
 
+bool CustomFlyViewOptions::showPhotoVideoControl(void) const
+{
+    return false;
+}
+
 CustomPlanViewOptions::CustomPlanViewOptions(CustomOptions* options, QObject* parent)
     : QGCPlanViewOptions(options, parent)
 {

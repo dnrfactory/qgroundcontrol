@@ -15,8 +15,8 @@ import QGroundControl               1.0
 import QGroundControl.Controls      1.0
 import QGroundControl.Controllers   1.0
 import QGroundControl.FlightDisplay 1.0
+import QGroundControl.FlightMap     1.0
 import QGroundControl.Palette       1.0
-import QGroundControl.ScreenTools   1.0
 
 Row {
     id: root
@@ -56,6 +56,13 @@ Row {
         }
     }
     Rectangle { width: panelMargin; height: parent.height; color: "white"; opacity: 0.8 }
+    // ----------------------------------------
+    // 
+    // ----------------------------------------
+    //                       |
+    //                       |
+    //                       |
+    // ----------------------------------------
     Column {
         spacing: 0
 
@@ -65,10 +72,22 @@ Row {
             width: root.width * 0.4
         }
         Rectangle { width: root.width * 0.4; height: panelMargin; color: "white"; opacity: 0.8 }
-        Rectangle {
-            height: root.height * 0.7
-            width: root.width * 0.4
-            color: "blue"
-        }
+        Row {
+            Rectangle {
+                height: root.height * 0.7
+                width: root.width * 0.4 * 0.6 -  - panelMargin
+                color: "blue"
+            }
+            Rectangle { width: panelMargin; height: parent.height; color: "white"; opacity: 0.8 }
+            Item {
+                height: root.height * 0.7
+                width: root.width * 0.4 * 0.4
+                PhotoVideoControl {
+                    anchors.centerIn: parent
+                    width: parent.width  
+                    visible: true
+                }
+            }            
+        }        
     }
 }
