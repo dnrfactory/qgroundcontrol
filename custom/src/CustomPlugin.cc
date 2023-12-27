@@ -224,9 +224,13 @@ void CustomPlugin::paletteOverride(QString colorName, QGCPalette::PaletteColorIn
     }
     else if (colorName == QStringLiteral("button")) {
         colorInfo[QGCPalette::Dark][QGCPalette::ColorGroupEnabled]   = QColor("#313A70");
-        colorInfo[QGCPalette::Dark][QGCPalette::ColorGroupDisabled]  = QColor("#D9D9D9");
+        colorInfo[QGCPalette::Dark][QGCPalette::ColorGroupDisabled]  = QColor("darkgrey");
         colorInfo[QGCPalette::Light][QGCPalette::ColorGroupEnabled]  = QColor("#313A70");
-        colorInfo[QGCPalette::Light][QGCPalette::ColorGroupDisabled] = QColor("#D9D9D9");
+        colorInfo[QGCPalette::Light][QGCPalette::ColorGroupDisabled] = QColor("darkgrey");
+    }
+    else if (colorName == QStringLiteral("buttonText")) {
+        colorInfo[QGCPalette::Dark][QGCPalette::ColorGroupDisabled]  = QColor("lightgrey");
+        colorInfo[QGCPalette::Light][QGCPalette::ColorGroupDisabled] = QColor("lightgrey");
     }
     else if (colorName == QStringLiteral("buttonHighlight")) {
         colorInfo[QGCPalette::Dark][QGCPalette::ColorGroupEnabled]   = QColor("#F49F26");

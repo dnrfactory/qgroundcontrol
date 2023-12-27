@@ -28,7 +28,7 @@ import QGroundControl.ScreenTools   1.0
 import QGroundControl.Vehicle       1.0
 
 Rectangle {
-    id:                     root
+    id: root
 
     property real  _bottomPanelTopPadding: 20
     property real  _bottomPanelMargin: 20
@@ -46,15 +46,14 @@ Rectangle {
         _activeVehicle ? switchCirle.state = "leftOff" : switchCirle.state = "disActiveVehicle"
     }
 
-    property bool   _vehicleArmed:          _activeVehicle ? _activeVehicle.armed  : false
+    property bool _vehicleArmed: _activeVehicle ? _activeVehicle.armed : false
     on_VehicleArmedChanged: {
         _vehicleArmed ? switchCirle.state = "rightOn" : switchCirle.state = "leftOff"
     }
 
     Column {
-        anchors.fill:       parent
         spacing:            _bottomPanelTopPadding/2
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.centerIn: parent
         anchors.margins:    _bottomPanelMargin
 
         QGCLabel{
@@ -120,7 +119,7 @@ Rectangle {
             }
         }
 
-        Rectangle{
+        Rectangle {
             id: armswitch
             color: "transparent"
             width: parent.width * 0.9
@@ -157,7 +156,7 @@ Rectangle {
                 }
             }
 
-            Rectangle{
+            Rectangle {
                 id: switchCirle
                 width: parent.height
                 height:width
@@ -203,56 +202,47 @@ Rectangle {
                 ]
             }
 
-            MouseArea{
+            MouseArea {
                 anchors.fill: parent
 
-                readonly property int actionArm:                        4
-                readonly property int actionDisarm:                     5
-                readonly property int actionStartMission:               12
-                readonly property int actionResumeMission:              14
+                readonly property int actionArm: 4
+                readonly property int actionDisarm: 5
+                readonly property int actionStartMission: 12
+                readonly property int actionResumeMission: 14
 
-                hoverEnabled : true
+                hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
 
                 onClicked: {
-                     switchCirle.state == "leftOff" ? _guidedController.executeAction(actionArm) : _guidedController.executeAction(actionDisarm)
+                    switchCirle.state == "leftOff" ? _guidedController.executeAction(actionArm) : _guidedController.executeAction(actionDisarm)
                 }
             }
         }
 
-        QGCLabel{
-            text:           qsTr("수신 감도")
-            font.pointSize: ScreenTools.mediumFontPointSize
-            font.bold :     true
-            anchors.horizontalCenter:   parent.horizontalCenter
+        QGCButton {
+            width: root.width * 0.8
+            height: width / 3
+            backRadius: 10
+            anchors.horizontalCenter: parent.horizontalCenter
+            enabled: _activeVehicle
+            text: qsTr("Pause")
+            pointSize: ScreenTools.mediumFontPointSize
+            onClicked: {
+                console.log("Pause Button clicked")
+            }
         }
 
-        QGCLabel{
-            id:             rssiValue
-            text:           _activeVehicle ? (_activeVehicle.rcRSSI + " " + "%") : 0
-            font.pointSize: ScreenTools.mediumFontPointSize
-            font.bold :     true
-            anchors.horizontalCenter:   parent.horizontalCenter
-        }
-
-        QGCLabel{
-            text:           qsTr("배터리 잔량")
-            font.pointSize: ScreenTools.mediumFontPointSize
-            font.bold :     true
-            anchors.horizontalCenter:   parent.horizontalCenter
-        }
-
-        QGCLabel{
-            property var    _batteryGroup:                  globals.activeVehicle && globals.activeVehicle.batteries.count ? globals.activeVehicle.batteries.get(0) : undefined
-            property var    _batteryValue:                  _batteryGroup ? _batteryGroup.percentRemaining.value : 0
-            property var    _batPercentRemaining:           isNaN(_batteryValue) ? 0 : _batteryValue
-
-            id:             batteryValue
-            text:           _batPercentRemaining !== 0 ? _batPercentRemaining + " " + _batteryGroup.percentRemaining.units : 0
-
-            font.pointSize: ScreenTools.mediumFontPointSize
-            font.bold :     true
-            anchors.horizontalCenter:   parent.horizontalCenter
+        QGCButton {
+            width: root.width * 0.8
+            height: width / 3
+            backRadius: 10
+            anchors.horizontalCenter: parent.horizontalCenter
+            enabled: _activeVehicle
+            text: qsTr("Home Return")
+            pointSize: ScreenTools.mediumFontPointSize
+            onClicked: {
+                console.log("Home Return Button clicked")
+            }
         }
     }
 }
