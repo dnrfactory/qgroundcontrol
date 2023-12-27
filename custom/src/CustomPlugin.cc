@@ -22,7 +22,10 @@
 #include "SettingsManager.h"
 #include "AppMessages.h"
 #include "QmlComponentInfo.h"
+#include "QmlObjectListModel.h"
 #include "QGCPalette.h"
+#include "HorizontalFactValueGrid.h"
+#include "InstrumentValueData.h"
 
 QGC_LOGGING_CATEGORY(CustomLog, "CustomLog")
 
@@ -238,6 +241,77 @@ void CustomPlugin::paletteOverride(QString colorName, QGCPalette::PaletteColorIn
     else if (colorName == QStringLiteral("toolbarBackground")) {
         colorInfo[QGCPalette::Dark][QGCPalette::ColorGroupEnabled]   = QColor("#161C41");
     }    
+}
+
+void CustomPlugin::factValueGridCreateDefaultSettings(const QString& defaultSettingsGroup)
+{
+    HorizontalFactValueGrid factValueGrid(defaultSettingsGroup);
+
+    factValueGrid.setFontSize(FactValueGrid::LargeFontSize);
+
+    factValueGrid.appendColumn();
+    factValueGrid.appendColumn();
+
+    factValueGrid.appendRow();
+    factValueGrid.appendRow();
+    factValueGrid.appendRow();
+    factValueGrid.appendRow();
+
+    int                 rowIndex    = 0;
+    QmlObjectListModel* column      = factValueGrid.columns()->value<QmlObjectListModel*>(0);
+    InstrumentValueData* value = column->value<InstrumentValueData*>(rowIndex++);
+
+    value->setFact("gps", "count");
+    value->setText(QString::fromLocal8Bit("GPS").toUtf8());
+    value->setShowUnits(true);
+
+    value = column->value<InstrumentValueData*>(rowIndex++);
+    value->setFact("gps", "lat");
+    value->setText(tr("Latitude"));
+    value->setShowUnits(true);
+
+    value = column->value<InstrumentValueData*>(rowIndex++);
+    value->setFact("gps", "lon");
+    value->setText(tr("Longitude"));
+    value->setShowUnits(true);
+
+    value = column->value<InstrumentValueData*>(rowIndex++);
+    value->setFact("Vehicle", "DistanceToHome");
+    value->setText(tr("Home Point"));
+    value->setShowUnits(true);
+
+    value = column->value<InstrumentValueData*>(rowIndex++);
+    value->setFact("Vehicle", "DistanceToGCS");
+    value->setText(QString::fromLocal8Bit("GCS"));
+    value->setShowUnits(true);
+
+    rowIndex    = 0;
+    column      = factValueGrid.columns()->value<QmlObjectListModel*>(1);
+
+    value = column->value<InstrumentValueData*>(rowIndex++);
+    value->setFact("gps", "lock");
+    value->setText(QString::fromLocal8Bit("Lock"));
+    value->setShowUnits(true);
+
+    value = column->value<InstrumentValueData*>(rowIndex++);
+    value->setFact("battery0", "voltage");
+    value->setText(tr("Voltage"));
+    value->setShowUnits(true);
+
+    value = column->value<InstrumentValueData*>(rowIndex++);
+    value->setFact("Vehicle", "flightTime");
+    value->setText(tr("Flight Time"));
+    value->setShowUnits(true);
+
+    value = column->value<InstrumentValueData*>(rowIndex++);
+    value->setFact("Vehicle", "ThrottlePct");
+    value->setText(tr("Throttle"));
+    value->setShowUnits(true);
+
+    value = column->value<InstrumentValueData*>(rowIndex++);
+    value->setFact("Vehicle", "AirSpeed");
+    value->setText(tr("AirSpeed"));
+    value->setShowUnits(true);
 }
 
 // We override this so we can get access to QQmlApplicationEngine and use it to register our qml module
