@@ -26,6 +26,7 @@
     <qresource prefix="/qml">
         <file alias="QGroundControl/FlightDisplay/FlyViewCustomLayer.qml">res/CustomFlyViewOverlay.qml</file>
         <file alias="PlanViewCustomLayer.qml">res/CustomPlanViewOverlay.qml</file>
-		<file alias="QGroundControl/Controls/MainToolBar.qml">res/CustomMainToolBar.qml</file>
+        <file alias="QGroundControl/Controls/MainToolBar.qml">res/CustomMainToolBar.qml</file>
+		<file alias="QGroundControl/Controls/HorizontalFactValueGrid.qml">res/CustomHorizontalFactValueGrid.qml</file>
     </qresource>
 </RCC>
