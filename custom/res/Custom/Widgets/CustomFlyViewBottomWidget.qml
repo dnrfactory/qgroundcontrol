@@ -29,14 +29,14 @@ import QGroundControl.Vehicle       1.0
 
 Item {
     id: _root
+
+    width: parent.width
+    height: ScreenTools.defaultFontPixelWidth * 30
     
-    readonly property real  _bottomPanelWidth:          ScreenTools.defaultFontPixelWidth * 35                  // Width        : 280
-    readonly property real  _bottomPanelHeight:         ScreenTools.defaultFontPixelWidth * 30                  // Height       : 240
+    readonly property real  _bottomPanelWidth:          ScreenTools.defaultFontPixelWidth * 35
 
-    readonly property real  _bottomPanelButtonWidth:    _bottomPanelWidth - (_bottomPanelMargin * 2)            // Width        : 248
-    readonly property real  _bottomPanelButtonHeight:   (_bottomPanelHeight - (_bottomPanelTopPadding * 5))/4   // Height       : 35
-
-    readonly property real  _bottomPanelMargin:         ScreenTools.defaultFontPixelWidth * 2                  // Margin       : 16
+    readonly property real  _bottomPanelButtonWidth:    _bottomPanelWidth
+    readonly property real  _bottomPanelButtonHeight:   (height - (_bottomPanelTopPadding * 5))/4   // Height       : 35
 
     readonly property real  _bottomPanelLeftPadding:    ScreenTools.defaultFontPixelWidth * 2                 // LeftPadding  : 16
     readonly property real  _bottomPanelTopPadding:     ScreenTools.defaultFontPixelWidth * 2.5                 // TopPadding   : 20
@@ -44,7 +44,6 @@ Item {
     readonly property real  _bottomPanelRadious:        ScreenTools.defaultFontPixelWidth * 1.25
 
     property var    _activeVehicle:         QGroundControl.multiVehicleManager.activeVehicle
-    property string _sailMode:              _activeVehicle ? _activeVehicle.flightMode : ""
     property bool   _communicationLost:     _activeVehicle ? _activeVehicle.vehicleLinkManager.communicationLost : false
     property color  _statusTextColor:       "white"
     property real   _statusTextFontSize:    ScreenTools.mediumFontPointSize
@@ -56,44 +55,14 @@ Item {
         return message;
     }
 
-    function checkMode(){
-        switch(_sailMode){
-        case "Manual":
-            manualButton.checked = true
-            break;
-        case "Auto":
-            autoButton.checked = true;
-            break;
-        case "Loiter":
-            loiterButton.checked = true;
-            break;
-        default:
-            manualButton.checked = false;
-            autoButton.checked = false;
-            loiterButton.checked = false;
-
-            break;
-        }
-    }
-
-    on_SailModeChanged: {
-        checkMode();
-    }    
-
-    Item {
-        id:                     bottomPanel
-        width:                  parent.width
-        height:                 _bottomPanelHeight + _bottomPanelMargin * 2
-        anchors.bottom:         parent.bottom
-        DeadMouseArea {
-            anchors.fill:       parent
-        }
+    DeadMouseArea {
+        anchors.fill: parent
     }    
 
     QGCTabBar {
         id: layerTabBar
-        anchors.left: bottomPanel.left
-        anchors.bottom: bottomPanel.top
+        anchors.left: _root.left
+        anchors.bottom: _root.top
         width: 0.2 * parent.width
         Component.onCompleted: currentIndex = 0
         QGCTabButton {
@@ -108,7 +77,7 @@ Item {
     }
 
     StackLayout {
-        anchors.fill: bottomPanel
+        anchors.fill: _root
         currentIndex: layerTabBar.currentIndex
         CustomFlyViewPlanControlWidget {
             Layout.fillWidth: true

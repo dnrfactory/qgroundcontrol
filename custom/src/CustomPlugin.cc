@@ -298,7 +298,7 @@ void CustomPlugin::factValueGridCreateDefaultSettings(const QString& defaultSett
     value->setShowUnits(true);
 
     value = column->value<InstrumentValueData*>(rowIndex++);
-    value->setFact("battery0", "voltage");
+    value->setFact("battery1", "voltage");
     value->setText(tr("Voltage"));
     value->setShowUnits(true);
 

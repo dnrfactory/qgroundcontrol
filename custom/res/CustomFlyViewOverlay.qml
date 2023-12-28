@@ -54,7 +54,15 @@ Item {
         bottomEdgeRightInset:   parentToolInsets.bottomEdgeRightInset
     }
 
+    CustomVehicleList {
+        width: ScreenTools.defaultFontPixelWidth * 30
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.bottom: bottomWidget.top
+    }
+
     CustomFlyViewBottomWidget {
-        anchors.fill:         parent
+        id: bottomWidget
+        anchors.bottom: parent.bottom
     }
 }

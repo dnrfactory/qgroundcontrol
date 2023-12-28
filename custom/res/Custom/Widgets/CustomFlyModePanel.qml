@@ -32,10 +32,34 @@ Rectangle {
 
     property real _bottomPanelLeftPadding: 16
     property real _bottomPanelMargin: 20
-    property var    _activeVehicle:         QGroundControl.multiVehicleManager.activeVehicle
+    property var _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+    property string flightMode: _activeVehicle ? _activeVehicle.flightMode : ""
     
     color:                  qgcPal.window
     opacity:                0.8
+
+    function updateMode(){
+        switch(flightMode){
+        case "Manual":
+            manualButton.checked = true
+            break;
+        case "Auto":
+            autoButton.checked = true;
+            break;
+        case "Loiter":
+            loiterButton.checked = true;
+            break;
+        default:
+            manualButton.checked = false;
+            autoButton.checked = false;
+            loiterButton.checked = false;
+            break;
+        }
+    }
+
+    onFlightModeChanged: {
+        updateMode();
+    }
 
     Row {
         anchors.fill:       parent
