@@ -54,10 +54,46 @@ Item {
         bottomEdgeRightInset:   parentToolInsets.bottomEdgeRightInset
     }
 
-    CustomVehicleList {
-        width: ScreenTools.defaultFontPixelWidth * 30
-        anchors.right: parent.right
+    Rectangle {
+        id: vehicleListControlPanel
         anchors.top: parent.top
+        anchors.right: parent.right
+        height: parent.height / 15
+        width: ScreenTools.defaultFontPixelWidth * 40
+        color: qgcPal.window
+        opacity: 0.8
+
+        Row {
+            anchors.centerIn: parent
+            spacing: vehicleListControlPanel.width * 0.1
+            QGCButton {
+                id: vehicleListControlSingleButton
+                width: vehicleListControlPanel.width * 0.4
+                height: vehicleListControlPanel.height * 0.6
+                backRadius: 10                
+                text: qsTr("Single")
+                pointSize: ScreenTools.mediumFontPointSize
+                onClicked: {
+                    console.log("Single Button clicked")
+                }
+            }
+            QGCButton {
+                width: vehicleListControlSingleButton.width
+                height: vehicleListControlSingleButton.height
+                backRadius: vehicleListControlSingleButton.backRadius                
+                text: qsTr("Multi")
+                pointSize: ScreenTools.mediumFontPointSize
+                onClicked: {
+                    console.log("Multi Button clicked")
+                }
+            }
+        }
+    }
+
+    CustomVehicleList {
+        width: vehicleListControlPanel.width
+        anchors.right: parent.right
+        anchors.top: vehicleListControlPanel.bottom
         anchors.bottom: bottomWidget.top
     }
 

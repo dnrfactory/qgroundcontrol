@@ -25,35 +25,158 @@ import QGroundControl.ScreenTools   1.0
 
 QGCListView {
     id: root
-    model: ["red", "green", "blue", "yellow"]//QGroundControl.multiVehicleManager.vehicles
+    model: vehicles
     clip: true
 
     property var colorList: ["#ffa07a", "#97ff7a", "#7ad9ff", "#e37aff"]
-    property var textList: ["red", "green", "blue", "yellow"]
+    property var vehicles: [ null, null, null, null ]
+    property string connectedIndex: "xxxx"
+
+    Connections {
+        target: QGroundControl.multiVehicleManager
+        onVehicleAdded: {
+            console.log("onVehicleAdded id:" + vehicle.id)
+            vehicles[vehicleIdToIndex(vehicle.id)] = vehicle
+            for (let element of vehicles) {
+                console.log(element);
+            }
+            setIndexConnection(vehicleIdToIndex(vehicle.id), true)
+        }
+        onVehicleRemoved: {
+            console.log("onVehicleRemoved id:" + vehicle.id)
+            vehicles[vehicleIdToIndex(vehicle.id)] = null
+            for (let element of vehicles) {
+                console.log(element);
+            }
+            setIndexConnection(vehicleIdToIndex(vehicle.id), false)
+        }
+    }
+
+    function setIndexConnection(index, connected) {
+        var charArray = connectedIndex.split('');
+        charArray[index] = connected ? 'o' : 'x';
+        connectedIndex = charArray.join('');
+    }
+
+    function vehicleIdToIndex(vehicleId) {
+        return vehicleId - 128
+    }
 
     delegate: Column {
         width: root.width
-        height: root.height / 4        
+        height: root.height / 4
 
         Rectangle {
+            id: vehicleNameBar
             width: parent.width
             height: parent.height* 0.2
             color: colorList[index]
             Text {
                 anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter    
-                text: textList[index]
+                anchors.verticalCenter: parent.verticalCenter
+                text: "UAV " + index
                 font.pointSize: ScreenTools.mediumFontPointSize
-                color: "white"
+                font.bold: true
+                color: "black"
                 leftPadding: 20
             }
         }
         Rectangle {
-            width: root.width
-            height: root.height * 0.8
+            id: vehicleInfoPanel
+            width: parent.width
+            height: parent.height * 0.8
             color: qgcPal.window
             opacity: 0.8
-        }    
+            border.color: vehicleNameBar.color
+            border.width: connectedIndex[index] == 'o' ? 2 : 0
+
+            Component {
+                id: factViewComponent
+                Item {
+                    width: vehicleInfoPanel.width / 3
+                    height: vehicleInfoPanel.height / 2
+                    property string valueText
+                    property string nameText
+                    Column {
+                        spacing: 10
+                        Text {
+                            text: valueText
+                            font.pointSize: ScreenTools.mediumFontPointSize
+                            font.bold: true
+                            color: "white"
+                            topPadding: 10
+                            leftPadding: 20
+                        }
+                        Text {
+                            text: nameText
+                            font.pointSize: ScreenTools.defaultFontPointSize
+                            color: "white"
+                            leftPadding: 20
+                        }
+                    }
+                }
+            }
+            Grid {
+                columns: 3
+                Loader {
+                    sourceComponent: factViewComponent
+                    onLoaded: {
+                        item.valueText = Qt.binding(function() {
+                            return connectedIndex[index] == 'o' ? "ONLINE" : "OFFLINE"
+                        })
+                        item.nameText = Qt.binding(function() { return qsTr("Connect status") })
+                    }
+                }
+                Loader {
+                    sourceComponent: factViewComponent
+                    onLoaded: {
+                        item.valueText = Qt.binding(function() {
+                            if (connectedIndex[index] == 'o' && vehicles[index].batteries.rowCount() > 0) {
+                                var batteries = vehicles[index].batteries
+                                var battery = batteries.get(0)
+                                console.log("batteries cnt:" + batteries.rowCount())
+                                var voltageStr = battery.voltage.rawValue.toFixed(1)
+                                var percentStr = battery.percentRemaining.rawValue.toFixed(0)
+                                return "%1(%2)".arg(voltageStr).arg(percentStr)
+                            }
+                            return "00.0(0)"
+                        })
+                        item.nameText = Qt.binding(function() { return qsTr("Battery(V, \%)") })
+                    }
+                }
+                Loader {
+                    sourceComponent: factViewComponent
+                    onLoaded: {
+                        item.valueText = Qt.binding(function() {
+                            return connectedIndex[index] == 'o' ? "0" : "0"
+                        })
+                        item.nameText = Qt.binding(function() { return qsTr("Conn. Str.(%)") })
+                    }
+                }
+                Loader {
+                    sourceComponent: factViewComponent
+                }
+                Loader {
+                    sourceComponent: factViewComponent
+                    onLoaded: {
+                        item.valueText = Qt.binding(function() {
+                            return connectedIndex[index] == 'o' ?
+                                   vehicles[index].altitudeAboveTerr.rawValue.toFixed(0) : "0"
+                        })
+                        item.nameText = Qt.binding(function() { return qsTr("Altitude(m)") })
+                    }
+                }
+                Loader {
+                    sourceComponent: factViewComponent
+                    onLoaded: {
+                        item.valueText = Qt.binding(function() {
+                            return connectedIndex[index] == 'o' ? "0" : "0"
+                        })
+                        item.nameText = Qt.binding(function() { return qsTr("Satelite Signal") })
+                    }
+                }
+            }
+        }
 
         Component.onCompleted: {
             console.log("CustomVehicleList item completed index: " + index)
