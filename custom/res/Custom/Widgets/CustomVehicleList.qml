@@ -41,6 +41,7 @@ QGCListView {
                 console.log(element);
             }
             setIndexConnection(vehicleIdToIndex(vehicle.id), true)
+            getAllBatteryInfo()
         }
         onVehicleRemoved: {
             console.log("onVehicleRemoved id:" + vehicle.id)
@@ -49,6 +50,7 @@ QGCListView {
                 console.log(element);
             }
             setIndexConnection(vehicleIdToIndex(vehicle.id), false)
+            getAllBatteryInfo()
         }
     }
 
@@ -60,6 +62,44 @@ QGCListView {
 
     function vehicleIdToIndex(vehicleId) {
         return vehicleId - 128
+    }
+
+    function getAllBatteryInfo() {
+        for (var i = 0; i < 4; i++) {
+            if (connectedIndex[i] == 'o') {
+                console.log("getAllBatteryInfo vehicle(%1) batteries cnt(%2)"
+                        .arg(i)
+                        .arg(vehicles[i].batteries.rowCount()))
+                getBatteryStr(i)
+            }
+        }
+    }
+
+    function getBatteryStr(idx) {
+        var voltageStr = "00.0"
+        var percentStr = "0"
+        if (connectedIndex[idx] == 'o' && vehicles[idx].batteries.rowCount() > 0) {
+            var batteries = vehicles[idx].batteries
+            console.log("vehicle(%1) batteries cnt(%2)"
+                        .arg(idx)
+                        .arg(batteries.rowCount()))
+            for(var i = 0; i < vehicles[idx].batteries.rowCount(); i++) {
+                var btt = vehicles[idx].getFactGroup("battery%1".arg(i))
+                if (btt !== null) {
+                    voltageStr = btt.voltage.rawValue.toFixed(1)
+                    percentStr = btt.percentRemaining.rawValue.toFixed(0)
+                    console.log("bat(%1) vol(%2) per(%3)"
+                                .arg(i)
+                                .arg(voltageStr)
+                                .arg(percentStr))
+                    break;
+                }
+                else {
+                    console.log("bat(%1) is null".arg(i))
+                }
+            }
+        }
+        return "%1(%2)".arg(voltageStr).arg(percentStr)
     }
 
     delegate: Column {
@@ -88,7 +128,7 @@ QGCListView {
             color: qgcPal.window
             opacity: 0.8
             border.color: vehicleNameBar.color
-            border.width: connectedIndex[index] == 'o' ? 2 : 0
+            border.width: connectedIndex[index] == 'o' ? 3 : 0
 
             Component {
                 id: factViewComponent
@@ -130,17 +170,7 @@ QGCListView {
                 Loader {
                     sourceComponent: factViewComponent
                     onLoaded: {
-                        item.valueText = Qt.binding(function() {
-                            if (connectedIndex[index] == 'o' && vehicles[index].batteries.rowCount() > 0) {
-                                var batteries = vehicles[index].batteries
-                                var battery = batteries.get(0)
-                                console.log("batteries cnt:" + batteries.rowCount())
-                                var voltageStr = battery.voltage.rawValue.toFixed(1)
-                                var percentStr = battery.percentRemaining.rawValue.toFixed(0)
-                                return "%1(%2)".arg(voltageStr).arg(percentStr)
-                            }
-                            return "00.0(0)"
-                        })
+                        item.valueText = Qt.binding(function() { return getBatteryStr(index) })
                         item.nameText = Qt.binding(function() { return qsTr("Battery(V, \%)") })
                     }
                 }
