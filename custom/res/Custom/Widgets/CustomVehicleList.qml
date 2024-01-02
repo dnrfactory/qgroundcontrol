@@ -32,6 +32,8 @@ QGCListView {
     property var vehicles: [ null, null, null, null ]
     property string connectedIndex: "xxxx"
 
+    onCurrentIndexChanged: console.log("onCurrentIndexChanged index:%1".arg(currentIndex))
+
     Connections {
         target: QGroundControl.multiVehicleManager
         onVehicleAdded: {
@@ -102,116 +104,132 @@ QGCListView {
         return "%1(%2)".arg(voltageStr).arg(percentStr)
     }
 
-    delegate: Column {
+    delegate: Item {
+        id: listItem
         width: root.width
         height: root.height / 4
+        enabled: connectedIndex[index] == 'o'
 
-        Rectangle {
-            id: vehicleNameBar
-            width: parent.width
-            height: parent.height* 0.2
-            color: colorList[index]
-            Text {
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-                text: "UAV " + index
-                font.pointSize: ScreenTools.mediumFontPointSize
-                font.bold: true
-                color: "black"
-                leftPadding: 20
-            }
-        }
-        Rectangle {
-            id: vehicleInfoPanel
-            width: parent.width
-            height: parent.height * 0.8
-            color: qgcPal.window
-            opacity: 0.8
-            border.color: vehicleNameBar.color
-            border.width: connectedIndex[index] == 'o' ? 3 : 0
-
-            Component {
-                id: factViewComponent
-                Item {
-                    width: vehicleInfoPanel.width / 3
-                    height: vehicleInfoPanel.height / 2
-                    property string valueText
-                    property string nameText
-                    Column {
-                        spacing: 10
-                        Text {
-                            text: valueText
-                            font.pointSize: ScreenTools.mediumFontPointSize
-                            font.bold: true
-                            color: "white"
-                            topPadding: 10
-                            leftPadding: 20
-                        }
-                        Text {
-                            text: nameText
-                            font.pointSize: ScreenTools.defaultFontPointSize
-                            color: "white"
-                            leftPadding: 20
-                        }
-                    }
-                }
-            }
-            Grid {
-                columns: 3
-                Loader {
-                    sourceComponent: factViewComponent
-                    onLoaded: {
-                        item.valueText = Qt.binding(function() {
-                            return connectedIndex[index] == 'o' ? "ONLINE" : "OFFLINE"
-                        })
-                        item.nameText = Qt.binding(function() { return qsTr("Connect status") })
-                    }
-                }
-                Loader {
-                    sourceComponent: factViewComponent
-                    onLoaded: {
-                        item.valueText = Qt.binding(function() { return getBatteryStr(index) })
-                        item.nameText = Qt.binding(function() { return qsTr("Battery(V, \%)") })
-                    }
-                }
-                Loader {
-                    sourceComponent: factViewComponent
-                    onLoaded: {
-                        item.valueText = Qt.binding(function() {
-                            return connectedIndex[index] == 'o' ? "0" : "0"
-                        })
-                        item.nameText = Qt.binding(function() { return qsTr("Conn. Str.(%)") })
-                    }
-                }
-                Loader {
-                    sourceComponent: factViewComponent
-                }
-                Loader {
-                    sourceComponent: factViewComponent
-                    onLoaded: {
-                        item.valueText = Qt.binding(function() {
-                            return connectedIndex[index] == 'o' ?
-                                   vehicles[index].altitudeAboveTerr.rawValue.toFixed(0) : "0"
-                        })
-                        item.nameText = Qt.binding(function() { return qsTr("Altitude(m)") })
-                    }
-                }
-                Loader {
-                    sourceComponent: factViewComponent
-                    onLoaded: {
-                        item.valueText = Qt.binding(function() {
-                            return connectedIndex[index] == 'o' ? "0" : "0"
-                        })
-                        item.nameText = Qt.binding(function() { return qsTr("Satelite Signal") })
-                    }
-                }
+        MouseArea {
+            anchors.fill: listItem
+            onClicked: {
+                console.log("item clicked index:%1".arg(index))
+                root.currentIndex = index
+                QGroundControl.multiVehicleManager.activeVehicle = vehicles[index]
             }
         }
 
-        Component.onCompleted: {
-            console.log("CustomVehicleList item completed index: " + index)
-            console.log("CustomVehicleList item completed width: " + width)
-            console.log("CustomVehicleList item completed height: " + height)
+        Column {
+            width: root.width
+            height: root.height / 4
+
+            Rectangle {
+                id: vehicleNameBar
+                width: parent.width
+                height: parent.height* 0.2
+                color: colorList[index]
+                Text {
+                    anchors.left: parent.left
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: "UAV " + index
+                    font.pointSize: ScreenTools.mediumFontPointSize
+                    font.bold: true
+                    color: "black"
+                    leftPadding: 20
+                }
+            }
+            Rectangle {
+                id: vehicleInfoPanel
+                width: parent.width
+                height: parent.height * 0.8
+                color: qgcPal.window
+                opacity: 0.8
+                border.color: root.currentIndex == index ? "red" : vehicleNameBar.color
+                border.width: connectedIndex[index] == 'o' ? 3 : 0
+
+                Component {
+                    id: factViewComponent
+                    Item {
+                        width: vehicleInfoPanel.width / 3
+                        height: vehicleInfoPanel.height / 2
+                        property string valueText
+                        property string nameText
+                        Column {
+                            spacing: 10
+                            Text {
+                                text: valueText
+                                font.pointSize: ScreenTools.mediumFontPointSize
+                                font.bold: true
+                                color: "white"
+                                topPadding: 10
+                                leftPadding: 20
+                            }
+                            Text {
+                                text: nameText
+                                font.pointSize: ScreenTools.defaultFontPointSize
+                                color: "white"
+                                leftPadding: 20
+                            }
+                        }
+                    }
+                }
+                Grid {
+                    columns: 3
+                    Loader {
+                        sourceComponent: factViewComponent
+                        onLoaded: {
+                            item.valueText = Qt.binding(function() {
+                                return connectedIndex[index] == 'o' ? "ONLINE" : "OFFLINE"
+                            })
+                            item.nameText = Qt.binding(function() { return qsTr("Connect status") })
+                        }
+                    }
+                    Loader {
+                        sourceComponent: factViewComponent
+                        onLoaded: {
+                            item.valueText = Qt.binding(function() { return getBatteryStr(index) })
+                            item.nameText = Qt.binding(function() { return qsTr("Battery(V, \%)") })
+                        }
+                    }
+                    Loader {
+                        sourceComponent: factViewComponent
+                        onLoaded: {
+                            item.valueText = Qt.binding(function() {
+                                return connectedIndex[index] == 'o' ? "0" : "0"
+                            })
+                            item.nameText = Qt.binding(function() { return qsTr("Conn. Str.(%)") })
+                        }
+                    }
+                    Loader {
+                        sourceComponent: factViewComponent
+                    }
+                    Loader {
+                        sourceComponent: factViewComponent
+                        onLoaded: {
+                            item.valueText = Qt.binding(function() {
+                                return connectedIndex[index] == 'o' ?
+                                       vehicles[index].altitudeAboveTerr.rawValue.toFixed(0) : "0"
+                            })
+                            item.nameText = Qt.binding(function() { return qsTr("Altitude(m)") })
+                        }
+                    }
+                    Loader {
+                        sourceComponent: factViewComponent
+                        onLoaded: {
+                            item.valueText = Qt.binding(function() {
+                                return connectedIndex[index] == 'o' ? "0" : "0"
+                            })
+                            item.nameText = Qt.binding(function() { return qsTr("Satelite Signal") })
+                        }
+                    }
+                }
+            }
+
+            Component.onCompleted: {
+                console.log("CustomVehicleList item completed index: " + index)
+                console.log("CustomVehicleList item completed width: " + width)
+                console.log("CustomVehicleList item completed height: " + height)
+            }
         }
     }
 }
