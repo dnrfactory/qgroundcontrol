@@ -49,15 +49,15 @@ Row {
         height: parent.height
         color: qgcPal.window
         opacity: 0.8
-        
-        FlyViewInstrumentPanel {            
+
+        FlyViewInstrumentPanel {
             anchors.centerIn: parent
             width: 0.5 * parent.height
         }
     }
     Rectangle { width: panelMargin; height: parent.height; color: "white"; opacity: 0.8 }
     // ----------------------------------------
-    // 
+    //
     // ----------------------------------------
     //                       |
     //                       |
@@ -73,10 +73,9 @@ Row {
         }
         Rectangle { width: root.width * 0.4; height: panelMargin; color: "white"; opacity: 0.8 }
         Row {
-            Rectangle {
+            CustomFlyCameraControlPanel {
                 height: root.height * 0.7
-                width: root.width * 0.4 * 0.6 -  - panelMargin
-                color: "blue"
+                width: root.width * 0.4 * 0.6 - panelMargin
             }
             Rectangle { width: panelMargin; height: parent.height; color: "white"; opacity: 0.8 }
             Item {
@@ -84,10 +83,10 @@ Row {
                 width: root.width * 0.4 * 0.4
                 PhotoVideoControl {
                     anchors.centerIn: parent
-                    width: parent.width  
+                    width: parent.width
                     visible: true
                 }
-            }            
-        }        
+            }
+        }
     }
 }

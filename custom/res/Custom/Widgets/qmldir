@@ -9,3 +9,4 @@ CustomFlyStatusInfoPanel 1.0    CustomFlyStatusInfoPanel.qml
 CustomTelemetryValuePanel 1.0   CustomTelemetryValuePanel.qml
 CustomFlyViewPlanControlWidget 1.0 CustomFlyViewPlanControlWidget.qml
 CustomVehicleList       1.0     CustomVehicleList.qml
+CustomFlyCameraControlPanel 1.0 CustomFlyCameraControlPanel.qml
