@@ -3,16 +3,19 @@
         <file alias="CustomAppIcon.png">res/Images/CustomAppIcon.png</file>
     </qresource>
 	<qresource prefix="/res/custom/img">
-		<file alias="icon_Sail.svg">res/imgs/icon_Sail.svg</file>
-        <file alias="icon_SailPlan.svg">res/imgs/icon_SailPlan.svg</file>
-        <file alias="icon_Setting.svg">res/imgs/icon_Setting.svg</file>
-        <file alias="icon_Control.svg">res/imgs/icon_Control.svg</file>
-        <file alias="Logo_USV">res/imgs/Logo_USV.png</file>
 		<file alias="FlightModeButtonManual.svg">res/imgs/FlightModeButtonManual.svg</file>
 		<file alias="FlightModeButtonAuto.svg">res/imgs/FlightModeButtonAuto.svg</file>
 		<file alias="FlightModeButtonLoiter.svg">res/imgs/FlightModeButtonLoiter.svg</file>
+		<file alias="TitleBarFlight.svg">res/imgs/TitleBarFlight.svg</file>
+		<file alias="TitleBarMissionPlan.svg">res/imgs/TitleBarMissionPlan.svg</file>
+		<file alias="TitleBarVehicleSetting.svg">res/imgs/TitleBarVehicleSetting.svg</file>
+		<file alias="DnrLogo.svg">res/imgs/DnrLogo.svg</file>
+		<file alias="ArrowUp.svg">res/imgs/ArrowUp.svg</file>
+		<file alias="ArrowDown.svg">res/imgs/ArrowDown.svg</file>
+		<file alias="ArrowLeft.svg">res/imgs/ArrowLeft.svg</file>
+		<file alias="ArrowRight.svg">res/imgs/ArrowRight.svg</file>
 	</qresource>
-    <qresource prefix="Custom/Widgets">        
+    <qresource prefix="Custom/Widgets">
         <file alias="Custom/Widgets/CustomToolBarButton.qml">res/Custom/Widgets/CustomToolBarButton.qml</file>
         <file alias="Custom/Widgets/CustomFlyViewBottomWidget.qml">res/Custom/Widgets/CustomFlyViewBottomWidget.qml</file>
         <file alias="Custom/Widgets/CustomWeatherPanel.qml">res/Custom/Widgets/CustomWeatherPanel.qml</file>

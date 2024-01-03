@@ -33,7 +33,7 @@ Rectangle {
     property var    _activeVehicle:     QGroundControl.multiVehicleManager.activeVehicle
     property bool   _communicationLost: _activeVehicle ? _activeVehicle.vehicleLinkManager.communicationLost : false
     property color  _mainStatusBGColor: qgcPal.brandingPurple
-    
+
     //    toolbarHeight: defaultFontPixelHeight * 3 * 1.5                                                                       // mainToolBarRowLayoutTopMargin    : 81
     readonly property int _mainToolBarRowLayoutHeight:       ScreenTools.toolbarHeight - _mainToolBarRowLayoutTopMargin * 2 // mainToolBarRowLayoutHeight       : 73
     readonly property int _mainToolBarRowLayoutLeftMargin:   ScreenTools.defaultFontPixelWidth * 2.5                        // mainToolBarRowLayoutLeftMargin   : 20
@@ -82,7 +82,7 @@ Rectangle {
             Layout.preferredWidth:  parent.height
 
             text:                   "Sail"
-            icon.source:            "/res/custom/img/icon_Sail"
+            icon.source:            "/res/custom/img/TitleBarFlight"
             logo:                   true
             checked:                true
             ButtonGroup.group:      toolbarButtonGroup
@@ -94,7 +94,7 @@ Rectangle {
             Layout.preferredHeight: parent.height
             Layout.preferredWidth:  parent.height
             text:                   "Plan"
-            icon.source:            "/res/custom/img/icon_SailPlan"
+            icon.source:            "/res/custom/img/TitleBarMissionPlan"
             logo:                   true
             ButtonGroup.group:      toolbarButtonGroup
             onClicked:              mainWindow.showPlanView()
@@ -105,7 +105,7 @@ Rectangle {
             Layout.preferredHeight: parent.height
             Layout.preferredWidth:  parent.height
             text:                   "Setting"
-            icon.source:            "/res/custom/img/icon_Setting"
+            icon.source:            "/res/custom/img/TitleBarVehicleSetting"
             logo:                   true
 
             onPressed: checked = true
@@ -135,7 +135,7 @@ Rectangle {
             bottomMargin:       _mainToolBarRowLayoutTopMargin
             rightMargin:        _mainToolBarRowLayoutLeftMargin
         }
-        source:                 "/res/custom/img/Logo_USV"
+        source:                 "/res/custom/img/DnrLogo"
         sourceSize.height:      parent.height
         fillMode:               Image.PreserveAspectFit
 

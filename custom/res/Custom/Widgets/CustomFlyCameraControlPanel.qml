@@ -68,8 +68,7 @@ Rectangle {
                 width: root.btnWidth
                 height: root.btnHeight
                 backRadius: root.btnRadius
-                text: "up"
-                pointSize: ScreenTools.mediumFontPointSize
+                iconSource: "/res/custom/img/ArrowUp"
                 enabled : _activeVehicle
                 onClicked: {
                     console.log("upButton clicked")
@@ -82,8 +81,7 @@ Rectangle {
                 width: root.btnWidth
                 height: root.btnHeight
                 backRadius: root.btnRadius
-                text: "left"
-                pointSize: ScreenTools.mediumFontPointSize
+                iconSource: "/res/custom/img/ArrowLeft"
                 enabled : _activeVehicle
                 onClicked: {
                     console.log("leftButton clicked")
@@ -114,8 +112,7 @@ Rectangle {
                 width: root.btnWidth
                 height: root.btnHeight
                 backRadius: root.btnRadius
-                text: "right"
-                pointSize: ScreenTools.mediumFontPointSize
+                iconSource: "/res/custom/img/ArrowRight"
                 enabled : _activeVehicle
                 onClicked: {
                     console.log("rightButton clicked")
@@ -129,8 +126,7 @@ Rectangle {
                 width: root.btnWidth
                 height: root.btnHeight
                 backRadius: root.btnRadius
-                text: "down"
-                pointSize: ScreenTools.mediumFontPointSize
+                iconSource: "/res/custom/img/ArrowDown"
                 enabled : _activeVehicle
                 onClicked: {
                     console.log("downButton clicked")
