@@ -22,7 +22,7 @@ Rectangle {
     opacity: 0.8
 
     property var activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
-    property string vehicleName: "UAV 1"
+    property string vehicleName: "UAV 0"
     property string vehicleNameColor: "grey"
     property real itemVerticalSpacing: ScreenTools.defaultFontPixelWidth * 1.8
     property var colorList: ["#ffa07a", "#97ff7a", "#7ad9ff", "#e37aff"]
@@ -33,10 +33,16 @@ Rectangle {
     }
 
     function updateVehicleName() {
-        var vIndex = activeVehicle.id - 128
-        vehicleName = "UAV %1".arg(vIndex)
-        if (vIndex >= 0 && vIndex < 4) {
-            vehicleNameColor = colorList[vIndex]
+        if (activeVehicle === null) {
+            vehicleName = "UAV 0"
+            vehicleNameColor = "grey"
+        }
+        else {
+            var vIndex = activeVehicle.id - 128
+            vehicleName = "UAV %1".arg(vIndex)
+            if (vIndex >= 0 && vIndex < 4) {
+                vehicleNameColor = colorList[vIndex]
+            }
         }
     }
 

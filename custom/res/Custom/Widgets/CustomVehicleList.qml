@@ -120,8 +120,7 @@ QGCListView {
         }
 
         Column {
-            width: root.width
-            height: root.height / 4
+            anchors.fill: parent
 
             Rectangle {
                 id: vehicleNameBar
@@ -195,7 +194,8 @@ QGCListView {
                         sourceComponent: factViewComponent
                         onLoaded: {
                             item.valueText = Qt.binding(function() {
-                                return connectedIndex[index] == 'o' ? "0" : "0"
+                                return connectedIndex[index] == 'o' ?
+                                       vehicles[index].rcRSSI : "0"
                             })
                             item.nameText = Qt.binding(function() { return qsTr("Conn. Str.(%)") })
                         }
@@ -217,9 +217,10 @@ QGCListView {
                         sourceComponent: factViewComponent
                         onLoaded: {
                             item.valueText = Qt.binding(function() {
-                                return connectedIndex[index] == 'o' ? "0" : "0"
+                                return connectedIndex[index] == 'o' ?
+                                       vehicles[index].gps.count.rawValue : "0"
                             })
-                            item.nameText = Qt.binding(function() { return qsTr("Satelite Signal") })
+                            item.nameText = Qt.binding(function() { return qsTr("Satellite Signal") })
                         }
                     }
                 }
