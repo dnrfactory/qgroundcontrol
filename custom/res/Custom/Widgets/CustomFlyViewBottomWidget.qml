@@ -32,7 +32,7 @@ Item {
 
     width: parent.width
     height: ScreenTools.defaultFontPixelWidth * 30
-    
+
     readonly property real  _bottomPanelWidth:          ScreenTools.defaultFontPixelWidth * 35
 
     readonly property real  _bottomPanelButtonWidth:    _bottomPanelWidth
@@ -57,7 +57,7 @@ Item {
 
     DeadMouseArea {
         anchors.fill: parent
-    }    
+    }
 
     QGCTabBar {
         id: layerTabBar
@@ -66,32 +66,30 @@ Item {
         width: 0.2 * parent.width
         Component.onCompleted: currentIndex = 0
         QGCTabButton {
-            text:       qsTr("Plan control")
+            text:       qsTr("Flight Control")
         }
         QGCTabButton {
-            text:       qsTr("Plan status")
+            text:       qsTr("Flight Status")
         }
         QGCTabButton {
-            text:       qsTr("Plan history")
+            text:       qsTr("Flight History")
         }
     }
 
     StackLayout {
         anchors.fill: _root
         currentIndex: layerTabBar.currentIndex
-        CustomFlyViewPlanControlWidget {
+        CustomFlyViewFlightControlWidget {
             Layout.fillWidth: true
             Layout.fillHeight: true
         }
-        Rectangle {
+        CustomFlyViewFlightStatusWidget {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            color: "red"
         }
-        Rectangle {
+        CustomFlyViewFlightHistoryWidget {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            color: "blue"
         }
-    }    
+    }
 }
