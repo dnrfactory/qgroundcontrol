@@ -83,7 +83,35 @@ Rectangle {
                 }
             }
         }
-        return "%1V (%2\%)".arg(voltageStr).arg(percentStr)
+        return "%1 V (%2\%)".arg(voltageStr).arg(percentStr)
+    }
+
+    function getAirSpeedStr(idx) {
+        var airSpeedStr = "0"
+        if (connectedIndex[idx] == 'o') {
+            altitudeStr = vehicles[idx].airSpeed.rawValue.toFixed(1)
+        }
+        return "%1 km/h".arg(airSpeedStr)
+    }
+
+    function getAltitudeStr(idx) {
+        var altitudeStr = "0"
+        if (connectedIndex[idx] == 'o') {
+            altitudeStr = vehicles[idx].gps.count.rawValue
+        }
+        return "%1 m".arg(altitudeStr)
+    }
+
+    function getLocationStr(idx) {
+        var latitudeStr = "--.--"
+        var longitudeStr = "--.--"
+        if (connectedIndex[idx] == 'o') {
+            latitudeStr = vehicles[idx].gps.lat.rawValue.toFixed(2)
+            longitudeStr = vehicles[idx].gps.lon.rawValue.toFixed(2)
+
+            console.log("getLocationStr lat:%1, lon:%2".arg(vehicles[idx].gps.lat.rawValue).arg(vehicles[idx].gps.lon.rawValue))
+        }
+        return "%1 %2  /%3 %4".arg(qsTr("Lat.")).arg(latitudeStr).arg("Lon.").arg(longitudeStr)
     }
 
     QGCListView {
@@ -121,7 +149,7 @@ Rectangle {
                     sourceComponent: headerColNameComponent
                     onLoaded: {
                         item.colIndex = 1
-                        item.colName = Qt.binding(function() { return qsTr("Take-off time") })
+                        item.colName = Qt.binding(function() { return qsTr("Take-off Time") })
                     }
                 }
                 Loader {
@@ -149,7 +177,7 @@ Rectangle {
                     sourceComponent: headerColNameComponent
                     onLoaded: {
                         item.colIndex = 5
-                        item.colName = Qt.binding(function() { return qsTr("Velocity") })
+                        item.colName = Qt.binding(function() { return qsTr("Air Speed") })
                     }
                 }
                 Loader {
@@ -182,9 +210,9 @@ Rectangle {
             height: root.height / 5
 
             Rectangle {
-                width: parent.width
+                width: parent.width - 40
                 height: parent.height * 0.5
-                anchors.verticalCenter: parent.verticalCenter
+                anchors.centerIn: parent
                 color: colorList[index]
                 opacity: 0.3
             }
@@ -244,21 +272,42 @@ Rectangle {
                     sourceComponent: valueComponent
                     onLoaded: {
                         item.colIndex = 5
-                        item.valueText = Qt.binding(function() { return connectedIndex[index] == 'o' ? "" : "" })
+                        item.valueText = Qt.binding(function() { return getAirSpeedStr(index) })
                     }
                 }
                 Loader {
                     sourceComponent: valueComponent
                     onLoaded: {
                         item.colIndex = 6
-                        item.valueText = Qt.binding(function() { return connectedIndex[index] == 'o' ? vehicles[index].altitudeAboveTerr.rawValue.toFixed(0) : "0" })
+                        item.valueText = Qt.binding(function() { return getAltitudeStr(index) })
                     }
                 }
                 Loader {
+                    id: locationLoader
                     sourceComponent: valueComponent
                     onLoaded: {
                         item.colIndex = 7
-                        item.valueText = Qt.binding(function() { return connectedIndex[index] == 'o' ? "" : "" })
+                        item.valueText = Qt.binding(function() { return getLocationStr(index) })
+
+                        Qt.createQmlObject(`
+                            import QGroundControl.Controls 1.0
+
+                            QGCButton {
+                                anchors.right: parent.right
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.rightMargin: 120
+                                width: 60
+                                height: parent.height * 0.5
+                                backRadius: 4
+                                text: qsTr("Go")
+                                onClicked: {
+                                    console.log("Location Go Button clicked")
+                                }
+                            }
+                            `,
+                            locationLoader,
+                            ""
+                        );
                     }
                 }
                 Loader {
