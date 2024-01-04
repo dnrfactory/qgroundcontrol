@@ -39,6 +39,8 @@ Rectangle {
     property int ePosition: 7
     property int eProgress: 8
 
+    property var mapControl
+
     Connections {
         target: QGroundControl.multiVehicleManager
         onVehicleAdded: {
@@ -295,13 +297,18 @@ Rectangle {
                             QGCButton {
                                 anchors.right: parent.right
                                 anchors.verticalCenter: parent.verticalCenter
-                                anchors.rightMargin: 120
+                                anchors.rightMargin: 100
                                 width: 60
                                 height: parent.height * 0.5
                                 backRadius: 4
                                 text: qsTr("Go")
+                                enabled: connectedIndex[index] == 'o'
                                 onClicked: {
                                     console.log("Location Go Button clicked")
+
+                                    if (root.mapControl !== null) {
+                                        root.mapControl.center = vehicles[index].coordinate
+                                    }
                                 }
                             }
                             `,

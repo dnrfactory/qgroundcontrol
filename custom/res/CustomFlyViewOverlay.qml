@@ -70,7 +70,7 @@ Item {
                 id: vehicleListControlSingleButton
                 width: vehicleListControlPanel.width * 0.4
                 height: vehicleListControlPanel.height * 0.6
-                backRadius: 10                
+                backRadius: 10
                 text: qsTr("Single")
                 pointSize: ScreenTools.mediumFontPointSize
                 onClicked: {
@@ -80,7 +80,7 @@ Item {
             QGCButton {
                 width: vehicleListControlSingleButton.width
                 height: vehicleListControlSingleButton.height
-                backRadius: vehicleListControlSingleButton.backRadius                
+                backRadius: vehicleListControlSingleButton.backRadius
                 text: qsTr("Multi")
                 pointSize: ScreenTools.mediumFontPointSize
                 onClicked: {
@@ -100,5 +100,6 @@ Item {
     CustomFlyViewBottomWidget {
         id: bottomWidget
         anchors.bottom: parent.bottom
+        mapControl: _root.mapControl
     }
 }

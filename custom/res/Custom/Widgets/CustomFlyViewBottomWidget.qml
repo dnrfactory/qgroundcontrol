@@ -48,6 +48,8 @@ Item {
     property color  _statusTextColor:       "white"
     property real   _statusTextFontSize:    ScreenTools.mediumFontPointSize
 
+    property var mapControl
+
     function formatMessage(message) {
         message = message.replace(new RegExp("<#E>", "g"), "color: " + qgcPal.warningText + "; font: " + (ScreenTools.defaultFontPointSize.toFixed(0) - 1) + "pt monospace;");
         message = message.replace(new RegExp("<#I>", "g"), "color: " + qgcPal.warningText + "; font: " + (ScreenTools.defaultFontPointSize.toFixed(0) - 1) + "pt monospace;");
@@ -86,6 +88,8 @@ Item {
         CustomFlyViewFlightStatusWidget {
             Layout.fillWidth: true
             Layout.fillHeight: true
+
+            mapControl: _root.mapControl
         }
         CustomFlyViewFlightHistoryWidget {
             Layout.fillWidth: true
