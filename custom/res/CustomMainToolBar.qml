@@ -51,16 +51,6 @@ Rectangle {
 
     QGCPalette { id: qgcPal }
 
-    /// Bottom single pixel divider
-    Rectangle {
-        anchors.left:   parent.left
-        anchors.right:  parent.right
-        anchors.bottom: parent.bottom
-        height:         1
-        color:          "black"
-        visible:        qgcPal.globalTheme === QGCPalette.Light
-    }
-
     RowLayout {
         id:                     viewButtonRow
         anchors.left:           parent.left
@@ -77,49 +67,35 @@ Rectangle {
         }
 
         CustomToolBarButton {
-            id:                     sailviewButton
             Layout.preferredHeight: parent.height
             Layout.preferredWidth:  parent.height
 
-            text:                   "Sail"
+            text:                   "Flight"
             icon.source:            "/res/custom/img/TitleBarFlight"
-            logo:                   true
             checked:                true
             ButtonGroup.group:      toolbarButtonGroup
             onClicked:              mainWindow.showFlyView()
         }
 
         CustomToolBarButton {
-            id:                     planviewButton
             Layout.preferredHeight: parent.height
             Layout.preferredWidth:  parent.height
             text:                   "Plan"
             icon.source:            "/res/custom/img/TitleBarMissionPlan"
-            logo:                   true
             ButtonGroup.group:      toolbarButtonGroup
             onClicked:              mainWindow.showPlanView()
         }
 
         CustomToolBarButton {
-            id:                     settingButton
             Layout.preferredHeight: parent.height
             Layout.preferredWidth:  parent.height
             text:                   "Setting"
             icon.source:            "/res/custom/img/TitleBarVehicleSetting"
-            logo:                   true
-
             onPressed: checked = true
             onReleased: checked = false
             onHoveredChanged: checked = false
 
             onClicked: mainWindow.showToolSelectDialog()
-        }
-
-        CustomToolBarButton {
-            id:                 disconnectButton
-            text:               qsTr("Disconnect")
-            onClicked:          _activeVehicle.closeVehicle()
-            visible:            _activeVehicle && _communicationLost && currentToolbar === flyViewToolbar
         }
     }
 

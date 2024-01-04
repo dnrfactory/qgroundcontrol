@@ -24,20 +24,14 @@ Button {
     width:              height
     checkable:          true
 
-    property bool logo: false
-
     readonly property real _mainToolBarButtonIconHeight: ScreenTools.toolbarHeight - ScreenTools.defaultFontPixelWidth * 3.5 - _mainToolBarButtonSpacing // mainToolBarButtonIconHeight :    52
     readonly property real _mainToolBarButtonSpacing: 5                                                                                                 // _mainToolBarButtonSpacing :       5
     readonly property real _mainToolBarButtonFontSize: ScreenTools.defaultFontPixelWidth * 1.5                                                          // _mainToolBarButtonFontSize :     12
 
-    //onCheckedChanged: checkable = false
-
     background: Rectangle {
         anchors.fill:   parent
-        color:          button.checked ? qgcPal.buttonHighlight : Qt.rgba(0,0,0,0)
-        border.color:   "red"
-        border.width:   QGroundControl.corePlugin.showTouchAreas ? 3 : 0
-	radius: ScreenTools.defaultFontPixelWidth
+        color: button.checked ? qgcPal.button : Qt.rgba(0,0,0,0)
+        radius: ScreenTools.defaultFontPixelWidth
     }
 
     contentItem: Column {
@@ -48,9 +42,9 @@ Button {
             height:                 _mainToolBarButtonIconHeight
             width:                  _mainToolBarButtonIconHeight
             fillMode:               Image.PreserveAspectFit
-            color:                  logo ? "transparent" : (button.checked ? qgcPal.buttonHighlightText : qgcPal.buttonText)
+            color:                  "transparent"
             source:                 button.icon.source
-            anchors.horizontalCenter:   parent.horizontalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
         }
         Label {
             id:                     _label
