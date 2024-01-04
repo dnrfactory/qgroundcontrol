@@ -182,6 +182,7 @@ Vehicle::Vehicle(LinkInterface*             link,
     , _efiFactGroup                 (this)
     , _terrainFactGroup             (this)
     , _terrainProtocolHandler       (new TerrainProtocolHandler(this, &_terrainFactGroup, this))
+    , _mapItemColor(QColor("red"))
 {
     _linkManager = _toolbox->linkManager();
 
@@ -324,6 +325,7 @@ Vehicle::Vehicle(MAV_AUTOPILOT              firmwareType,
     , _distanceSensorFactGroup          (this)
     , _localPositionFactGroup           (this)
     , _localPositionSetpointFactGroup   (this)
+    , _mapItemColor(QColor("red"))
 {
     _linkManager = _toolbox->linkManager();
 
@@ -2754,8 +2756,8 @@ double Vehicle::minimumEquivalentAirspeed()
     return _firmwarePlugin->minimumEquivalentAirspeed(this);
 }
 
-bool Vehicle::hasGripper()  const 
-{ 
+bool Vehicle::hasGripper()  const
+{
     return _firmwarePlugin->hasGripper(this);
 }
 
@@ -3093,12 +3095,12 @@ bool Vehicle::_commandCanBeDuplicated(MAV_CMD command)
 }
 
 void Vehicle::_sendMavCommandWorker(
-    bool        commandInt, 
-    bool        showError, 
+    bool        commandInt,
+    bool        showError,
     const MavCmdAckHandlerInfo_t* ackHandlerInfo,
-    int         targetCompId, 
-    MAV_CMD     command, 
-    MAV_FRAME   frame, 
+    int         targetCompId,
+    MAV_CMD     command,
+    MAV_FRAME   frame,
     float param1, float param2, float param3, float param4, double param5, double param6, float param7)
 {
     // We can't send commands to compIdAll using this method. The reason being that we would get responses back possibly from multiple components
@@ -3906,7 +3908,7 @@ void Vehicle::_handleRawImuTemp(mavlink_message_t& message)
 {
     // This is used by compass calibration
     emit mavlinkRawImu(message);
-    
+
     mavlink_raw_imu_t imuRaw;
     mavlink_msg_raw_imu_decode(&message, &imuRaw);
 
@@ -4159,8 +4161,8 @@ void Vehicle::doSetHome(const QGeoCoordinate& coord)
             disconnect(_currentDoSetHomeTerrainAtCoordinateQuery, &TerrainAtCoordinateQuery::terrainDataReceived, this, &Vehicle::_doSetHomeTerrainReceived);
             _currentDoSetHomeTerrainAtCoordinateQuery = nullptr;
         }
-        // Save the coord for using when our terrain data arrives. If there was a pending terrain query paired with an older coordinate it is safe to 
-        // Override now, as we just disconnected the signal that would trigger the command sending 
+        // Save the coord for using when our terrain data arrives. If there was a pending terrain query paired with an older coordinate it is safe to
+        // Override now, as we just disconnected the signal that would trigger the command sending
         _doSetHomeCoordinate = coord;
         // Now setup and trigger the new terrain query
         _currentDoSetHomeTerrainAtCoordinateQuery = new TerrainAtCoordinateQuery(true /* autoDelet */);
@@ -4496,16 +4498,16 @@ void Vehicle::setGripperAction(GRIPPER_ACTIONS gripperAction)
 void Vehicle::sendGripperAction(GRIPPER_OPTIONS gripperOption)
 {
     switch(gripperOption) {
-        case Gripper_release: 
+        case Gripper_release:
             setGripperAction(GRIPPER_ACTION_RELEASE);
             break;
-        case Gripper_grab: 
+        case Gripper_grab:
             setGripperAction(GRIPPER_ACTION_GRAB);
             break;
         case Invalid_option:
             qDebug("unknown function");
             break;
-        default: 
+        default:
         break;
     }
 }

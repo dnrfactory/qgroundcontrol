@@ -74,6 +74,11 @@ MapQuickItem {
                 angle:          isNaN(heading) ? 0 : heading
             }
         }
+        ColorOverlay {
+            anchors.fill: vehicleIcon
+            source: vehicleIcon
+            color: vehicle.mapItemColor
+        }
 
         QGCMapLabel {
             id:                         vehicleLabel

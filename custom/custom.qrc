@@ -36,4 +36,7 @@
         <file alias="QGroundControl/Controls/MainToolBar.qml">res/CustomMainToolBar.qml</file>
 		<file alias="QGroundControl/Controls/HorizontalFactValueGrid.qml">res/CustomHorizontalFactValueGrid.qml</file>
     </qresource>
+    <qresource prefix="/qmlimages">
+        <file alias="vehicleArrowOpaque.svg">res/Images/UAV.svg</file>
+    </qresource>
 </RCC>

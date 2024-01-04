@@ -135,6 +135,24 @@ void MultiVehicleManager::_vehicleHeartbeatInfo(LinkInterface* link, int vehicle
     connect(vehicle->vehicleLinkManager(),  &VehicleLinkManager::allLinksRemoved,       this, &MultiVehicleManager::_deleteVehiclePhase1);
     connect(vehicle->parameterManager(),    &ParameterManager::parametersReadyChanged,  this, &MultiVehicleManager::_vehicleParametersReadyChanged);
 
+    QColor vehicleColor = vehicle->getMapItemColor();
+    switch (vehicleId)
+    {
+    case 128:
+        vehicleColor = QColor("#ffa07a");
+        break;
+    case 129:
+        vehicleColor = QColor("#97ff7a");
+        break;
+    case 130:
+        vehicleColor = QColor("#7ad9ff");
+        break;
+    case 131:
+        vehicleColor = QColor("#e37aff");
+        break;
+    }
+    vehicle->setMapItemColor(vehicleColor);
+
     _vehicles.append(vehicle);
 
     // Send QGC heartbeat ASAP, this allows PX4 to start accepting commands
