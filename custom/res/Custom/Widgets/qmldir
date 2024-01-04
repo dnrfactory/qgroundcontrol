@@ -12,3 +12,4 @@ CustomFlyViewFlightStatusWidget 1.0 CustomFlyViewFlightStatusWidget.qml
 CustomFlyViewFlightHistoryWidget 1.0 CustomFlyViewFlightHistoryWidget.qml
 CustomVehicleList       1.0     CustomVehicleList.qml
 CustomFlyCameraControlPanel 1.0 CustomFlyCameraControlPanel.qml
+CustomTabButton         1.0     CustomTabButton.qml

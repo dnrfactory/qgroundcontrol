@@ -28,6 +28,7 @@
         <file alias="Custom/Widgets/CustomFlyViewFlightHistoryWidget.qml">res/Custom/Widgets/CustomFlyViewFlightHistoryWidget.qml</file>
         <file alias="Custom/Widgets/CustomVehicleList.qml">res/Custom/Widgets/CustomVehicleList.qml</file>
         <file alias="Custom/Widgets/CustomFlyCameraControlPanel.qml">res/Custom/Widgets/CustomFlyCameraControlPanel.qml</file>
+        <file alias="Custom/Widgets/CustomTabButton.qml">res/Custom/Widgets/CustomTabButton.qml</file>
         <file alias="Custom/Widgets/qmldir">res/Custom/Widgets/qmldir</file>
     </qresource>
     <qresource prefix="/qml">

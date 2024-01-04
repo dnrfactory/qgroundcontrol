@@ -61,20 +61,34 @@ Item {
         anchors.fill: parent
     }
 
-    QGCTabBar {
+    TabBar {
         id: layerTabBar
         anchors.left: _root.left
         anchors.bottom: _root.top
         width: 0.2 * parent.width
-        Component.onCompleted: currentIndex = 0
-        QGCTabButton {
-            text:       qsTr("Flight Control")
+        Component.onCompleted: {
+            currentIndex = 0
+            updateCurrentIndex()
         }
-        QGCTabButton {
-            text:       qsTr("Flight Status")
+
+        background: Rectangle {
+            color: "transparent"
         }
-        QGCTabButton {
-            text:       qsTr("Flight History")
+
+        CustomTabButton { text: qsTr("Flight Control") }
+        CustomTabButton { text: qsTr("Flight Status") }
+        CustomTabButton { text: qsTr("Flight History") }
+
+        onCurrentIndexChanged: updateCurrentIndex()
+
+        function updateCurrentIndex() {
+            for (var i = 0; i < count; ++i) {
+                if (i === currentIndex) {
+                    layerTabBar.itemAt(i).height = 40;
+                } else {
+                    layerTabBar.itemAt(i).height = 30;
+                }
+            }
         }
     }
 
