@@ -13,3 +13,9 @@ CustomFlyViewFlightHistoryWidget 1.0 CustomFlyViewFlightHistoryWidget.qml
 CustomVehicleList       1.0     CustomVehicleList.qml
 CustomFlyCameraControlPanel 1.0 CustomFlyCameraControlPanel.qml
 CustomTabButton         1.0     CustomTabButton.qml
+CustomMissionCreateWidget 1.0 CustomMissionCreateWidget.qml
+CustomMissionInOutWidget 1.0 CustomMissionInOutWidget.qml
+CustomMissionShortcutWidget 1.0 CustomMissionShortcutWidget.qml
+CustomMissionVehicleWidget 1.0 CustomMissionVehicleWidget.qml
+CustomMissionInfoWidget 1.0 CustomMissionInfoWidget.qml
+CustomButton 1.0 CustomButton.qml

@@ -83,7 +83,7 @@ Item {
         if(visible) {
             editorMap.zoomLevel = QGroundControl.flightMapZoom
             editorMap.center    = QGroundControl.flightMapPosition
-            if (!_planMasterController.containsItems) {
+            if (toolStrip.visible && !_planMasterController.containsItems) {
                 toolStrip.simulateClick(toolStrip.fileButtonIndex)
             }
         }
@@ -502,6 +502,7 @@ Item {
             z:                  QGroundControl.zOrderWidgets
             maxHeight:          parent.height - toolStrip.y
             title:              qsTr("Plan")
+            visible:           QGroundControl.corePlugin.options.planView.showToolStrip
 
             readonly property int flyButtonIndex:       0
             readonly property int fileButtonIndex:      1
@@ -645,14 +646,6 @@ Item {
                     QGCTabButton {
                         text:       qsTr("Mission")
                     }
-                    QGCTabButton {
-                        text:       qsTr("Fence")
-                        enabled:    _geoFenceController.supported
-                    }
-                    QGCTabButton {
-                        text:       qsTr("Rally")
-                        enabled:    _rallyPointController.supported
-                    }
                 }
             }
             //-------------------------------------------------------
@@ -752,7 +745,9 @@ Item {
             anchors.bottom:     parent.bottom
             height:             ScreenTools.defaultFontPixelHeight * 7
             missionController:  _missionController
-            visible:            _internalVisible && _editingLayer === _layerMission && QGroundControl.corePlugin.options.showMissionStatus
+            visible:            _internalVisible && _editingLayer === _layerMission
+                                && QGroundControl.corePlugin.options.showMissionStatus
+                                && QGroundControl.corePlugin.options.planView.showTerrainStatus
 
             onSetCurrentSeqNum: _missionController.setCurrentPlanViewSeqNum(seqNum, true)
 
@@ -767,13 +762,22 @@ Item {
         MapScale {
             id:                     mapScale
             anchors.margins:        _toolsMargin
-            anchors.bottom:         terrainStatus.visible ? terrainStatus.top : parent.bottom
-            anchors.left:           toolStrip.y + toolStrip.height + _toolsMargin > mapScale.y ? toolStrip.right: parent.left
+            anchors.top:            parent.top
+            anchors.left:           parent.left
             mapControl:             editorMap
             buttonsOnLeft:          true
             terrainButtonVisible:   _editingLayer === _layerMission
             terrainButtonChecked:   terrainStatus.visible
             onTerrainButtonClicked: terrainStatus.toggleVisible()
+        }
+
+        PlanViewCustomLayer {
+            anchors.fill: parent
+            /*planView: _root
+            wayPointChecked: addWaypointRallyPointAction.checked
+            onWayPointCheckedChanged: {
+                addWaypointRallyPointAction.checked = wayPointChecked
+            }*/
         }
     }
 

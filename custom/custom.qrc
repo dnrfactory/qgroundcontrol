@@ -29,6 +29,12 @@
         <file alias="Custom/Widgets/CustomVehicleList.qml">res/Custom/Widgets/CustomVehicleList.qml</file>
         <file alias="Custom/Widgets/CustomFlyCameraControlPanel.qml">res/Custom/Widgets/CustomFlyCameraControlPanel.qml</file>
         <file alias="Custom/Widgets/CustomTabButton.qml">res/Custom/Widgets/CustomTabButton.qml</file>
+        <file alias="Custom/Widgets/CustomMissionCreateWidget.qml">res/Custom/Widgets/CustomMissionCreateWidget.qml</file>
+        <file alias="Custom/Widgets/CustomMissionInOutWidget.qml">res/Custom/Widgets/CustomMissionInOutWidget.qml</file>
+        <file alias="Custom/Widgets/CustomMissionShortcutWidget.qml">res/Custom/Widgets/CustomMissionShortcutWidget.qml</file>
+        <file alias="Custom/Widgets/CustomMissionVehicleWidget.qml">res/Custom/Widgets/CustomMissionVehicleWidget.qml</file>
+        <file alias="Custom/Widgets/CustomMissionInfoWidget.qml">res/Custom/Widgets/CustomMissionInfoWidget.qml</file>
+        <file alias="Custom/Widgets/CustomButton.qml">res/Custom/Widgets/CustomButton.qml</file>
         <file alias="Custom/Widgets/qmldir">res/Custom/Widgets/qmldir</file>
     </qresource>
     <qresource prefix="/qml">
