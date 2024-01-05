@@ -34,14 +34,13 @@ Column {
     CustomButton {
         id: sendPlanButton
         width: parent.width
-        height: parent.height * 0.25 - divideLineThickness
+        height: parent.height * 0.25
         text: qsTr("Send Plan")
         pointSize: ScreenTools.mediumFontPointSize
         onClicked: {
 
         }
     }
-	Rectangle { width: parent.width; height: divideLineThickness; color: "white"; opacity: 0.8 }
 	Rectangle {
         id: uavButtonGroup
 		width: parent.width
@@ -64,7 +63,8 @@ Column {
 		        normalColor: uavButtonGroup.colorList[index]
 		        hightlightColor: normalColor
 		        checked: uavButtonGroup.currentIndex === index
-		        scale: uavButtonGroup.currentIndex === index ? 1 : 0.9
+		        scale: uavButtonGroup.currentIndex === index ? 1 : 0.8
+		        backRadius: 4
 		        onClicked: {
 					uavButtonGroup.currentIndex = index
 		        }
@@ -74,21 +74,20 @@ Column {
 	    Row {
 			height: parent.height
 
+            spacing: divideLineThickness
+
 			Loader {
 	            sourceComponent: uavButtonComponent
                 onLoaded: item.index = 0
             }
-			Rectangle { width: divideLineThickness; height: parent.height; color: "white"; opacity: 0.8 }
 			Loader {
 	            sourceComponent: uavButtonComponent
                 onLoaded: item.index = 1
             }
-			Rectangle { width: divideLineThickness; height: parent.height; color: "white"; opacity: 0.8 }
 			Loader {
 	            sourceComponent: uavButtonComponent
                 onLoaded: item.index = 2
             }
-			Rectangle { width: divideLineThickness; height: parent.height; color: "white"; opacity: 0.8 }
 			Loader {
 	            sourceComponent: uavButtonComponent
                 onLoaded: item.index = 3
