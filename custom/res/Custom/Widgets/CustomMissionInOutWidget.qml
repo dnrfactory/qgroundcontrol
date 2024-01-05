@@ -32,7 +32,7 @@ Column {
 	property real divideLineThickness: 2
 
     CustomButton {
-        id: wayPointButton
+        id: sendPlanButton
         width: parent.width
         height: parent.height * 0.25 - divideLineThickness
         text: qsTr("Send Plan")
@@ -42,14 +42,61 @@ Column {
         }
     }
 	Rectangle { width: parent.width; height: divideLineThickness; color: "white"; opacity: 0.8 }
-    Item {
-        id: traciButton
-        width: parent.width
+	Rectangle {
+        id: uavButtonGroup
+		width: parent.width
         height: parent.height * 0.25 - divideLineThickness
-    }
+        color: qgcPal.button
+        opacity: 0.8
+
+        property var colorList: ["#ffa07a", "#97ff7a", "#7ad9ff", "#e37aff"]
+        property int currentIndex: 0
+
+        Component {
+        	id: uavButtonComponent
+            CustomButton {
+                property int index
+
+		        width: root.width *0.25 - divideLineThickness
+		        height: uavButtonGroup.height
+		        text: qsTr("UAV %1").arg(index)
+		        pointSize: ScreenTools.mediumFontPointSize
+		        normalColor: uavButtonGroup.colorList[index]
+		        hightlightColor: normalColor
+		        checked: uavButtonGroup.currentIndex === index
+		        scale: uavButtonGroup.currentIndex === index ? 1 : 0.9
+		        onClicked: {
+					uavButtonGroup.currentIndex = index
+		        }
+		    }
+        }
+
+	    Row {
+			height: parent.height
+
+			Loader {
+	            sourceComponent: uavButtonComponent
+                onLoaded: item.index = 0
+            }
+			Rectangle { width: divideLineThickness; height: parent.height; color: "white"; opacity: 0.8 }
+			Loader {
+	            sourceComponent: uavButtonComponent
+                onLoaded: item.index = 1
+            }
+			Rectangle { width: divideLineThickness; height: parent.height; color: "white"; opacity: 0.8 }
+			Loader {
+	            sourceComponent: uavButtonComponent
+                onLoaded: item.index = 2
+            }
+			Rectangle { width: divideLineThickness; height: parent.height; color: "white"; opacity: 0.8 }
+			Loader {
+	            sourceComponent: uavButtonComponent
+                onLoaded: item.index = 3
+            }
+	    }
+	}
 	Rectangle { width: parent.width; height: divideLineThickness; color: "white"; opacity: 0.8 }
     CustomButton {
-        id: clearTracingButton
         width: parent.width
         height: parent.height * 0.25 - divideLineThickness
         text: qsTr("Import Plan")
@@ -57,9 +104,8 @@ Column {
         onClicked: {
         }
     }
-	Rectangle { width: parent.width; height: divideLineThickness; color: "white"; opacity: 0.8 }
+    Rectangle { width: parent.width; height: divideLineThickness; color: "white"; opacity: 0.8 }
     CustomButton {
-        id: resetButton
         width: parent.width
         height: parent.height * 0.25
         text: qsTr("Save as different")

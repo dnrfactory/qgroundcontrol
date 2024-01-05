@@ -43,7 +43,7 @@ Column {
     }
 	Rectangle { width: parent.width; height: divideLineThickness; color: "white"; opacity: 0.8 }
     CustomButton {
-        id: traciButton
+        id: tracingButton
         width: parent.width
         height: parent.height * 0.25 - divideLineThickness
         text: qsTr("Tracing")

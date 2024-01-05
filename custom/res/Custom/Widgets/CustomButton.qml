@@ -27,6 +27,9 @@ Button {
     property int _horizontalPadding:    ScreenTools.defaultFontPixelWidth
     property int _verticalPadding:      Math.round(ScreenTools.defaultFontPixelHeight * heightFactor)
 
+    property color hightlightColor: qgcPal.buttonHighlight
+    property color normalColor: qgcPal.button
+
     QGCPalette { id: qgcPal; colorGroupEnabled: enabled }
 
     background: Rectangle {
@@ -34,7 +37,7 @@ Button {
         implicitWidth:  ScreenTools.implicitButtonWidth
         implicitHeight: ScreenTools.implicitButtonHeight
         radius:         backRadius
-        color:          _showHighlight ? qgcPal.buttonHighlight : qgcPal.button
+        color:          _showHighlight ? hightlightColor : normalColor
         opacity: 0.8
     }
 
