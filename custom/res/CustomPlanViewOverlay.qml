@@ -29,15 +29,21 @@ import Custom.Widgets               1.0
 Item {
     id: root
 
+    property var planView
+    property var missionCreator: _missionCreator
+    property var missionEditEventHandler
+
     Row {
         id: bottomPanel
         height: ScreenTools.defaultFontPixelWidth * 30
         anchors.bottom: parent.bottom
 
-		property real divideLineThickness: 2
+        property real divideLineThickness: 2
 
         CustomMissionCreateWidget {
+            id: _missionCreator
             width: root.width * 0.2 - bottomPanel.divideLineThickness
+            eventHandler: root.missionEditEventHandler
         }
 		Rectangle { width: bottomPanel.divideLineThickness; height: parent.height; color: "white"; opacity: 0.8 }
         CustomMissionInOutWidget {

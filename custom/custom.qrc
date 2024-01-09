@@ -42,6 +42,7 @@
         <file alias="PlanViewCustomLayer.qml">res/CustomPlanViewOverlay.qml</file>
         <file alias="QGroundControl/Controls/MainToolBar.qml">res/CustomMainToolBar.qml</file>
 		<file alias="QGroundControl/Controls/HorizontalFactValueGrid.qml">res/CustomHorizontalFactValueGrid.qml</file>
+		<file alias="CustomPlanViewMissionStateManager.qml">res/CustomPlanViewMissionStateManager.qml</file>
     </qresource>
     <qresource prefix="/qmlimages">
         <file alias="vehicleArrowOpaque.svg">res/Images/UAV.svg</file>

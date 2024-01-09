@@ -59,6 +59,15 @@ Item {
     readonly property int       _layerRallyPoints:          3
     readonly property string    _armedVehicleUploadPrompt:  qsTr("Vehicle is currently armed. Do you want to upload the mission to the vehicle?")
 
+    CustomPlanViewMissionStateManager {
+        id: _planViewMissionStateManager
+        planMasterController: _root._planMasterController
+        addWaypointRallyPointAction_: addWaypointRallyPointAction
+        mapCenter: function() { return _root.mapCenter() }
+        missionCreator: customLayer.missionCreator
+    }
+    property int _missionEditStatus: _planViewMissionStateManager.missionEditStatus
+
     function mapCenter() {
         var coordinate = editorMap.center
         coordinate.latitude  = coordinate.latitude.toFixed(_decimalPlaces)
@@ -367,7 +376,11 @@ Item {
                     case _layerMission:
                         if (addWaypointRallyPointAction.checked) {
                             insertSimpleItemAfterCurrent(coordinate)
-                        } else if (_addROIOnClick) {
+                        }
+                        else if (_missionEditStatus ===  _planViewMissionStateManager.eMissionEditCorridorScanAdd) {
+                            //insertComplexItemAfterCurrent(_missionController.complexMissionItemNames[1])
+                        }
+                        else if (_addROIOnClick) {
                             insertROIAfterCurrent(coordinate)
                             _addROIOnClick = false
                         }
@@ -390,6 +403,7 @@ Item {
                     onClicked:   _missionController.setCurrentPlanViewSeqNum(sequenceNumber, false)
                     opacity:     _editingLayer == _layerMission ? 1 : editorMap._nonInteractiveOpacity
                     interactive: _editingLayer == _layerMission
+                                 && (object.sequenceNumber !== _missionController.getCorridorScanComplexItemSeqNum() || _missionEditStatus === _planViewMissionStateManager.eMissionEditCorridorScanAdd)
                     vehicle:     _planMasterController.controllerVehicle
                 }
             }
@@ -772,12 +786,10 @@ Item {
         }
 
         PlanViewCustomLayer {
+            id: customLayer
             anchors.fill: parent
-            /*planView: _root
-            wayPointChecked: addWaypointRallyPointAction.checked
-            onWayPointCheckedChanged: {
-                addWaypointRallyPointAction.checked = wayPointChecked
-            }*/
+            planView: _root
+            missionEditEventHandler: _planViewMissionStateManager
         }
     }
 

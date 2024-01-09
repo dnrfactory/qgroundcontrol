@@ -2368,7 +2368,7 @@ bool MissionController::_isROICancelItem(SimpleMissionItem* simpleItem)
 void MissionController::setCurrentPlanViewSeqNum(int sequenceNumber, bool force)
 {
     if (_visualItems && (force || sequenceNumber != _currentPlanViewSeqNum)) {
-        qDebug() << "setCurrentPlanViewSeqNum";
+        qDebug() << "setCurrentPlanViewSeqNum " << sequenceNumber;
         bool    foundLand =             false;
         int     takeoffSeqNum =         -1;
         int     landSeqNum =            -1;
@@ -2534,6 +2534,30 @@ void MissionController::setCurrentPlanViewSeqNum(int sequenceNumber, bool force)
         emit flyThroughCommandsAllowedChanged();
         emit previousCoordinateChanged();
     }
+}
+
+Q_INVOKABLE int MissionController::getCorridorScanComplexItemSeqNum(void) const
+{
+    int seqNum = -1;
+    for (int i=1; i<_visualItems->count(); i++) {
+        if (_visualItems->value<CorridorScanComplexItem*>(i)) {
+            seqNum = _visualItems->value<CorridorScanComplexItem*>(i)->sequenceNumber();
+            break;
+        }
+    }
+    return seqNum;
+}
+
+Q_INVOKABLE int MissionController::getCorridorScanComplexItemIndex(void) const
+{
+    int foundIndex = -1;
+    for (int i=1; i<_visualItems->count(); i++) {
+        if (_visualItems->value<CorridorScanComplexItem*>(i)) {
+            foundIndex = i;
+            break;
+        }
+    }
+    return foundIndex;
 }
 
 void MissionController::_updateTimeout()
