@@ -54,6 +54,9 @@ QGCListView {
             setIndexConnection(vehicleIdToIndex(vehicle.id), false)
             getAllBatteryInfo()
         }
+        onConnectedIndexBitFlagForUiChanged: {
+            console.log("onConnectedIndexBitFlagForUiChanged %1".arg(connectedIndexBitFlagForUi))
+        }
     }
 
     function setIndexConnection(index, connected) {

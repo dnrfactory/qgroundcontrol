@@ -91,7 +91,7 @@ Rectangle {
     function getAirSpeedStr(idx) {
         var airSpeedStr = "0"
         if (connectedIndex[idx] == 'o') {
-            altitudeStr = vehicles[idx].airSpeed.rawValue.toFixed(1)
+            airSpeedStr = vehicles[idx].airSpeed.rawValue.toFixed(1)
         }
         return "%1 km/h".arg(airSpeedStr)
     }

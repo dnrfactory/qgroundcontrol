@@ -45,6 +45,7 @@ public:
     Q_PROPERTY(bool                 gcsHeartBeatEnabled             READ gcsHeartbeatEnabled            WRITE setGcsHeartbeatEnabled    NOTIFY gcsHeartBeatEnabledChanged)
     Q_PROPERTY(Vehicle*             offlineEditingVehicle           READ offlineEditingVehicle                                          CONSTANT)
     Q_PROPERTY(QGeoCoordinate       lastKnownLocation               READ lastKnownLocation                                              NOTIFY lastKnownLocationChanged) //< Current vehicles last know location
+	Q_PROPERTY(unsigned int connectedIndexBitFlagForUi READ getConnectedIndexBitFlagForUi NOTIFY connectedIndexBitFlagForUiChanged)
 
     // Methods
 
@@ -73,6 +74,8 @@ public:
 
     QGeoCoordinate lastKnownLocation    () { return _lastKnownLocation; }
 
+	unsigned int getConnectedIndexBitFlagForUi(void) const { return _connectedIndexBitFlagForUi; }
+
 signals:
     void vehicleAdded                   (Vehicle* vehicle);
     void vehicleRemoved                 (Vehicle* vehicle);
@@ -85,6 +88,8 @@ signals:
     void _deleteVehiclePhase2Signal     (void);
 #endif
 
+	void connectedIndexBitFlagForUiChanged(unsigned int connectedIndexBitFlagForUi);
+
 private slots:
     void _deleteVehiclePhase1           (Vehicle* vehicle);
     void _deleteVehiclePhase2           (void);
@@ -94,6 +99,8 @@ private slots:
     void _vehicleHeartbeatInfo          (LinkInterface* link, int vehicleId, int componentId, int vehicleFirmwareType, int vehicleType);
     void _requestProtocolVersion        (unsigned version);
     void _coordinateChanged             (QGeoCoordinate coordinate);
+	void _addConnectedIndexBitFlagForUi(Vehicle* vehicle);
+	void _removeConnectedIndexBitFlagForUi(Vehicle* vehicle);
 
 private:
     bool _vehicleExists(int vehicleId);
@@ -119,6 +126,9 @@ private:
     bool                _gcsHeartbeatEnabled;           ///< Enabled/disable heartbeat emission
     static const int    _gcsHeartbeatRateMSecs = 1000;  ///< Heartbeat rate
     static const char*  _gcsHeartbeatEnabledKey;
+
+	unsigned int _connectedIndexBitFlagForUi;
+	static int getVehicleUiIndex(Vehicle* vehicle);
 };
 
 #endif

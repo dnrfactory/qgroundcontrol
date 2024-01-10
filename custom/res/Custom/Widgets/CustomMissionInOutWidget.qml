@@ -10,26 +10,64 @@
 import QtQuick          2.3
 import QtQuick.Controls 1.2
 import QtQuick.Dialogs  1.2
-import QtLocation       5.3
-import QtPositioning    5.3
 import QtQuick.Layouts  1.2
 import QtQuick.Window   2.2
 
 import QGroundControl                   1.0
-import QGroundControl.FlightMap         1.0
 import QGroundControl.ScreenTools       1.0
 import QGroundControl.Controls          1.0
-import QGroundControl.FactSystem        1.0
-import QGroundControl.FactControls      1.0
 import QGroundControl.Palette           1.0
 import QGroundControl.Controllers       1.0
 import QGroundControl.ShapeFileHelper   1.0
+import QGroundControl.Vehicle           1.0
 
 Column {
     id: root
     height: parent.height
 
+    property var eventHandler
 	property real divideLineThickness: 2
+	property var vehicles: [ null, null, null, null ]
+	property var activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+
+    signal buttonClicked(int index)
+
+    Connections {
+        target: QGroundControl.multiVehicleManager
+        onVehicleAdded: {
+            vehicles[vehicleIdToIndex(vehicle.id)] = vehicle
+        }
+        onVehicleRemoved: {
+            vehicles[vehicleIdToIndex(vehicle.id)] = null
+        }
+    }
+
+    onActiveVehicleChanged: {
+        updateActiveVehicle()
+    }
+
+    function vehicleIdToIndex(vehicleId) {
+        return vehicleId - 128
+    }
+
+    function updateActiveVehicle() {
+        for (var i = 0; i < vehicles.length; i++) {
+            if (vehicles[i] !== null && vehicles[i] === QGroundControl.multiVehicleManager.activeVehicle) {
+                uavButtonGroup.currentIndex = i
+                break;
+            }
+        }
+    }
+
+    function setUavCurrentIndex(index) {
+        if (index >= 0 && index < 4)
+        uavButtonGroup.currentIndex = index
+        if (vehicles[uavButtonGroup.currentIndex] !== null) {
+            QGroundControl
+            .multiVehicleManager
+            .activeVehicle = vehicles[uavButtonGroup.currentIndex]
+        }
+    }
 
     CustomButton {
         id: sendPlanButton
@@ -37,8 +75,9 @@ Column {
         height: parent.height * 0.25
         text: qsTr("Send Plan")
         pointSize: ScreenTools.mediumFontPointSize
+        enabled: activeVehicle !== null
         onClicked: {
-
+            buttonClicked(0)
         }
     }
 	Rectangle {
@@ -49,10 +88,10 @@ Column {
         opacity: 0.8
 
         property var colorList: ["#ffa07a", "#97ff7a", "#7ad9ff", "#e37aff"]
-        property int currentIndex: 0
+        property int currentIndex: -1
 
         Component {
-        	id: uavButtonComponent
+            id: uavButtonComponent
             CustomButton {
                 property int index
 
@@ -65,8 +104,9 @@ Column {
 		        checked: uavButtonGroup.currentIndex === index
 		        scale: uavButtonGroup.currentIndex === index ? 1 : 0.8
 		        backRadius: 4
+		        enabled: vehicles[index] !== null
 		        onClicked: {
-					uavButtonGroup.currentIndex = index
+		            setUavCurrentIndex(index)
 		        }
 		    }
         }
@@ -92,6 +132,8 @@ Column {
 	            sourceComponent: uavButtonComponent
                 onLoaded: item.index = 3
             }
+
+            Component.onCompleted: updateActiveVehicle()
 	    }
 	}
 	Rectangle { width: parent.width; height: divideLineThickness; color: "white"; opacity: 0.8 }

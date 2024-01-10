@@ -65,6 +65,7 @@ Item {
         addWaypointRallyPointAction_: addWaypointRallyPointAction
         mapCenter: function() { return _root.mapCenter() }
         missionCreator: customLayer.missionCreator
+        missionInOutWidget: customLayer.missionInOutWidget
     }
     property int _missionEditStatus: _planViewMissionStateManager.missionEditStatus
 

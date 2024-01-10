@@ -77,7 +77,7 @@ MapQuickItem {
         ColorOverlay {
             anchors.fill: vehicleIcon
             source: vehicleIcon
-            color: vehicle.mapItemColor
+            color: vehicle ? vehicle.mapItemColor : "tranparent"
         }
 
         QGCMapLabel {

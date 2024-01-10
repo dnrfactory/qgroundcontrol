@@ -33,6 +33,7 @@ Item {
     property var addWaypointRallyPointAction_
     property var mapCenter
     property var missionCreator
+    property var missionInOutWidget
 
     property int missionEditStatus: eMissionEditEmpty
 
@@ -52,11 +53,20 @@ Item {
     property int eCorridorScan: 2
 
     Component.onCompleted: {
-        missionCreator.buttonClicked.connect(handleMissionEventorButton)
+        missionCreator.buttonClicked.connect(handleEventMissionCreator)
+        missionInOutWidget.buttonClicked.connect(handleEventMissionInOutWidget)
     }
 
-    function handleMissionEventorButton(index) {
+    function handleEventMissionCreator(index) {
         processMissionEditEvent(eEventMissionEditStart + index)
+    }
+
+    function handleEventMissionInOutWidget(index) {
+        switch (index) {
+        case 0:
+            planMasterController.upload()
+            break;
+        }
     }
 
     function processMissionEditEvent(event) {

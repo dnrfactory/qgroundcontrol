@@ -39,6 +39,7 @@ MultiVehicleManager::MultiVehicleManager(QGCApplication* app, QGCToolbox* toolbo
     , _joystickManager(nullptr)
     , _mavlinkProtocol(nullptr)
     , _gcsHeartbeatEnabled(true)
+    , _connectedIndexBitFlagForUi(0)
 {
     QSettings settings;
     _gcsHeartbeatEnabled = settings.value(_gcsHeartbeatEnabledKey, true).toBool();
@@ -59,6 +60,9 @@ void MultiVehicleManager::setToolbox(QGCToolbox *toolbox)
 
     connect(_mavlinkProtocol, &MAVLinkProtocol::vehicleHeartbeatInfo, this, &MultiVehicleManager::_vehicleHeartbeatInfo);
     connect(&_gcsHeartbeatTimer, &QTimer::timeout, this, &MultiVehicleManager::_sendGCSHeartbeat);
+
+    connect(this, &MultiVehicleManager::vehicleAdded, this, &MultiVehicleManager::_addConnectedIndexBitFlagForUi);
+    connect(this, &MultiVehicleManager::vehicleRemoved, this, &MultiVehicleManager::_removeConnectedIndexBitFlagForUi);
 
     if (_gcsHeartbeatEnabled) {
         _gcsHeartbeatTimer.start();
@@ -416,3 +420,33 @@ void MultiVehicleManager::_sendGCSHeartbeat(void)
         }
     }
 }
+
+int MultiVehicleManager::getVehicleUiIndex(Vehicle* vehicle)
+{
+    if (vehicle != nullptr) {
+        int index = vehicle->id() - 128;
+        if (index >= 0 && index < 4) {
+            return index;
+        }
+    }
+    return -1;
+}
+
+void MultiVehicleManager::_addConnectedIndexBitFlagForUi(Vehicle* vehicle)
+{
+    int index = getVehicleUiIndex(vehicle);
+    if (index != -1) {
+        _connectedIndexBitFlagForUi |= (1 << index);
+        emit connectedIndexBitFlagForUiChanged(_connectedIndexBitFlagForUi);
+    }
+}
+
+void MultiVehicleManager::_removeConnectedIndexBitFlagForUi(Vehicle* vehicle)
+{
+    int index = getVehicleUiIndex(vehicle);
+    if (index != -1) {
+        _connectedIndexBitFlagForUi &= ~(1 << index);
+        emit connectedIndexBitFlagForUiChanged(_connectedIndexBitFlagForUi);
+    }
+}
+
