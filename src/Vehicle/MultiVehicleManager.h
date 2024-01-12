@@ -45,7 +45,7 @@ public:
     Q_PROPERTY(bool                 gcsHeartBeatEnabled             READ gcsHeartbeatEnabled            WRITE setGcsHeartbeatEnabled    NOTIFY gcsHeartBeatEnabledChanged)
     Q_PROPERTY(Vehicle*             offlineEditingVehicle           READ offlineEditingVehicle                                          CONSTANT)
     Q_PROPERTY(QGeoCoordinate       lastKnownLocation               READ lastKnownLocation                                              NOTIFY lastKnownLocationChanged) //< Current vehicles last know location
-	Q_PROPERTY(unsigned int connectedIndexBitFlagForUi READ getConnectedIndexBitFlagForUi NOTIFY connectedIndexBitFlagForUiChanged)
+    Q_PROPERTY(QmlObjectListModel*  vehiclesForUi READ getVehiclesForUi CONSTANT);
 
     // Methods
 
@@ -74,7 +74,8 @@ public:
 
     QGeoCoordinate lastKnownLocation    () { return _lastKnownLocation; }
 
-	unsigned int getConnectedIndexBitFlagForUi(void) const { return _connectedIndexBitFlagForUi; }
+	QmlObjectListModel* getVehiclesForUi(void) { return &_vehiclesForUi; }
+	Q_INVOKABLE int getUiIndexOfVehicle(Vehicle* vehicle);
 
 signals:
     void vehicleAdded                   (Vehicle* vehicle);
@@ -87,8 +88,6 @@ signals:
 #ifndef DOXYGEN_SKIP
     void _deleteVehiclePhase2Signal     (void);
 #endif
-
-	void connectedIndexBitFlagForUiChanged(unsigned int connectedIndexBitFlagForUi);
 
 private slots:
     void _deleteVehiclePhase1           (Vehicle* vehicle);
@@ -127,8 +126,9 @@ private:
     static const int    _gcsHeartbeatRateMSecs = 1000;  ///< Heartbeat rate
     static const char*  _gcsHeartbeatEnabledKey;
 
-	unsigned int _connectedIndexBitFlagForUi;
-	static int getVehicleUiIndex(Vehicle* vehicle);
+	static const unsigned int _VEHICLE_FOR_UI_COUNT;
+	static const int _VEHICLE_FOR_UI_START_ID;
+	QmlObjectListModel _vehiclesForUi;
 };
 
 #endif

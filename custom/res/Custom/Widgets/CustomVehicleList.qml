@@ -29,96 +29,115 @@ QGCListView {
     clip: true
 
     property var colorList: ["#ffa07a", "#97ff7a", "#7ad9ff", "#e37aff"]
-    property var vehicles: [ null, null, null, null ]
-    property string connectedIndex: "xxxx"
-
-    onCurrentIndexChanged: console.log("onCurrentIndexChanged index:%1".arg(currentIndex))
+    property var vehicles: QGroundControl.multiVehicleManager.vehiclesForUi
+    property var batteryValueItem: [null, null, null, null]
 
     Connections {
         target: QGroundControl.multiVehicleManager
-        onVehicleAdded: {
-            console.log("onVehicleAdded id:" + vehicle.id)
-            vehicles[vehicleIdToIndex(vehicle.id)] = vehicle
-            for (let element of vehicles) {
-                console.log(element);
-            }
-            setIndexConnection(vehicleIdToIndex(vehicle.id), true)
-            getAllBatteryInfo()
-        }
-        onVehicleRemoved: {
-            console.log("onVehicleRemoved id:" + vehicle.id)
-            vehicles[vehicleIdToIndex(vehicle.id)] = null
-            for (let element of vehicles) {
-                console.log(element);
-            }
-            setIndexConnection(vehicleIdToIndex(vehicle.id), false)
-            getAllBatteryInfo()
-        }
-        onConnectedIndexBitFlagForUiChanged: {
-            console.log("onConnectedIndexBitFlagForUiChanged %1".arg(connectedIndexBitFlagForUi))
+        onVehicleAdded: startBatteryDectect(vehicle)
+        onVehicleRemoved: stopBatteryDectect(vehicle)
+    }
+
+    Connections {
+        target: batteryDectectTimer
+        onBatteryValueChaned: {
+            batteryValueItem[vehicleIndex].setValueText(
+               "%1(%2)"
+               .arg(voltage.toFixed(1))
+               .arg(percentage.toFixed(0)))
         }
     }
 
-    function setIndexConnection(index, connected) {
-        var charArray = connectedIndex.split('');
-        charArray[index] = connected ? 'o' : 'x';
-        connectedIndex = charArray.join('');
-    }
+    Timer {
+        id: batteryDectectTimer
+        repeat: true
+        interval: 1000
 
-    function vehicleIdToIndex(vehicleId) {
-        return vehicleId - 128
-    }
+        property var targetVehicles: []
 
-    function getAllBatteryInfo() {
-        for (var i = 0; i < 4; i++) {
-            if (connectedIndex[i] == 'o') {
-                console.log("getAllBatteryInfo vehicle(%1) batteries cnt(%2)"
-                        .arg(i)
-                        .arg(vehicles[i].batteries.rowCount()))
-                getBatteryStr(i)
-            }
-        }
-    }
+        signal batteryValueChaned(int vehicleIndex, real voltage, real percentage)
 
-    function getBatteryStr(idx) {
-        var voltageStr = "00.0"
-        var percentStr = "0"
-        if (connectedIndex[idx] == 'o' && vehicles[idx].batteries.rowCount() > 0) {
-            var batteries = vehicles[idx].batteries
-            console.log("vehicle(%1) batteries cnt(%2)"
-                        .arg(idx)
-                        .arg(batteries.rowCount()))
-            for(var i = 0; i < vehicles[idx].batteries.rowCount(); i++) {
-                var btt = vehicles[idx].getFactGroup("battery%1".arg(i))
-                if (btt !== null) {
-                    voltageStr = btt.voltage.rawValue.toFixed(1)
-                    percentStr = btt.percentRemaining.rawValue.toFixed(0)
-                    console.log("bat(%1) vol(%2) per(%3)"
-                                .arg(i)
-                                .arg(voltageStr)
-                                .arg(percentStr))
-                    break;
+        onTriggered: {
+            console.log("@@@@@ batteryDectectTimer @@@@@")
+            for (var vehicle of targetVehicles) {
+                var batteriesCount = vehicle.batteries.rowCount()
+                var uiIndex = QGroundControl.multiVehicleManager.getUiIndexOfVehicle(vehicle)
+
+                //console.log("@@@@@ batteryDectectTimer vehicleId(%1) batteryCount(%2)"
+                //            .arg(vehicle.id).arg(batteriesCount))
+
+                if (batteriesCount > 0) {
+                    for (var i = 0; i < batteriesCount; i++) {
+                        var btt = vehicle.getFactGroup("battery%1".arg(i))
+                        if (btt !== null) {
+                            var voltageStr = btt.voltage.rawValue.toFixed(1)
+                            var percentStr = btt.percentRemaining.rawValue.toFixed(0)
+
+                            /*console.log("bat(%1) vol(%2) per(%3)"
+                                        .arg(i)
+                                        .arg(voltageStr)
+                                        .arg(percentStr))*/
+
+                            batteryValueChaned(uiIndex,
+                                                btt.voltage.rawValue,
+                                                btt.percentRemaining.rawValue)
+                            break;
+                        }
+                        else {
+                            console.log("bat(%1) is null".arg(i))
+                        }
+                    }
                 }
                 else {
-                    console.log("bat(%1) is null".arg(i))
+                    batteryValueChaned(uiIndex, 0, 0)
                 }
             }
         }
-        return "%1(%2)".arg(voltageStr).arg(percentStr)
+
+        function addTarget(vehicle) {
+            targetVehicles.push(vehicle)
+            if (targetVehicles.length > 0) {
+                start()
+            }
+        }
+        function removeTarget(vehicle) {
+            targetVehicles = targetVehicles.filter(function(item) { return item !== vehicle; })
+            if (targetVehicles.length <= 0) {
+                stop()
+            }
+            var uiIndexOfVehicle =
+                    QGroundControl.multiVehicleManager.getUiIndexOfVehicle(vehicle)
+            batteryValueItem[uiIndexOfVehicle].setValueText("0.0(0)")
+        }
+    }
+
+    function startBatteryDectect(vehicle) {
+        batteryDectectTimer.addTarget(vehicle)
+    }
+    function stopBatteryDectect(vehicle) {
+        batteryDectectTimer.removeTarget(vehicle)
+    }
+
+    function isConnectedIndex(index) {
+        return index >= 0 && index < 4 && vehicles.get(index) !== null
+    }
+
+    function isValidIndex(index) {
+        return index >= 0 && index < 4
     }
 
     delegate: Item {
         id: listItem
         width: root.width
         height: root.height / 4
-        enabled: connectedIndex[index] == 'o'
+        enabled: { console.log("listItem enabled:%1".arg(isConnectedIndex(index))); isConnectedIndex(index) }
 
         MouseArea {
             anchors.fill: listItem
             onClicked: {
                 console.log("item clicked index:%1".arg(index))
                 root.currentIndex = index
-                QGroundControl.multiVehicleManager.activeVehicle = vehicles[index]
+                QGroundControl.multiVehicleManager.activeVehicle = vehicles.get(index)
             }
         }
 
@@ -129,7 +148,7 @@ QGCListView {
                 id: vehicleNameBar
                 width: parent.width
                 height: parent.height* 0.2
-                color: colorList[index]
+                color: isValidIndex(index) ? colorList[index] : "transparent"
                 Text {
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
@@ -147,7 +166,7 @@ QGCListView {
                 color: qgcPal.window
                 opacity: 0.8
                 border.color: root.currentIndex == index ? "red" : vehicleNameBar.color
-                border.width: connectedIndex[index] == 'o' ? 3 : 0
+                border.width: isConnectedIndex(index) ? 3 : 0
 
                 Component {
                     id: factViewComponent
@@ -173,6 +192,10 @@ QGCListView {
                                 leftPadding: 20
                             }
                         }
+
+                        function setValueText(value) {
+                            valueText = value
+                        }
                     }
                 }
                 Grid {
@@ -181,24 +204,26 @@ QGCListView {
                         sourceComponent: factViewComponent
                         onLoaded: {
                             item.valueText = Qt.binding(function() {
-                                return connectedIndex[index] == 'o' ? "ONLINE" : "OFFLINE"
+                                return isConnectedIndex(index) ? "ONLINE" : "OFFLINE"
                             })
                             item.nameText = Qt.binding(function() { return qsTr("Connect status") })
                         }
                     }
                     Loader {
+                        id: batteryValueLoader
                         sourceComponent: factViewComponent
                         onLoaded: {
-                            item.valueText = Qt.binding(function() { return getBatteryStr(index) })
+                            item.valueText = "0.0(0)"
                             item.nameText = Qt.binding(function() { return qsTr("Battery(V, \%)") })
+                            root.batteryValueItem[index] = item
                         }
                     }
                     Loader {
                         sourceComponent: factViewComponent
                         onLoaded: {
                             item.valueText = Qt.binding(function() {
-                                return connectedIndex[index] == 'o' ?
-                                       vehicles[index].rcRSSI : "0"
+                                return isConnectedIndex(index) ?
+                                       vehicles.get(index).rcRSSI : "0"
                             })
                             item.nameText = Qt.binding(function() { return qsTr("Conn. Str.(%)") })
                         }
@@ -210,8 +235,8 @@ QGCListView {
                         sourceComponent: factViewComponent
                         onLoaded: {
                             item.valueText = Qt.binding(function() {
-                                return connectedIndex[index] == 'o' ?
-                                       vehicles[index].altitudeAboveTerr.rawValue.toFixed(0) : "0"
+                                return isConnectedIndex(index) ?
+                                       vehicles.get(index).altitudeAboveTerr.rawValue.toFixed(0) : "0"
                             })
                             item.nameText = Qt.binding(function() { return qsTr("Altitude(m)") })
                         }
@@ -220,8 +245,8 @@ QGCListView {
                         sourceComponent: factViewComponent
                         onLoaded: {
                             item.valueText = Qt.binding(function() {
-                                return connectedIndex[index] == 'o' ?
-                                       vehicles[index].gps.count.rawValue : "0"
+                                return isConnectedIndex(index) ?
+                                       vehicles.get(index).gps.count.rawValue : "0"
                             })
                             item.nameText = Qt.binding(function() { return qsTr("Satellite Signal") })
                         }

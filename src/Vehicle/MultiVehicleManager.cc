@@ -24,10 +24,14 @@
 #endif
 
 #include <QQmlEngine>
+#include <QDebug>
 
 QGC_LOGGING_CATEGORY(MultiVehicleManagerLog, "MultiVehicleManagerLog")
 
 const char* MultiVehicleManager::_gcsHeartbeatEnabledKey = "gcsHeartbeatEnabled";
+
+const unsigned int MultiVehicleManager::_VEHICLE_FOR_UI_COUNT = 4;
+const int MultiVehicleManager::_VEHICLE_FOR_UI_START_ID = 128;
 
 MultiVehicleManager::MultiVehicleManager(QGCApplication* app, QGCToolbox* toolbox)
     : QGCTool(app, toolbox)
@@ -39,12 +43,15 @@ MultiVehicleManager::MultiVehicleManager(QGCApplication* app, QGCToolbox* toolbo
     , _joystickManager(nullptr)
     , _mavlinkProtocol(nullptr)
     , _gcsHeartbeatEnabled(true)
-    , _connectedIndexBitFlagForUi(0)
 {
     QSettings settings;
     _gcsHeartbeatEnabled = settings.value(_gcsHeartbeatEnabledKey, true).toBool();
     _gcsHeartbeatTimer.setInterval(_gcsHeartbeatRateMSecs);
     _gcsHeartbeatTimer.setSingleShot(false);
+
+    for (int i = 0; i < _VEHICLE_FOR_UI_COUNT; i++) {
+        _vehiclesForUi.append(nullptr);
+    }
 }
 
 void MultiVehicleManager::setToolbox(QGCToolbox *toolbox)
@@ -421,11 +428,11 @@ void MultiVehicleManager::_sendGCSHeartbeat(void)
     }
 }
 
-int MultiVehicleManager::getVehicleUiIndex(Vehicle* vehicle)
+int MultiVehicleManager::getUiIndexOfVehicle(Vehicle* vehicle)
 {
     if (vehicle != nullptr) {
-        int index = vehicle->id() - 128;
-        if (index >= 0 && index < 4) {
+        int index = vehicle->id() - _VEHICLE_FOR_UI_START_ID;
+        if (index >= 0 && index < _VEHICLE_FOR_UI_COUNT) {
             return index;
         }
     }
@@ -434,19 +441,19 @@ int MultiVehicleManager::getVehicleUiIndex(Vehicle* vehicle)
 
 void MultiVehicleManager::_addConnectedIndexBitFlagForUi(Vehicle* vehicle)
 {
-    int index = getVehicleUiIndex(vehicle);
+    int index = getUiIndexOfVehicle(vehicle);
     if (index != -1) {
-        _connectedIndexBitFlagForUi |= (1 << index);
-        emit connectedIndexBitFlagForUiChanged(_connectedIndexBitFlagForUi);
+        _vehiclesForUi.removeAt(index);
+        _vehiclesForUi.insert(index, vehicle);
     }
 }
 
 void MultiVehicleManager::_removeConnectedIndexBitFlagForUi(Vehicle* vehicle)
 {
-    int index = getVehicleUiIndex(vehicle);
+    int index = getUiIndexOfVehicle(vehicle);
     if (index != -1) {
-        _connectedIndexBitFlagForUi &= ~(1 << index);
-        emit connectedIndexBitFlagForUiChanged(_connectedIndexBitFlagForUi);
+        _vehiclesForUi.removeAt(index);
+        _vehiclesForUi.insert(index, nullptr);
     }
 }
 
