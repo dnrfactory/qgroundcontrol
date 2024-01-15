@@ -28,7 +28,7 @@ QGCListView {
     model: vehicles
     clip: true
 
-    property var colorList: ["#ffa07a", "#97ff7a", "#7ad9ff", "#e37aff"]
+    property var colorList: QGroundControl.multiVehicleManager.vehicleColorList
     property var vehicles: QGroundControl.multiVehicleManager.vehiclesForUi
     property var batteryValueItem: [null, null, null, null]
 
@@ -72,7 +72,14 @@ QGCListView {
                 id: vehicleNameBar
                 width: parent.width
                 height: parent.height* 0.2
-                color: isValidIndex(index) ? colorList[index] : "transparent"
+                color: {
+                    console.log("===vehicle color list===")
+                    console.log(colorList[0])
+                    console.log(colorList[1])
+                    console.log(colorList[2])
+                    console.log(colorList[3])
+                    isValidIndex(index) ? colorList[index] : "transparent"
+                    }
                 Text {
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter

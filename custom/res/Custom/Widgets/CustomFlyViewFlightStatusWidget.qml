@@ -24,10 +24,10 @@ Rectangle {
     color: qgcPal.window
     opacity: 0.8
 
-    property var colorList: ["#ffa07a", "#97ff7a", "#7ad9ff", "#e37aff"]
-    property var vehicles: [ null, null, null, null ]
-    property string connectedIndex: "xxxx"
+    property var colorList: QGroundControl.multiVehicleManager.vehicleColorList
+    property var vehicles: QGroundControl.multiVehicleManager.vehiclesForUi
     property var itemWidthRatio: [0.05, 0.2, 0.05, 0.05, 0.15, 0.1, 0.1, 0.25, 0.05]
+    property var batteryValueItem: [null, null, null, null]
 
     property int eVehicle: 0
     property int eTakeOff: 1
@@ -41,56 +41,17 @@ Rectangle {
 
     property var mapControl
 
-    Connections {
-        target: QGroundControl.multiVehicleManager
-        onVehicleAdded: {
-            console.log("CustomFlyViewFlightStatusWidget onVehicleAdded id:" + vehicle.id)
-            vehicles[vehicleIdToIndex(vehicle.id)] = vehicle
-            for (let element of vehicles) {
-                console.log(element);
-            }
-            setIndexConnection(vehicleIdToIndex(vehicle.id), true)
-        }
-        onVehicleRemoved: {
-            console.log("CustomFlyViewFlightStatusWidget onVehicleRemoved id:" + vehicle.id)
-            vehicles[vehicleIdToIndex(vehicle.id)] = null
-            for (let element of vehicles) {
-                console.log(element);
-            }
-            setIndexConnection(vehicleIdToIndex(vehicle.id), false)
-        }
+    function isConnectedIndex(index) {
+        return index >= 0 && index < 4 && vehicles.get(index) !== null
     }
 
-    function setIndexConnection(index, connected) {
-        var charArray = connectedIndex.split('');
-        charArray[index] = connected ? 'o' : 'x';
-        connectedIndex = charArray.join('');
-    }
-
-    function vehicleIdToIndex(vehicleId) {
-        return vehicleId - 128
-    }
-
-    function getBatteryStr(idx) {
-        var voltageStr = "00.0"
-        var percentStr = "0"
-        if (connectedIndex[idx] == 'o' && vehicles[idx].batteries.rowCount() > 0) {
-            var batteries = vehicles[idx].batteries
-            for(var i = 0; i < vehicles[idx].batteries.rowCount(); i++) {
-                var btt = vehicles[idx].getFactGroup("battery%1".arg(i))
-                if (btt !== null) {
-                    voltageStr = btt.voltage.rawValue.toFixed(1)
-                    percentStr = btt.percentRemaining.rawValue.toFixed(0)
-                    break;
-                }
-            }
-        }
-        return "%1 V (%2\%)".arg(voltageStr).arg(percentStr)
+    function isValidIndex(index) {
+        return index >= 0 && index < 4
     }
 
     function getAirSpeedStr(idx) {
         var airSpeedStr = "0"
-        if (connectedIndex[idx] == 'o') {
+        if (isConnectedIndex(idx)) {
             airSpeedStr = vehicles[idx].airSpeed.rawValue.toFixed(1)
         }
         return "%1 km/h".arg(airSpeedStr)
@@ -98,7 +59,7 @@ Rectangle {
 
     function getAltitudeStr(idx) {
         var altitudeStr = "0"
-        if (connectedIndex[idx] == 'o') {
+        if (isConnectedIndex(idx)) {
             altitudeStr = vehicles[idx].gps.count.rawValue
         }
         return "%1 m".arg(altitudeStr)
@@ -107,7 +68,7 @@ Rectangle {
     function getLocationStr(idx) {
         var latitudeStr = "--.--"
         var longitudeStr = "--.--"
-        if (connectedIndex[idx] == 'o') {
+        if (isConnectedIndex(idx)) {
             latitudeStr = vehicles[idx].gps.lat.rawValue.toFixed(2)
             longitudeStr = vehicles[idx].gps.lon.rawValue.toFixed(2)
 
@@ -215,7 +176,7 @@ Rectangle {
                 width: parent.width - 40
                 height: parent.height * 0.5
                 anchors.centerIn: parent
-                color: colorList[index]
+                color: isValidIndex(index) ? colorList[index] : "transparent"
                 opacity: 0.3
             }
 
@@ -246,28 +207,29 @@ Rectangle {
                     sourceComponent: valueComponent
                     onLoaded: {
                         item.colIndex = 1
-                        item.valueText = Qt.binding(function() { return connectedIndex[index] == 'o' ? "" : "" })
+                        item.valueText = Qt.binding(function() { return isConnectedIndex(index) ? "" : "" })
                     }
                 }
                 Loader {
                     sourceComponent: valueComponent
                     onLoaded: {
                         item.colIndex = 2
-                        item.valueText = Qt.binding(function() { return connectedIndex[index] == 'o' ? "ON" : "OFF" })
+                        item.valueText = Qt.binding(function() { return isConnectedIndex(index) ? "ON" : "OFF" })
                     }
                 }
                 Loader {
                     sourceComponent: valueComponent
                     onLoaded: {
                         item.colIndex = 3
-                        item.valueText = Qt.binding(function() { return connectedIndex[index] == 'o' ? vehicles[index].gps.count.rawValue : "0" })
+                        item.valueText = Qt.binding(function() { return isConnectedIndex(index) ? vehicles[index].gps.count.rawValue : "0" })
                     }
                 }
                 Loader {
                     sourceComponent: valueComponent
                     onLoaded: {
                         item.colIndex = 4
-                        item.valueText = Qt.binding(function() { return getBatteryStr(index) })
+                        item.valueText = "0.0(0)"
+                        root.batteryValueItem[index] = item
                     }
                 }
                 Loader {
@@ -302,7 +264,7 @@ Rectangle {
                                 height: parent.height * 0.5
                                 backRadius: 4
                                 text: qsTr("Go")
-                                enabled: connectedIndex[index] == 'o'
+                                enabled: isConnectedIndex(idx)
                                 onClicked: {
                                     console.log("Location Go Button clicked")
 
@@ -321,7 +283,7 @@ Rectangle {
                     sourceComponent: valueComponent
                     onLoaded: {
                         item.colIndex = 8
-                        item.valueText = Qt.binding(function() { return connectedIndex[index] == 'o' ? "" : "" })
+                        item.valueText = Qt.binding(function() { return isConnectedIndex(index) ? "" : "" })
                     }
                 }
             }

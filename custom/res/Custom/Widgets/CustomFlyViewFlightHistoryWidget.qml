@@ -23,8 +23,7 @@ Rectangle {
     color: qgcPal.window
     opacity: 0.8
 
-    property var vehicles: [ null, null, null, null ]
-    property string connectedIndex: "xxxx"
+    property var vehicles: QGroundControl.multiVehicleManager.vehiclesForUi
     property var itemWidthRatio: [0.1, 0.3, 0.1, 0.1, 0.4]
 
     property int eVehicle: 0
@@ -33,34 +32,8 @@ Rectangle {
     property int ePath: 3
     property int eVideo: 4
 
-    Connections {
-        target: QGroundControl.multiVehicleManager
-        onVehicleAdded: {
-            console.log("CustomFlyViewFlightStatusWidget onVehicleAdded id:" + vehicle.id)
-            vehicles[vehicleIdToIndex(vehicle.id)] = vehicle
-            for (let element of vehicles) {
-                console.log(element);
-            }
-            setIndexConnection(vehicleIdToIndex(vehicle.id), true)
-        }
-        onVehicleRemoved: {
-            console.log("CustomFlyViewFlightStatusWidget onVehicleRemoved id:" + vehicle.id)
-            vehicles[vehicleIdToIndex(vehicle.id)] = null
-            for (let element of vehicles) {
-                console.log(element);
-            }
-            setIndexConnection(vehicleIdToIndex(vehicle.id), false)
-        }
-    }
-
-    function setIndexConnection(index, connected) {
-        var charArray = connectedIndex.split('');
-        charArray[index] = connected ? 'o' : 'x';
-        connectedIndex = charArray.join('');
-    }
-
-    function vehicleIdToIndex(vehicleId) {
-        return vehicleId - 128
+    function isConnectedIndex(index) {
+        return index >= 0 && index < 4 && vehicles.get(index) !== null
     }
 
     QGCListView {
@@ -157,14 +130,14 @@ Rectangle {
                     sourceComponent: valueComponent
                     onLoaded: {
                         item.colIndex = 1
-                        item.valueText = Qt.binding(function() { return connectedIndex[index] == 'o' ? "" : "" })
+                        item.valueText = Qt.binding(function() { return isConnectedIndex(index) ? "" : "" })
                     }
                 }
                 Loader {
                     sourceComponent: valueComponent
                     onLoaded: {
                         item.colIndex = 2
-                        item.valueText = Qt.binding(function() { return connectedIndex[index] == 'o' ? "" : "" })
+                        item.valueText = Qt.binding(function() { return isConnectedIndex(index) ? "" : "" })
                     }
                 }
                 Loader {
@@ -182,7 +155,7 @@ Rectangle {
                                 height: parent.height * 0.5
                                 backRadius: 4
                                 text: qsTr("Show")
-                                enabled: connectedIndex[index] == 'o'
+                                enabled: isConnectedIndex(index)
                                 onClicked: {
                                     console.log("Flight Path Show Button clicked")
                                 }
@@ -198,7 +171,7 @@ Rectangle {
                     sourceComponent: valueComponent
                     onLoaded: {
                         item.colIndex = 4
-                        item.valueText = Qt.binding(function() { return connectedIndex[index] == 'o' ? "" : "" })
+                        item.valueText = Qt.binding(function() { return isConnectedIndex(index) ? "" : "" })
 
                         Qt.createQmlObject(`
                             import QGroundControl.Controls 1.0
@@ -211,7 +184,7 @@ Rectangle {
                                 height: parent.height * 0.5
                                 backRadius: 4
                                 text: qsTr("Folder")
-                                enabled: connectedIndex[index] == 'o'
+                                enabled: isConnectedIndex(index)
                                 onClicked: {
                                     console.log("FlightVideo Folder Button clicked")
                                 }
@@ -232,7 +205,7 @@ Rectangle {
                                 height: parent.height * 0.5
                                 backRadius: 4
                                 text: qsTr("Play")
-                                enabled: connectedIndex[index] == 'o'
+                                enabled: isConnectedIndex(index)
                                 onClicked: {
                                     console.log("FlightVideo Play Button clicked")
                                 }

@@ -25,7 +25,7 @@ Rectangle {
     property string vehicleName: "UAV 0"
     property string vehicleNameColor: "grey"
     property real itemVerticalSpacing: ScreenTools.defaultFontPixelWidth * 1.8
-    property var colorList: ["#ffa07a", "#97ff7a", "#7ad9ff", "#e37aff"]
+    property var colorList: QGroundControl.multiVehicleManager.vehicleColorList
 
     onActiveVehicleChanged: {
         console.log("onActiveVehicleChanged")

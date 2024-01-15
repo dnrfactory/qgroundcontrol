@@ -27,32 +27,22 @@ Column {
 
     property var eventHandler
 	property real divideLineThickness: 2
-	property var vehicles: [ null, null, null, null ]
+	property var vehicles: QGroundControl.multiVehicleManager.vehiclesForUi
 	property var activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
 
     signal buttonClicked(int index)
-
-    Connections {
-        target: QGroundControl.multiVehicleManager
-        onVehicleAdded: {
-            vehicles[vehicleIdToIndex(vehicle.id)] = vehicle
-        }
-        onVehicleRemoved: {
-            vehicles[vehicleIdToIndex(vehicle.id)] = null
-        }
-    }
 
     onActiveVehicleChanged: {
         updateActiveVehicle()
     }
 
-    function vehicleIdToIndex(vehicleId) {
-        return vehicleId - 128
+    function isConnectedIndex(index) {
+        return index >= 0 && index < 4 && vehicles.get(index) !== null
     }
 
     function updateActiveVehicle() {
-        for (var i = 0; i < vehicles.length; i++) {
-            if (vehicles[i] !== null && vehicles[i] === QGroundControl.multiVehicleManager.activeVehicle) {
+        for (var i = 0; i < vehicles.rowCount(); i++) {
+            if (vehicles.get(i) !== null && vehicles.get(i) === QGroundControl.multiVehicleManager.activeVehicle) {
                 uavButtonGroup.currentIndex = i
                 break;
             }
@@ -62,10 +52,10 @@ Column {
     function setUavCurrentIndex(index) {
         if (index >= 0 && index < 4)
         uavButtonGroup.currentIndex = index
-        if (vehicles[uavButtonGroup.currentIndex] !== null) {
+        if (isConnectedIndex(uavButtonGroup.currentIndex)) {
             QGroundControl
             .multiVehicleManager
-            .activeVehicle = vehicles[uavButtonGroup.currentIndex]
+            .activeVehicle = vehicles.get(uavButtonGroup.currentIndex)
         }
     }
 
@@ -87,7 +77,7 @@ Column {
         color: qgcPal.button
         opacity: 0.8
 
-        property var colorList: ["#ffa07a", "#97ff7a", "#7ad9ff", "#e37aff"]
+        property var colorList: QGroundControl.multiVehicleManager.vehicleColorList
         property int currentIndex: -1
 
         Component {
@@ -104,7 +94,7 @@ Column {
 		        checked: uavButtonGroup.currentIndex === index
 		        scale: uavButtonGroup.currentIndex === index ? 1 : 0.8
 		        backRadius: 4
-		        enabled: vehicles[index] !== null
+		        enabled: isConnectedIndex(index)
 		        onClicked: {
 		            setUavCurrentIndex(index)
 		        }

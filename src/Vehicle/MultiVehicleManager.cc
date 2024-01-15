@@ -52,6 +52,8 @@ MultiVehicleManager::MultiVehicleManager(QGCApplication* app, QGCToolbox* toolbo
     for (int i = 0; i < _VEHICLE_FOR_UI_COUNT; i++) {
         _vehiclesForUi.append(nullptr);
     }
+    _vehicleColorList << QColor("#ffa07a") << QColor("#97ff7a") << QColor("#7ad9ff") << QColor("#e37aff");
+    emit vehicleColorListChanged();
 }
 
 void MultiVehicleManager::setToolbox(QGCToolbox *toolbox)
@@ -147,20 +149,9 @@ void MultiVehicleManager::_vehicleHeartbeatInfo(LinkInterface* link, int vehicle
     connect(vehicle->parameterManager(),    &ParameterManager::parametersReadyChanged,  this, &MultiVehicleManager::_vehicleParametersReadyChanged);
 
     QColor vehicleColor = vehicle->getMapItemColor();
-    switch (vehicleId)
-    {
-    case 128:
-        vehicleColor = QColor("#ffa07a");
-        break;
-    case 129:
-        vehicleColor = QColor("#97ff7a");
-        break;
-    case 130:
-        vehicleColor = QColor("#7ad9ff");
-        break;
-    case 131:
-        vehicleColor = QColor("#e37aff");
-        break;
+    if (vehicleId >= _VEHICLE_FOR_UI_START_ID
+        && vehicleId < _VEHICLE_FOR_UI_START_ID + _VEHICLE_FOR_UI_COUNT - 1) {
+        vehicleColor = _vehicleColorList.at(vehicleId - _VEHICLE_FOR_UI_START_ID);
     }
     vehicle->setMapItemColor(vehicleColor);
 
