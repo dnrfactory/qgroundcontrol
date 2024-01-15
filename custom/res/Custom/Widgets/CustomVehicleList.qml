@@ -33,89 +33,13 @@ QGCListView {
     property var batteryValueItem: [null, null, null, null]
 
     Connections {
-        target: QGroundControl.multiVehicleManager
-        onVehicleAdded: startBatteryDectect(vehicle)
-        onVehicleRemoved: stopBatteryDectect(vehicle)
-    }
-
-    Connections {
-        target: batteryDectectTimer
-        onBatteryValueChaned: {
+        target: batteryDetectTimer
+        onBatteryValueChanged: {
             batteryValueItem[vehicleIndex].setValueText(
                "%1(%2)"
                .arg(voltage.toFixed(1))
                .arg(percentage.toFixed(0)))
         }
-    }
-
-    Timer {
-        id: batteryDectectTimer
-        repeat: true
-        interval: 1000
-
-        property var targetVehicles: []
-
-        signal batteryValueChaned(int vehicleIndex, real voltage, real percentage)
-
-        onTriggered: {
-            console.log("@@@@@ batteryDectectTimer @@@@@")
-            for (var vehicle of targetVehicles) {
-                var batteriesCount = vehicle.batteries.rowCount()
-                var uiIndex = QGroundControl.multiVehicleManager.getUiIndexOfVehicle(vehicle)
-
-                //console.log("@@@@@ batteryDectectTimer vehicleId(%1) batteryCount(%2)"
-                //            .arg(vehicle.id).arg(batteriesCount))
-
-                if (batteriesCount > 0) {
-                    for (var i = 0; i < batteriesCount; i++) {
-                        var btt = vehicle.getFactGroup("battery%1".arg(i))
-                        if (btt !== null) {
-                            var voltageStr = btt.voltage.rawValue.toFixed(1)
-                            var percentStr = btt.percentRemaining.rawValue.toFixed(0)
-
-                            /*console.log("bat(%1) vol(%2) per(%3)"
-                                        .arg(i)
-                                        .arg(voltageStr)
-                                        .arg(percentStr))*/
-
-                            batteryValueChaned(uiIndex,
-                                                btt.voltage.rawValue,
-                                                btt.percentRemaining.rawValue)
-                            break;
-                        }
-                        else {
-                            console.log("bat(%1) is null".arg(i))
-                        }
-                    }
-                }
-                else {
-                    batteryValueChaned(uiIndex, 0, 0)
-                }
-            }
-        }
-
-        function addTarget(vehicle) {
-            targetVehicles.push(vehicle)
-            if (targetVehicles.length > 0) {
-                start()
-            }
-        }
-        function removeTarget(vehicle) {
-            targetVehicles = targetVehicles.filter(function(item) { return item !== vehicle; })
-            if (targetVehicles.length <= 0) {
-                stop()
-            }
-            var uiIndexOfVehicle =
-                    QGroundControl.multiVehicleManager.getUiIndexOfVehicle(vehicle)
-            batteryValueItem[uiIndexOfVehicle].setValueText("0.0(0)")
-        }
-    }
-
-    function startBatteryDectect(vehicle) {
-        batteryDectectTimer.addTarget(vehicle)
-    }
-    function stopBatteryDectect(vehicle) {
-        batteryDectectTimer.removeTarget(vehicle)
     }
 
     function isConnectedIndex(index) {

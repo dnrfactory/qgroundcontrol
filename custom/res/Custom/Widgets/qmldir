@@ -19,3 +19,4 @@ CustomMissionShortcutWidget 1.0 CustomMissionShortcutWidget.qml
 CustomMissionVehicleWidget 1.0 CustomMissionVehicleWidget.qml
 CustomMissionInfoWidget 1.0 CustomMissionInfoWidget.qml
 CustomButton 1.0 CustomButton.qml
+CustomBatteryDetectTimer 1.0 CustomBatteryDetectTimer.qml
