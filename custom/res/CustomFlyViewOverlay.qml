@@ -94,12 +94,6 @@ Item {
         id: batteryDetectTimer
     }
 
-    Connections {
-        target: QGroundControl.multiVehicleManager
-        onVehicleAdded: batteryDetectTimer.addTarget(vehicle)
-        onVehicleRemoved: batteryDetectTimer.removeTarget(vehicle)
-    }
-
     CustomVehicleList {
         width: vehicleListControlPanel.width
         anchors.right: parent.right
