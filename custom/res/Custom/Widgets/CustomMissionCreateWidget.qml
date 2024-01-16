@@ -28,7 +28,7 @@ Column {
         id: wayPointButton
         width: parent.width
         height: parent.height * 0.25 - divideLineThickness
-        text: qsTr("WayPoint")
+        text: qsTr("Waypoint")
         pointSize: ScreenTools.mediumFontPointSize
         isSelected: eventHandler.missionEditStatus === eventHandler.eMissionEditWayPointAdd
         onClicked: {
@@ -54,7 +54,7 @@ Column {
         id: clearTracingButton
         width: parent.width
         height: parent.height * 0.25 - divideLineThickness
-        text: qsTr("Clear Tracing")
+        text: qsTr("Clear tracing")
         pointSize: ScreenTools.mediumFontPointSize
         enabled: eventHandler.missionEditStatus === eventHandler.eMissionEditCorridorScanAdd
         onClicked: {

@@ -30,6 +30,10 @@ Column {
 	property var vehicles: QGroundControl.multiVehicleManager.vehiclesForUi
 	property var activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
 
+    readonly property int eButtonSendPlan: 0
+    readonly property int eButtonImportPlan: 1
+    readonly property int eButtonSavePlan: 2
+
     signal buttonClicked(int index)
 
     onActiveVehicleChanged: {
@@ -63,11 +67,11 @@ Column {
         id: sendPlanButton
         width: parent.width
         height: parent.height * 0.25
-        text: qsTr("Send Plan")
+        text: qsTr("Send plan")
         pointSize: ScreenTools.mediumFontPointSize
         enabled: activeVehicle !== null
         onClicked: {
-            buttonClicked(0)
+            buttonClicked(eButtonSendPlan)
         }
     }
 	Rectangle {
@@ -130,18 +134,20 @@ Column {
     CustomButton {
         width: parent.width
         height: parent.height * 0.25 - divideLineThickness
-        text: qsTr("Import Plan")
+        text: qsTr("Import plan")
         pointSize: ScreenTools.mediumFontPointSize
         onClicked: {
+            buttonClicked(eButtonImportPlan)
         }
     }
     Rectangle { width: parent.width; height: divideLineThickness; color: "white"; opacity: 0.8 }
     CustomButton {
         width: parent.width
         height: parent.height * 0.25
-        text: qsTr("Save as different")
+        text: qsTr("Save plan as different name")
         pointSize: ScreenTools.mediumFontPointSize
         onClicked: {
+            buttonClicked(eButtonSavePlan)
         }
     }
 }

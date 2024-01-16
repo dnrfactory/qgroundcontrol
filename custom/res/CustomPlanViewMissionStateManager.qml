@@ -62,9 +62,22 @@ Item {
     }
 
     function handleEventMissionInOutWidget(index) {
+        console.log("handleEventMissionInOutWidget %1".arg(index))
         switch (index) {
-        case 0:
+        case missionInOutWidget.eButtonSendPlan:
             planMasterController.upload()
+            break;
+        case missionInOutWidget.eButtonImportPlan:
+            if (_planMasterController.dirty) {
+                syncLoadFromFileOverwrite.createObject(mainWindow).open()
+            }
+            else {
+                processMissionEditEvent(eEventMissionEditResetButtonClicked)
+                planMasterController.loadFromSelectedFile()
+            }
+            break;
+        case missionInOutWidget.eButtonSavePlan:
+            planMasterController.saveToSelectedFile()
             break;
         }
     }
@@ -194,6 +207,21 @@ Item {
         var corridorScanComplexItemIndex = missionController.getCorridorScanComplexItemIndex()
         if (corridorScanComplexItemIndex != -1) {
             missionController.removeVisualItem(corridorScanComplexItemIndex)
+        }
+    }
+
+    Component {
+        id: syncLoadFromFileOverwrite
+        QGCSimpleMessageDialog {
+            id:        syncLoadFromVehicleCheck
+            title:      ""
+            text:       qsTr("You have unsaved/unsent changes. Loading from a file will lose these changes. Are you sure you want to load from a file?")
+            buttons:    StandardButton.Yes | StandardButton.No
+
+            onAccepted: {
+                processMissionEditEvent(eEventMissionEditResetButtonClicked)
+                planMasterController.loadFromSelectedFile()
+            }
         }
     }
 }
