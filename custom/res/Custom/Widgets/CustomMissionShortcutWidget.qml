@@ -39,28 +39,51 @@ Rectangle {
 
     signal missionItemClicked(string fileName)
 
+    function updateFileList() {
+        var fileNameList = planMasterController.planFileNames
+        var missionFileModelCount = missionFileModel.count
+
+        for (var i = 0; i < missionFileModelCount; i++) {
+            if (i < fileNameList.length) {
+                missionFileModel.setProperty(i, "value", fileNameList[i]);
+                console.log("+" + i)
+            } else {
+                missionFileModel.setProperty(i, "value", "+");
+                console.log("-" + i)
+            }
+        }
+    }
+
+    function initFileList() {
+        var fileNameList = planMasterController.planFileNames
+        var fileIndex = 0
+
+        for (var i = 0; i < 10; ++i) {
+            for (var j = 0; j < 4; ++j) {
+                if (fileIndex < fileNameList.length) {
+                    missionFileModel.append({row: i, col: j, value: fileNameList[fileIndex]});
+                }
+                else {
+                    missionFileModel.append({row: i, col: j, value: "+"});
+                }
+                fileIndex++
+            }
+        }
+    }
+
+    Connections {
+        target: planMasterController
+        onCurrentPlanFileChanged: {
+            console.log("CustomMissionShortcutWidget onCurrentPlanFileChanged")
+            updateFileList()
+        }
+    }
+
     ListModel {
         id: missionFileModel
 
         Component.onCompleted: {
-            updateFileList()
-        }
-
-        function updateFileList() {
-            var fileNameList = planMasterController.planFileNames
-
-            var fileIndex = 0
-            for (var i = 0; i < 10; ++i) {
-                for (var j = 0; j < 4; ++j) {
-                    if (fileIndex < fileNameList.length) {
-                        missionFileModel.append({row: i, col: j, value: fileNameList[fileIndex]});
-                    }
-                    else {
-                        missionFileModel.append({row: i, col: j, value: "+"});
-                    }
-                    fileIndex++
-                }
-            }
+            initFileList()
         }
     }
 
@@ -94,7 +117,7 @@ Rectangle {
                     console.log("missionFile Button Clicked. file name: %1".arg(model.value))
                     if (model.value === "+") {
                         return
-                    }                    
+                    }
 
                     missionItemClicked(model.value)
                 }

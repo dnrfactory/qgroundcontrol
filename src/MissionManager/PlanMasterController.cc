@@ -642,18 +642,20 @@ void PlanMasterController::showPlanFromManagerVehicle(void)
 
 QStringList PlanMasterController::getPlanFileNames(void)
 {
-    if (_planFiles.empty()) {
-        AppSettings* appSettings = qgcApp()->toolbox()->settingsManager()->appSettings();
-        QString missionFilePath = appSettings->missionSavePath();
-        QDir directory(missionFilePath);
-        QStringList nameFilter;
-        nameFilter << "*.plan";
-
-        QFileInfoList fileInfoList = directory.entryInfoList(nameFilter, QDir::Files);
-
-        for (const QFileInfo &fileInfo : fileInfoList) {
-            _planFiles.append(fileInfo.baseName());
-        }
+    if (_planFiles.empty() == false) {
+        _planFiles.clear();
     }
+
+    AppSettings* appSettings = qgcApp()->toolbox()->settingsManager()->appSettings();
+    QString missionFilePath = appSettings->missionSavePath();
+    QDir directory(missionFilePath);
+    QStringList nameFilter;
+    nameFilter << "*.plan";
+    QFileInfoList fileInfoList = directory.entryInfoList(nameFilter, QDir::Files);
+
+    for (const QFileInfo &fileInfo : fileInfoList) {
+        _planFiles.append(fileInfo.baseName());
+    }
+
     return _planFiles;
 }
