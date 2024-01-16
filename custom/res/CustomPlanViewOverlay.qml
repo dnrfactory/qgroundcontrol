@@ -34,6 +34,10 @@ Item {
     property var missionInOutWidget: _missionInOutWidget
     property var missionEditEventHandler
 
+    DeadMouseArea {
+        anchors.fill: bottomPanel
+    }
+
     Row {
         id: bottomPanel
         height: ScreenTools.defaultFontPixelWidth * 30
