@@ -30,7 +30,11 @@ QGCListView {
 
     property var colorList: QGroundControl.multiVehicleManager.vehicleColorList
     property var vehicles: QGroundControl.multiVehicleManager.vehiclesForUi
+    property var activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
     property var batteryValueItem: [null, null, null, null]
+
+    onActiveVehicleChanged: updateActiveVehicle()
+    Component.onCompleted: updateActiveVehicle()
 
     Connections {
         target: batteryDetectTimer
@@ -48,6 +52,16 @@ QGCListView {
 
     function isValidIndex(index) {
         return index >= 0 && index < 4
+    }
+
+    function updateActiveVehicle() {
+        for (var i = 0; i < vehicles.rowCount(); i++) {
+            var vehicle = vehicles.get(i)
+            if (vehicle !== null && vehicle === activeVehicle) {
+                root.currentIndex = i
+                break;
+            }
+        }
     }
 
     delegate: Item {
