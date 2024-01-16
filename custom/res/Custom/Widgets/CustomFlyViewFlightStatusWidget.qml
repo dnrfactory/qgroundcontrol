@@ -264,7 +264,7 @@ Rectangle {
                                 height: parent.height * 0.5
                                 backRadius: 4
                                 text: qsTr("Go")
-                                enabled: isConnectedIndex(idx)
+                                enabled: isConnectedIndex(index)
                                 onClicked: {
                                     console.log("Location Go Button clicked")
 
