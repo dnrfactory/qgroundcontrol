@@ -59,6 +59,7 @@ Item {
 		Rectangle { width: bottomPanel.divideLineThickness; height: parent.height; color: "white"; opacity: 0.8 }
 		CustomMissionShortcutWidget {
             width: root.width * 0.2 - bottomPanel.divideLineThickness
+            planMasterController: planView._planMasterController
         }
 		Rectangle { width: bottomPanel.divideLineThickness; height: parent.height; color: "white"; opacity: 0.8 }
 		CustomMissionVehicleWidget {

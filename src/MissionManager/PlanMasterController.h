@@ -25,7 +25,7 @@ Q_DECLARE_LOGGING_CATEGORY(PlanMasterControllerLog)
 class PlanMasterController : public QObject
 {
     Q_OBJECT
-    
+
 public:
     PlanMasterController(QObject* parent = nullptr);
 #ifdef QT_DEBUG
@@ -51,6 +51,7 @@ public:
     Q_PROPERTY(QStringList              loadNameFilters         READ loadNameFilters                        CONSTANT)                       ///< File filter list loading plan files
     Q_PROPERTY(QStringList              saveNameFilters         READ saveNameFilters                        CONSTANT)                       ///< File filter list saving plan files
     Q_PROPERTY(QmlObjectListModel*      planCreators            MEMBER _planCreators                        NOTIFY planCreatorsChanged)
+	Q_PROPERTY(QStringList              planFileNames READ getPlanFileNames NOTIFY planFileNamesChanged)
 
     /// Should be called immediately upon Component.onCompleted.
     Q_INVOKABLE void start(void);
@@ -104,6 +105,8 @@ public:
     Vehicle* controllerVehicle(void) { return _controllerVehicle; }
     Vehicle* managerVehicle(void) { return _managerVehicle; }
 
+	QStringList getPlanFileNames(void);
+
     static const int    kPlanFileVersion;
     static const char*  kPlanFileType;
     static const char*  kJsonMissionObjectKey;
@@ -119,6 +122,8 @@ signals:
     void planCreatorsChanged                (QmlObjectListModel* planCreators);
     void managerVehicleChanged              (Vehicle* managerVehicle);
     void promptForPlanUsageOnVehicleChange  (void);
+
+	void planFileNamesChanged(void);
 
 private slots:
     void _activeVehicleChanged      (Vehicle* activeVehicle);
@@ -149,4 +154,6 @@ private:
     QString                 _currentPlanFile;
     bool                    _deleteWhenSendCompleted =  false;
     QmlObjectListModel*     _planCreators =             nullptr;
+
+	QStringList _planFiles;
 };

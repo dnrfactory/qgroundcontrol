@@ -31,6 +31,8 @@ Rectangle {
 	color: qgcPal.window
 	opacity: 0.8
 
+    property var planMasterController
+
     readonly property real verticalMargin: 40
     readonly property real horizontalMargin: 40
     readonly property real itemSpacing: 4
@@ -39,9 +41,22 @@ Rectangle {
         id: missionFileModel
 
         Component.onCompleted: {
-        for (var i = 0; i < 10; ++i) {
+            updateFileList()
+        }
+
+        function updateFileList() {
+            var fileNameList = planMasterController.planFileNames
+
+            var fileIndex = 0
+            for (var i = 0; i < 10; ++i) {
                 for (var j = 0; j < 4; ++j) {
-                    missionFileModel.append({row: i, col: j, value: "+"});
+                    if (fileIndex < fileNameList.length) {
+                        missionFileModel.append({row: i, col: j, value: fileNameList[fileIndex]});
+                    }
+                    else {
+                        missionFileModel.append({row: i, col: j, value: "+"});
+                    }
+                    fileIndex++
                 }
             }
         }

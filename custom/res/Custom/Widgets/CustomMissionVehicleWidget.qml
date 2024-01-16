@@ -36,11 +36,16 @@ Rectangle {
 
         Repeater {
             model: 4
-            Rectangle {
+            Item {
                 width: root.width - horizontalMargin
                 height: (root.height - verticalMargin - column.spacing * 3) / 4
-                color: colorList[index]
-                radius: 4
+
+                Rectangle {
+                    anchors.fill: parent
+                    color: colorList[index]
+                    opacity: 0.3
+                    radius: 4
+                }
                 Text {
                     anchors.fill: parent
                     font.pointSize: ScreenTools.mediumFontPointSize
