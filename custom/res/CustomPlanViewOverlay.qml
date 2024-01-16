@@ -32,6 +32,7 @@ Item {
     property var planView
     property var missionCreator: _missionCreator
     property var missionInOutWidget: _missionInOutWidget
+    property var missionShortCutWidget: _missionShortCutWidget
     property var missionEditEventHandler
 
     DeadMouseArea {
@@ -50,14 +51,15 @@ Item {
             width: root.width * 0.2 - bottomPanel.divideLineThickness
             eventHandler: root.missionEditEventHandler
         }
-		Rectangle { width: bottomPanel.divideLineThickness; height: parent.height; color: "white"; opacity: 0.8 }
+        Rectangle { width: bottomPanel.divideLineThickness; height: parent.height; color: "white"; opacity: 0.8 }
         CustomMissionInOutWidget {
             id: _missionInOutWidget
             width: root.width * 0.2 - bottomPanel.divideLineThickness
             eventHandler: root.missionEditEventHandler
         }
-		Rectangle { width: bottomPanel.divideLineThickness; height: parent.height; color: "white"; opacity: 0.8 }
-		CustomMissionShortcutWidget {
+        Rectangle { width: bottomPanel.divideLineThickness; height: parent.height; color: "white"; opacity: 0.8 }
+        CustomMissionShortcutWidget {
+            id: _missionShortCutWidget
             width: root.width * 0.2 - bottomPanel.divideLineThickness
             planMasterController: planView._planMasterController
         }

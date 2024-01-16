@@ -66,6 +66,7 @@ Item {
         mapCenter: function() { return _root.mapCenter() }
         missionCreator: customLayer.missionCreator
         missionInOutWidget: customLayer.missionInOutWidget
+        missionShortCutWidget: customLayer.missionShortCutWidget
     }
     property int _missionEditStatus: _planViewMissionStateManager.missionEditStatus
 

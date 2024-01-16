@@ -34,6 +34,7 @@ Item {
     property var mapCenter
     property var missionCreator
     property var missionInOutWidget
+    property var missionShortCutWidget
 
     property int missionEditStatus: eMissionEditEmpty
 
@@ -55,6 +56,26 @@ Item {
     Component.onCompleted: {
         missionCreator.buttonClicked.connect(handleEventMissionCreator)
         missionInOutWidget.buttonClicked.connect(handleEventMissionInOutWidget)
+        missionShortCutWidget.missionItemClicked.connect(onMissionItemClicked)
+    }
+
+    function onMissionItemClicked(fileName) {
+        var savePath = QGroundControl.settingsManager.appSettings.missionSavePath
+        var filePath = "%1/%2%3".arg(savePath).arg(fileName).arg(".plan")
+
+        console.log("onMissionItemClicked filePath: %1".arg(filePath))
+
+        if (planMasterController.dirty) {
+            var obj =  syncLoadFromFileOverwrite.createObject(mainWindow)
+            obj.filePath = filePath
+            obj.open()
+        }
+        else {
+            processMissionEditEvent(eEventMissionEditResetButtonClicked)
+            planMasterController.loadFromFile(filePath)
+            planMasterController.fitViewportToItems()
+            missionController.setCurrentPlanViewSeqNum(0, true)
+        }
     }
 
     function handleEventMissionCreator(index) {
@@ -68,7 +89,7 @@ Item {
             planMasterController.upload()
             break;
         case missionInOutWidget.eButtonImportPlan:
-            if (_planMasterController.dirty) {
+            if (planMasterController.dirty) {
                 syncLoadFromFileOverwrite.createObject(mainWindow).open()
             }
             else {
@@ -218,9 +239,18 @@ Item {
             text:       qsTr("You have unsaved/unsent changes. Loading from a file will lose these changes. Are you sure you want to load from a file?")
             buttons:    StandardButton.Yes | StandardButton.No
 
+            property string filePath: ""
+
             onAccepted: {
                 processMissionEditEvent(eEventMissionEditResetButtonClicked)
-                planMasterController.loadFromSelectedFile()
+                if (filePath.length === 0) {
+                    planMasterController.loadFromSelectedFile()
+                }
+                else {
+                    planMasterController.loadFromFile(filePath)
+                    planMasterController.fitViewportToItems()
+                    missionController.setCurrentPlanViewSeqNum(0, true)
+                }
             }
         }
     }

@@ -37,6 +37,8 @@ Rectangle {
     readonly property real horizontalMargin: 40
     readonly property real itemSpacing: 4
 
+    signal missionItemClicked(string fileName)
+
     ListModel {
         id: missionFileModel
 
@@ -87,6 +89,15 @@ Rectangle {
                 _showHighlight: pressed
                 pointSize: ScreenTools.mediumFontPointSize
                 backRadius: 4
+
+                onClicked: {
+                    console.log("missionFile Button Clicked. file name: %1".arg(model.value))
+                    if (model.value === "+") {
+                        return
+                    }                    
+
+                    missionItemClicked(model.value)
+                }
             }
         }
     }
