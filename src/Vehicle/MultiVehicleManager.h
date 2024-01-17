@@ -45,7 +45,7 @@ public:
     Q_PROPERTY(bool                 gcsHeartBeatEnabled             READ gcsHeartbeatEnabled            WRITE setGcsHeartbeatEnabled    NOTIFY gcsHeartBeatEnabledChanged)
     Q_PROPERTY(Vehicle*             offlineEditingVehicle           READ offlineEditingVehicle                                          CONSTANT)
     Q_PROPERTY(QGeoCoordinate       lastKnownLocation               READ lastKnownLocation                                              NOTIFY lastKnownLocationChanged) //< Current vehicles last know location
-    Q_PROPERTY(QmlObjectListModel*  vehiclesForUi READ getVehiclesForUi CONSTANT);
+    Q_PROPERTY(QmlObjectListModel*  vehiclesForUi READ getVehiclesForUi NOTIFY vehiclesForUiChanged);
 	Q_PROPERTY(QList<QColor>        vehicleColorList READ getVehicleColorList NOTIFY vehicleColorListChanged);
 
     // Methods
@@ -92,6 +92,7 @@ signals:
 #endif
 
 	void vehicleColorListChanged(void);
+	void vehiclesForUiChanged(void);
 
 private slots:
     void _deleteVehiclePhase1           (Vehicle* vehicle);

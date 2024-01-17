@@ -436,6 +436,7 @@ void MultiVehicleManager::_addConnectedIndexBitFlagForUi(Vehicle* vehicle)
     if (index != -1) {
         _vehiclesForUi.removeAt(index);
         _vehiclesForUi.insert(index, vehicle);
+        emit vehiclesForUiChanged();
     }
 }
 
@@ -445,6 +446,7 @@ void MultiVehicleManager::_removeConnectedIndexBitFlagForUi(Vehicle* vehicle)
     if (index != -1) {
         _vehiclesForUi.removeAt(index);
         _vehiclesForUi.insert(index, nullptr);
+        emit vehiclesForUiChanged();
     }
 }
 

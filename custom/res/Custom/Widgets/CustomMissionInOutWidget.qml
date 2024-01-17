@@ -36,9 +36,8 @@ Column {
 
     signal buttonClicked(int index)
 
-    onActiveVehicleChanged: {
-        updateActiveVehicle()
-    }
+    onActiveVehicleChanged: updateActiveVehicle()
+    Component.onCompleted: updateActiveVehicle()
 
     function isConnectedIndex(index) {
         return index >= 0 && index < 4 && vehicles.get(index) !== null
@@ -54,9 +53,10 @@ Column {
     }
 
     function setUavCurrentIndex(index) {
-        if (index >= 0 && index < 4)
-        uavButtonGroup.currentIndex = index
-        if (isConnectedIndex(uavButtonGroup.currentIndex)) {
+        console.log("setUavCurrentIndex index:" + index)
+        if (isConnectedIndex(index)) {
+            uavButtonGroup.currentIndex = index
+
             QGroundControl
             .multiVehicleManager
             .activeVehicle = vehicles.get(uavButtonGroup.currentIndex)
