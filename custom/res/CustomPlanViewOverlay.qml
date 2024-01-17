@@ -29,6 +29,8 @@ import Custom.Widgets               1.0
 Item {
     id: root
 
+    property var bottomPanelHeight: bottomPanel.height
+
     property var planView
     property var missionCreator: _missionCreator
     property var missionInOutWidget: _missionInOutWidget

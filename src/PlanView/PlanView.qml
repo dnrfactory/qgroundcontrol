@@ -632,11 +632,11 @@ Item {
         // Right pane for mission editing controls
         Rectangle {
             id:                 rightPanel
-            height:             parent.height
+            height:             parent.height - customLayer.bottomPanelHeight
             width:              _rightPanelWidth
             color:              qgcPal.window
             opacity:            layerTabBar.visible ? 0.2 : 0
-            anchors.bottom:     parent.bottom
+            anchors.top:        parent.top
             anchors.right:      parent.right
             anchors.rightMargin: _toolsMargin
         }
