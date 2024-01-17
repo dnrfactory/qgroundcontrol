@@ -405,7 +405,9 @@ Item {
                     onClicked:   _missionController.setCurrentPlanViewSeqNum(sequenceNumber, false)
                     opacity:     _editingLayer == _layerMission ? 1 : editorMap._nonInteractiveOpacity
                     interactive: _editingLayer == _layerMission
-                                 && (object.sequenceNumber !== _missionController.getCorridorScanComplexItemSeqNum() || _missionEditStatus === _planViewMissionStateManager.eMissionEditCorridorScanAdd)
+                                 && (object.sequenceNumber !== _missionController.getCorridorScanComplexItemSeqNum()
+                                    || _missionEditStatus === _planViewMissionStateManager.eMissionEditCorridorScanAdd
+                                    || _missionEditStatus === _planViewMissionStateManager.eMissionEditWayPointAdd)
                     vehicle:     _planMasterController.controllerVehicle
                 }
             }
