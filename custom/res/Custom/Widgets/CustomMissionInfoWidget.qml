@@ -28,7 +28,87 @@ import QGroundControl.ShapeFileHelper   1.0
 Rectangle {
     id: root
     height: parent.height
-
 	color: qgcPal.window
 	opacity: 0.8
+
+    property var planMasterController
+    property var currentMissionItem: globals.currentPlanMissionItem
+
+    readonly property real verticalMargin: 40
+    readonly property real itemSpacing: 20
+    readonly property real itemHeight: (height - verticalMargin) / 5
+    readonly property real itemWidth: (width - itemSpacing) / 2
+
+    Column {
+        anchors.centerIn: parent
+        Component {
+            id: rowComponent
+            Row {
+                spacing: root.itemSpacing
+
+                property string titleText
+                property string valueText
+                Item {
+                    height: itemHeight
+                    width: itemWidth
+                    Text {
+                        anchors.fill: parent
+                        font.pointSize: ScreenTools.mediumFontPointSize
+                        color: qgcPal.text
+                        text: titleText
+                        horizontalAlignment: Text.AlignRight
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                }
+                Item {
+                    height: itemHeight
+                    width: itemWidth
+                    Text {
+                        anchors.fill: parent
+                        font.pointSize: ScreenTools.mediumFontPointSize
+                        color: qgcPal.text
+                        text: valueText
+                        horizontalAlignment: Text.AlignLeft
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                }
+            }
+        }
+
+        Loader {
+            sourceComponent: rowComponent
+            onLoaded: {
+                item.titleText = qsTr("Plan name")
+                item.valueText = "untitled"
+            }
+        }
+        Loader {
+            sourceComponent: rowComponent
+            onLoaded: {
+                item.titleText = qsTr("Flight distance")
+                item.valueText = "0 m"
+            }
+        }
+        Loader {
+            sourceComponent: rowComponent
+            onLoaded: {
+                item.titleText = qsTr("Flight speed")
+                item.valueText = "0 km/h"
+            }
+        }
+        Loader {
+            sourceComponent: rowComponent
+            onLoaded: {
+                item.titleText = qsTr("Max distance")
+                item.valueText = "0 m"
+            }
+        }
+        Loader {
+            sourceComponent: rowComponent
+            onLoaded: {
+                item.titleText = qsTr("Estimated time")
+                item.valueText = "00:00:00"
+            }
+        }
+    }
 }
