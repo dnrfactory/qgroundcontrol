@@ -103,11 +103,10 @@ Rectangle {
         delegate: Item {
             width: gridView.cellWidth
             height: gridView.cellHeight
-            QGCButton {
+            CustomButton {
                 anchors.fill: parent
                 anchors.margins: itemSpacing
                 text: model.value
-                _showHighlight: pressed
                 pointSize: ScreenTools.mediumFontPointSize
                 backRadius: 4
 
