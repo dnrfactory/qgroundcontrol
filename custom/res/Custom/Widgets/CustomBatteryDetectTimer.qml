@@ -26,14 +26,23 @@ Item {
         repeat: true
         interval: 1000
 
+        property int cnt: 0
+
         onTriggered: {
-            console.log("@@@@@ batteryDectectTimer @@@@@")
+            ++cnt
+
+            if (cnt % 10 === 0) {
+                console.log("@@@@@ batteryDectectTimer @@@@@")
+            }
+
             for (var vehicle of targetVehicles) {
                 var batteriesCount = vehicle.batteries.rowCount()
                 var uiIndex = QGroundControl.multiVehicleManager.getUiIndexOfVehicle(vehicle)
 
-                console.log("@@@@@ batteryDectectTimer vehicleId(%1) batteryCount(%2)"
-                            .arg(vehicle.id).arg(batteriesCount))
+                if (cnt % 10 === 0) {
+                    console.log("@@@@@ batteryDectectTimer vehicleId(%1) batteryCount(%2)"
+                                .arg(vehicle.id).arg(batteriesCount))
+                }
 
                 if (batteriesCount > 0) {
                     for (var i = 0; i < batteriesCount; i++) {
@@ -42,10 +51,12 @@ Item {
                             var voltageStr = btt.voltage.rawValue.toFixed(1)
                             var percentStr = btt.percentRemaining.rawValue.toFixed(0)
 
-                            console.log("bat(%1) vol(%2) per(%3)"
-                                        .arg(i)
-                                        .arg(voltageStr)
-                                        .arg(percentStr))
+                            if (cnt % 10 === 0) {
+                                console.log("bat(%1) vol(%2) per(%3)"
+                                            .arg(i)
+                                            .arg(voltageStr)
+                                            .arg(percentStr))
+                            }
 
                             batteryValueChanged(uiIndex,
                                                 btt.voltage.rawValue,
@@ -53,7 +64,9 @@ Item {
                             break;
                         }
                         else {
-                            console.log("bat(%1) is null".arg(i))
+                            if (cnt % 10 === 0) {
+                                console.log("bat(%1) is null".arg(i))
+                            }
                         }
                     }
                 }
