@@ -23,13 +23,14 @@ Button {
     property alias horizontalAlignment: text.horizontalAlignment
 
     property bool   isSelected: false
-    property bool   _showHighlight:     pressed | hovered | checked | isSelected
+    property bool   _showHighlight:     hovered | checked | isSelected
 
     property int _horizontalPadding:    ScreenTools.defaultFontPixelWidth
     property int _verticalPadding:      Math.round(ScreenTools.defaultFontPixelHeight * heightFactor)
 
     property color hightlightColor: qgcPal.buttonHighlight
     property color normalColor: qgcPal.button
+    property color pressedColor: "cadetblue"
 
     QGCPalette { id: qgcPal; colorGroupEnabled: enabled }
 
@@ -38,8 +39,14 @@ Button {
         implicitWidth:  ScreenTools.implicitButtonWidth
         implicitHeight: ScreenTools.implicitButtonHeight
         radius:         backRadius
-        color:          _showHighlight ? hightlightColor : normalColor
+        color:          pressed ? pressedColor : (_showHighlight ? hightlightColor : normalColor)
         opacity: 0.8
+
+        Behavior on color {
+            ColorAnimation {
+                duration: 200
+            }
+        }
     }
 
     contentItem: Item {
