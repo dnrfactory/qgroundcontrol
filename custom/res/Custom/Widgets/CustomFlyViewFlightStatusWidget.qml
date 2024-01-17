@@ -52,7 +52,7 @@ Rectangle {
     function getAirSpeedStr(idx) {
         var airSpeedStr = "0"
         if (isConnectedIndex(idx)) {
-            airSpeedStr = vehicles[idx].airSpeed.rawValue.toFixed(1)
+            airSpeedStr = vehicles.get(idx).airSpeed.rawValue.toFixed(1)
         }
         return "%1 km/h".arg(airSpeedStr)
     }
@@ -60,7 +60,7 @@ Rectangle {
     function getAltitudeStr(idx) {
         var altitudeStr = "0"
         if (isConnectedIndex(idx)) {
-            altitudeStr = vehicles[idx].gps.count.rawValue
+            altitudeStr = vehicles.get(idx).gps.count.rawValue
         }
         return "%1 m".arg(altitudeStr)
     }
@@ -69,10 +69,10 @@ Rectangle {
         var latitudeStr = "--.--"
         var longitudeStr = "--.--"
         if (isConnectedIndex(idx)) {
-            latitudeStr = vehicles[idx].gps.lat.rawValue.toFixed(2)
-            longitudeStr = vehicles[idx].gps.lon.rawValue.toFixed(2)
+            latitudeStr = vehicles.get(idx).gps.lat.rawValue.toFixed(2)
+            longitudeStr = vehicles.get(idx).gps.lon.rawValue.toFixed(2)
 
-            console.log("getLocationStr lat:%1, lon:%2".arg(vehicles[idx].gps.lat.rawValue).arg(vehicles[idx].gps.lon.rawValue))
+            console.log("getLocationStr lat:%1, lon:%2".arg(vehicles.get(idx).gps.lat.rawValue).arg(vehicles.get(idx).gps.lon.rawValue))
         }
         return "%1 %2  /%3 %4".arg(qsTr("Lat.")).arg(latitudeStr).arg("Lon.").arg(longitudeStr)
     }
@@ -221,7 +221,7 @@ Rectangle {
                     sourceComponent: valueComponent
                     onLoaded: {
                         item.colIndex = 3
-                        item.valueText = Qt.binding(function() { return isConnectedIndex(index) ? vehicles[index].gps.count.rawValue : "0" })
+                        item.valueText = Qt.binding(function() { return isConnectedIndex(index) ? vehicles.get(index).gps.count.rawValue : "0" })
                     }
                 }
                 Loader {
@@ -269,7 +269,7 @@ Rectangle {
                                     console.log("Location Go Button clicked")
 
                                     if (root.mapControl !== null) {
-                                        root.mapControl.center = vehicles[index].coordinate
+                                        root.mapControl.center = vehicles.get(index).coordinate
                                     }
                                 }
                             }
