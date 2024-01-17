@@ -48,6 +48,7 @@ Item {
     readonly property int eEventMissionEditTracingButtonClicked: eEventMissionEditStart + 1
     readonly property int eEventMissionEditClearTracingButtonClicked: eEventMissionEditStart + 2
     readonly property int eEventMissionEditResetButtonClicked: eEventMissionEditStart + 3
+    readonly property int eEventMissionEditPlanFileChanged: eEventMissionEditStart + 4
 
     property int eBlank: 0
     property int eWayPoint: 1
@@ -57,6 +58,14 @@ Item {
         missionCreator.buttonClicked.connect(handleEventMissionCreator)
         missionInOutWidget.buttonClicked.connect(handleEventMissionInOutWidget)
         missionShortCutWidget.missionItemClicked.connect(onMissionItemClicked)
+    }
+
+    Connections {
+        target: planMasterController
+        onCurrentPlanFileChanged: {
+            console.log("CustomPlanViewMissionStateManager onCurrentPlanFileChanged currentPlanFile:" + planMasterController.currentPlanFile)
+            processMissionEditEvent(eEventMissionEditPlanFileChanged)
+        }
     }
 
     function onMissionItemClicked(fileName) {
@@ -131,6 +140,11 @@ Item {
         case eEventMissionEditTracingButtonClicked:
             changeMissionEditStatus(eMissionEditCorridorScanAdd)
             break;
+        case eEventMissionEditPlanFileChanged:
+            if (planMasterController.currentPlanFile !== "") {
+                changeMissionEditStatus(eMissionEditMapControl)
+            }
+            break;
         }
     }
 
@@ -149,6 +163,11 @@ Item {
         case eEventMissionEditResetButtonClicked:
             changeMissionEditStatus(eMissionEditEmpty)
             break;
+        case eEventMissionEditPlanFileChanged:
+            if (planMasterController.currentPlanFile !== "") {
+                changeMissionEditStatus(eMissionEditMapControl)
+            }
+            break;
         }
     }
 
@@ -164,6 +183,11 @@ Item {
             break;
         case eEventMissionEditResetButtonClicked:
             changeMissionEditStatus(eMissionEditEmpty)
+            break;
+        case eEventMissionEditPlanFileChanged:
+            if (planMasterController.currentPlanFile !== "") {
+                changeMissionEditStatus(eMissionEditMapControl)
+            }
             break;
         }
     }
@@ -217,7 +241,6 @@ Item {
             missionController.setCurrentPlanViewSeqNum(missionController.getCorridorScanComplexItemSeqNum(), true)
             break;
         case eMissionEditMapControl:
-            removeCorridorScanVisualItem()
             break;
         }
 
