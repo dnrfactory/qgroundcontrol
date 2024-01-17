@@ -22,6 +22,7 @@ void WayPointPlanCreator::createPlan(const QGeoCoordinate& mapCenterCoord)
 {
     _planMasterController->removeAll();
     VisualMissionItem* takeoffItem = _missionController->insertTakeoffItem(mapCenterCoord, -1);
+    takeoffItem->setWizardMode(false);
     _missionController->insertLandItem(mapCenterCoord, -1);
     _missionController->setCurrentPlanViewSeqNum(takeoffItem->sequenceNumber(), true);
 }
