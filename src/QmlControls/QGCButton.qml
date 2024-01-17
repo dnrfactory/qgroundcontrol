@@ -43,6 +43,12 @@ Button {
         color:          _showHighlight ?
                             qgcPal.buttonHighlight :
                             (primary ? qgcPal.primaryButton : qgcPal.button)
+
+        Behavior on color {
+            ColorAnimation {
+                duration: 200
+            }
+        }
     }
 
     contentItem: Item {
