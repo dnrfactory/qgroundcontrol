@@ -50,7 +50,7 @@ Rectangle {
                     anchors.fill: parent
                     font.pointSize: ScreenTools.mediumFontPointSize
                     color: qgcPal.text
-                    text: index
+                    text: "UAV %1".arg(index + 1)
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                 }
