@@ -39,9 +39,10 @@ Item {
     property int missionEditStatus: eMissionEditEmpty
 
     readonly property int eMissionEditEmpty: 0
-    readonly property int eMissionEditWayPointAdd: 1
-    readonly property int eMissionEditCorridorScanAdd: 2
-    readonly property int eMissionEditMapControl: 3
+    readonly property int eMissionEditWayPointCreate: 1
+    readonly property int eMissionEditWayPointAdd: 2
+    readonly property int eMissionEditCorridorScanAdd: 3
+    readonly property int eMissionEditMapControl: 4
 
     readonly property int eEventMissionEditStart: 100
     readonly property int eEventMissionEditWayPointButtonClicked: eEventMissionEditStart
@@ -49,6 +50,7 @@ Item {
     readonly property int eEventMissionEditClearTracingButtonClicked: eEventMissionEditStart + 2
     readonly property int eEventMissionEditResetButtonClicked: eEventMissionEditStart + 3
     readonly property int eEventMissionEditPlanFileChanged: eEventMissionEditStart + 4
+    readonly property int eEventMissionEditFlyThroughCommandsAllowedChanged: eEventMissionEditStart + 5
 
     property int eBlank: 0
     property int eWayPoint: 1
@@ -65,6 +67,14 @@ Item {
         onCurrentPlanFileChanged: {
             console.log("CustomPlanViewMissionStateManager onCurrentPlanFileChanged currentPlanFile:" + planMasterController.currentPlanFile)
             processMissionEditEvent(eEventMissionEditPlanFileChanged)
+        }
+    }
+    Connections {
+        target: missionController
+        onFlyThroughCommandsAllowedChanged: {
+            console.log("onFlyThroughCommandsAllowedChanged " + missionController.flyThroughCommandsAllowed)
+            missionCreator.isMissionAddEnable = missionController.flyThroughCommandsAllowed
+            processMissionEditEvent(eEventMissionEditFlyThroughCommandsAllowedChanged)
         }
     }
 
@@ -119,6 +129,9 @@ Item {
         case eMissionEditEmpty:
             processMissionEditEventOnEmpty(event);
             break;
+        case eMissionEditWayPointCreate:
+            processMissionEditEventOnWayPointCreate(event)
+            break;
         case eMissionEditWayPointAdd:
             processMissionEditEventOnWayPointAdd(event);
             break;
@@ -135,7 +148,7 @@ Item {
         console.log("processMissionEditEventOnEmpty event:%1".arg(event))
         switch (event) {
         case eEventMissionEditWayPointButtonClicked:
-            changeMissionEditStatus(eMissionEditWayPointAdd)
+            changeMissionEditStatus(eMissionEditWayPointCreate)
             break;
         case eEventMissionEditTracingButtonClicked:
             changeMissionEditStatus(eMissionEditCorridorScanAdd)
@@ -143,6 +156,28 @@ Item {
         case eEventMissionEditPlanFileChanged:
             if (planMasterController.currentPlanFile !== "") {
                 changeMissionEditStatus(eMissionEditMapControl)
+            }
+            break;
+        }
+    }
+
+    function processMissionEditEventOnWayPointCreate(event) {
+        console.log("processMissionEditEventOnWayPointCreate event:%1".arg(event))
+        switch (event) {
+        case eEventMissionEditWayPointButtonClicked:
+            changeMissionEditStatus(eMissionEditMapControl)
+            break;
+        case eEventMissionEditResetButtonClicked:
+            changeMissionEditStatus(eMissionEditEmpty)
+            break;
+        case eEventMissionEditPlanFileChanged:
+            if (planMasterController.currentPlanFile !== "") {
+                changeMissionEditStatus(eMissionEditMapControl)
+            }
+            break;
+        case eEventMissionEditFlyThroughCommandsAllowedChanged:
+            if (missionController.flyThroughCommandsAllowed === true) {
+                changeMissionEditStatus(eMissionEditWayPointAdd)
             }
             break;
         }
@@ -157,14 +192,16 @@ Item {
         case eEventMissionEditTracingButtonClicked:
             changeMissionEditStatus(eMissionEditCorridorScanAdd)
             break;
-        case eEventMissionEditClearTracingButtonClicked:
-            removeCorridorScanVisualItem()
-            break;
         case eEventMissionEditResetButtonClicked:
             changeMissionEditStatus(eMissionEditEmpty)
             break;
         case eEventMissionEditPlanFileChanged:
             if (planMasterController.currentPlanFile !== "") {
+                changeMissionEditStatus(eMissionEditMapControl)
+            }
+            break;
+        case eEventMissionEditFlyThroughCommandsAllowedChanged:
+            if (missionController.flyThroughCommandsAllowed === false) {
                 changeMissionEditStatus(eMissionEditMapControl)
             }
             break;
@@ -219,12 +256,14 @@ Item {
         case eMissionEditEmpty:
             planMasterController.planCreators.get(eBlank).createPlan(mapCenter())
             break;
-        case eMissionEditWayPointAdd:
+        case eMissionEditWayPointCreate:
             switch (prevStatus) {
             case eMissionEditEmpty:
                 planMasterController.planCreators.get(eWayPoint).createPlan(mapCenter())
                 break;
             }
+            break;
+        case eMissionEditWayPointAdd:
             break;
         case eMissionEditCorridorScanAdd:
             switch (prevStatus) {

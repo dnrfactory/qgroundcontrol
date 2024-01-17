@@ -46,10 +46,8 @@ Rectangle {
         for (var i = 0; i < missionFileModelCount; i++) {
             if (i < fileNameList.length) {
                 missionFileModel.setProperty(i, "value", fileNameList[i]);
-                console.log("+" + i)
             } else {
                 missionFileModel.setProperty(i, "value", "+");
-                console.log("-" + i)
             }
         }
     }

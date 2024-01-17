@@ -20,6 +20,7 @@ Column {
     height: parent.height
 
     property var eventHandler
+    property bool isMissionAddEnable: false
     property real divideLineThickness: 2
 
     signal buttonClicked(int index)
@@ -31,6 +32,7 @@ Column {
         text: qsTr("Waypoint")
         pointSize: ScreenTools.mediumFontPointSize
         isSelected: eventHandler.missionEditStatus === eventHandler.eMissionEditWayPointAdd
+        enabled: eventHandler.missionEditStatus === eventHandler.eMissionEditEmpty || isMissionAddEnable
         onClicked: {
             console.log("WayPoint Button clicked")
             buttonClicked(0)
