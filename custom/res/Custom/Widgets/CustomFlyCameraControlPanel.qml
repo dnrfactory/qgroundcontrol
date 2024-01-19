@@ -96,7 +96,7 @@ Rectangle {
                 width: root.btnWidth
                 height: root.btnHeight
                 backRadius: root.btnRadius
-                text: "reset"
+                text: "\u25CF"
                 pointSize: ScreenTools.mediumFontPointSize
                 enabled : _activeVehicle
                 onClicked: {
@@ -191,7 +191,7 @@ Rectangle {
                 width: root.btnWidth
                 height: root.btnHeight
                 backRadius: root.btnRadius
-                text: "reset"
+                text: "\u25CF"
                 pointSize: ScreenTools.mediumFontPointSize
                 enabled : _activeVehicle
                 onClicked: {
