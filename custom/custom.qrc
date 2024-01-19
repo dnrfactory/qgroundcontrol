@@ -48,4 +48,7 @@
     <qresource prefix="/qmlimages">
         <file alias="vehicleArrowOpaque.svg">res/Images/UAV.svg</file>
     </qresource>
+    <qresource prefix="/json">
+        <file alias="LocationInfo.json">src/LocationInfo.json</file>
+    </qresource>
 </RCC>

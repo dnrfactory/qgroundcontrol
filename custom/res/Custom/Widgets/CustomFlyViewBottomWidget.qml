@@ -98,6 +98,7 @@ Item {
         CustomFlyViewFlightControlWidget {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            mapControl: _root.mapControl
         }
         CustomFlyViewFlightStatusWidget {
             Layout.fillWidth: true

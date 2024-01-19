@@ -23,6 +23,8 @@ Row {
 
     readonly property real panelMargin: 2
 
+    property var mapControl
+
     spacing: 0
 
     CustomTelemetryValuePanel {
@@ -35,6 +37,7 @@ Row {
         id: customWeatherPanel
         height: parent.height
         width: parent.width * 0.2 - panelMargin
+        mapCenterPosition: root.mapControl.center
     }
     Rectangle { width: panelMargin; height: parent.height; color: "white"; opacity: 0.8 }
     CustomArmPanel {

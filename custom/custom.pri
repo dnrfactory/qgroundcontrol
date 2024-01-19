@@ -62,9 +62,11 @@ QML_IMPORT_PATH += \
 # Our own, custom sources
 SOURCES += \
     $$PWD/src/CustomPlugin.cc \
+    $$PWD/src/WeatherInfoProvider.cc \
 
 HEADERS += \
     $$PWD/src/CustomPlugin.h \
+    $$PWD/src/WeatherInfoProvider.h \
 
 INCLUDEPATH += \
     $$PWD/src \

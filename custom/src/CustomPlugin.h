@@ -83,6 +83,8 @@ public:
     // Overrides from QGCTool
     void                    setToolbox                      (QGCToolbox* toolbox);
 
+    static QObject* weatherInfoProviderSingletonFactory(QQmlEngine*, QJSEngine*);
+
 private slots:
     void _advancedChanged(bool advanced);
 

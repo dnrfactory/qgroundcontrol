@@ -26,6 +26,7 @@
 #include "QGCPalette.h"
 #include "HorizontalFactValueGrid.h"
 #include "InstrumentValueData.h"
+#include "WeatherInfoProvider.h"
 
 QGC_LOGGING_CATEGORY(CustomLog, "CustomLog")
 
@@ -130,6 +131,12 @@ void CustomPlugin::setToolbox(QGCToolbox* toolbox)
 
     // Allows us to be notified when the user goes in/out out advanced mode
     connect(qgcApp()->toolbox()->corePlugin(), &QGCCorePlugin::showAdvancedUIChanged, this, &CustomPlugin::_advancedChanged);
+
+    qmlRegisterSingletonType<WeatherInfoProvider>("WeatherInfoProvider",
+                                                 1,
+                                                 0,
+                                                 "WeatherInfoProvider",
+                                                 CustomPlugin::weatherInfoProviderSingletonFactory);
 }
 
 void CustomPlugin::_advancedChanged(bool changed)
@@ -217,7 +224,7 @@ bool CustomPlugin::adjustSettingMetaData(const QString& settingsGroup, FactMetaD
 void CustomPlugin::paletteOverride(QString colorName, QGCPalette::PaletteColorInfo_t& colorInfo)
 {
     if (colorName == QStringLiteral("window")) {
-        colorInfo[QGCPalette::Dark][QGCPalette::ColorGroupEnabled]   = QColor("#161C41");        
+        colorInfo[QGCPalette::Dark][QGCPalette::ColorGroupEnabled]   = QColor("#161C41");
     }
     else if (colorName == QStringLiteral("windowShade")) {
         colorInfo[QGCPalette::Dark][QGCPalette::ColorGroupEnabled]   = QColor("#313A70");
@@ -244,7 +251,7 @@ void CustomPlugin::paletteOverride(QString colorName, QGCPalette::PaletteColorIn
     }
     else if (colorName == QStringLiteral("toolbarBackground")) {
         colorInfo[QGCPalette::Dark][QGCPalette::ColorGroupEnabled]   = QColor("#161C41");
-    }    
+    }
 }
 
 void CustomPlugin::factValueGridCreateDefaultSettings(const QString& defaultSettingsGroup)
@@ -324,4 +331,10 @@ QQmlApplicationEngine* CustomPlugin::createQmlApplicationEngine(QObject* parent)
     QQmlApplicationEngine* qmlEngine = QGCCorePlugin::createQmlApplicationEngine(parent);
     qmlEngine->addImportPath("qrc:/Custom/Widgets");
     return qmlEngine;
+}
+
+QObject* CustomPlugin::weatherInfoProviderSingletonFactory(QQmlEngine*, QJSEngine*)
+{
+    WeatherInfoProvider* instance = new WeatherInfoProvider(qgcApp()->toolbox());
+    return instance;
 }
