@@ -15,6 +15,7 @@ Button {
     focusPolicy:    Qt.ClickFocus
 
     property real   pointSize:      ScreenTools.defaultFontPointSize    ///< Point size for button text
+    property bool   boldFont:       false
     property bool   iconLeft:       false
     property real   backRadius:     0
     property real   heightFactor:   0.5
@@ -59,8 +60,9 @@ Button {
             anchors.centerIn:       parent
             antialiasing:           true
             text:                   control.text
-            font.pointSize:         pointSize
+            font.pointSize:         control.pointSize
             font.family:            ScreenTools.normalFontFamily
+            font.bold:              control.boldFont
             color:                  _showHighlight ?
                                         qgcPal.buttonHighlightText : qgcPal.buttonText
         }
