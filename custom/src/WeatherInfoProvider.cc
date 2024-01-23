@@ -62,7 +62,7 @@ void WeatherInfoProvider::requestWeatherData(double longitude, double latitude)
 
 
     QString apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst";
-    QString apiKey = "H%2FjIqpZSIm5HkrIyiYPIJsRL14c7T0sIaBQpjmjAW6xl%2B79dELCJl2hO8lc79WuTlWBisNOqoadjwyeBjC9JKA%3D%3D";
+    QString apiKey = getWeatherApiKey();
 
     QString requestUrl = apiUrl + "?serviceKey=" + apiKey +
                             "&numOfRows=" + numOfRows +
@@ -266,6 +266,8 @@ bool WeatherInfoProvider::findRegionName(double longitude, double latitude, Loca
     outData.y = closestLocation.y;
 
     qDebug() << "Closest Location:";
+    qDebug() << "lon:" << longitude;
+    qDebug() << "lat:" << latitude;
     qDebug() << "1step:" << closestLocation.step1;
     qDebug() << "2step:" << closestLocation.step2;
     qDebug() << "3step:" << closestLocation.step3;
@@ -273,4 +275,27 @@ bool WeatherInfoProvider::findRegionName(double longitude, double latitude, Loca
     qDebug() << "Y:" << closestLocation.y;
 
     return true;
+}
+
+QString WeatherInfoProvider::getWeatherApiKey(void)
+{
+    QFile file(":/json/WeatherApiKey.json");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Could not open WeatherApiKey.json file.";
+        return QString();
+    }
+    QJsonDocument jsonDocument = QJsonDocument::fromJson(file.readAll());
+    file.close();
+    if (jsonDocument.isNull()) {
+        qDebug() << "Failed to create JSON document.";
+        return QString();
+    }
+
+    QJsonArray jsonArray = jsonDocument.array();
+    for (const QJsonValue &value : jsonArray) {
+        QJsonObject jsonObject = value.toObject();
+
+        return jsonObject["weather_api_key"].toString();
+    }
+    return QString();
 }

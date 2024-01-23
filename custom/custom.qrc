@@ -50,5 +50,6 @@
     </qresource>
     <qresource prefix="/json">
         <file alias="LocationInfo.json">src/LocationInfo.json</file>
+        <file alias="WeatherApiKey.json">src/WeatherApiKey.json</file>
     </qresource>
 </RCC>

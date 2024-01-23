@@ -85,6 +85,7 @@ public:
 private:
     void parseWeatherJson(const QByteArray& jsonData);
     static bool findRegionName(double longitude, double latitude, LocationData& outData);
+    static QString getWeatherApiKey(void);
 
 signals:
     void notifyWeatherData(void);
