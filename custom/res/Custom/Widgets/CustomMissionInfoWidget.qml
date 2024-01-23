@@ -58,6 +58,25 @@ Rectangle {
                                                                 .unitsConversion
                                                                 .appSettingsHorizontalDistanceUnitsString
 
+    function getPlanFileName() {
+        if (!_controllerValid) {
+            return qsTr("untitled")
+        }
+
+        var filePath = planMasterController.currentPlanFile
+
+        if (filePath.length === 0) {
+            return qsTr("untitled")
+        }
+        return planMasterController.currentPlanFileBaseName
+    }
+
+    function local8bitToUtf8(local8bitString) {
+        var textEncoder = new TextEncoder("utf-8");
+        var uint8Array = textEncoder.encode(local8bitString);
+        return String.fromCharCode.apply(null, uint8Array);
+    }
+
     function getMissionTime() {
         if (!_missionTime) {
             return "00:00:00"
@@ -115,7 +134,7 @@ Rectangle {
             sourceComponent: rowComponent
             onLoaded: {
                 item.titleText = qsTr("Plan name")
-                item.valueText = "untitled"
+                item.valueText = Qt.binding(function() { return getPlanFileName() })
             }
         }
         Loader {

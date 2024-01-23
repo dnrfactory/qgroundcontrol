@@ -52,6 +52,7 @@ public:
     Q_PROPERTY(QStringList              saveNameFilters         READ saveNameFilters                        CONSTANT)                       ///< File filter list saving plan files
     Q_PROPERTY(QmlObjectListModel*      planCreators            MEMBER _planCreators                        NOTIFY planCreatorsChanged)
 	Q_PROPERTY(QStringList              planFileNames READ getPlanFileNames NOTIFY planFileNamesChanged)
+    Q_PROPERTY(QString                  currentPlanFileBaseName READ currentPlanFileBaseName                NOTIFY currentPlanFileChanged)
 
     /// Should be called immediately upon Component.onCompleted.
     Q_INVOKABLE void start(void);
@@ -106,6 +107,7 @@ public:
     Vehicle* managerVehicle(void) { return _managerVehicle; }
 
 	QStringList getPlanFileNames(void);
+    QString     currentPlanFileBaseName (void) const { return _currentPlanFileBaseName; }
 
     static const int    kPlanFileVersion;
     static const char*  kPlanFileType;
@@ -156,4 +158,5 @@ private:
     QmlObjectListModel*     _planCreators =             nullptr;
 
 	QStringList _planFiles;
+    QString _currentPlanFileBaseName;
 };

@@ -405,8 +405,10 @@ void PlanMasterController::loadFromFile(const QString& filename)
 
     if(success){
         _currentPlanFile = QString::asprintf("%s/%s.%s", fileInfo.path().toLocal8Bit().data(), fileInfo.completeBaseName().toLocal8Bit().data(), AppSettings::planFileExtension);
+        _currentPlanFileBaseName = fileInfo.baseName();
     } else {
         _currentPlanFile.clear();
+        _currentPlanFileBaseName.clear();
     }
     emit currentPlanFileChanged();
 
@@ -461,12 +463,14 @@ void PlanMasterController::saveToFile(const QString& filename)
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         qgcApp()->showAppMessage(tr("Plan save error %1 : %2").arg(filename).arg(file.errorString()));
         _currentPlanFile.clear();
+        _currentPlanFileBaseName.clear();
         emit currentPlanFileChanged();
     } else {
         QJsonDocument saveDoc = saveToJson();
         file.write(saveDoc.toJson());
         if(_currentPlanFile != planFilename) {
             _currentPlanFile = planFilename;
+            _currentPlanFileBaseName = QFileInfo(file).baseName();
             emit currentPlanFileChanged();
         }
     }
@@ -511,6 +515,7 @@ void PlanMasterController::removeAll(void)
         _geoFenceController.setDirty(false);
         _rallyPointController.setDirty(false);
         _currentPlanFile.clear();
+        _currentPlanFileBaseName.clear();
         emit currentPlanFileChanged();
     }
 }
@@ -656,6 +661,7 @@ QStringList PlanMasterController::getPlanFileNames(void)
     for (const QFileInfo &fileInfo : fileInfoList) {
         _planFiles.append(fileInfo.baseName());
     }
+    qSort(_planFiles);
 
     return _planFiles;
 }
