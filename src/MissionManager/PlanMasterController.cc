@@ -661,7 +661,7 @@ QStringList PlanMasterController::getPlanFileNames(void)
     for (const QFileInfo &fileInfo : fileInfoList) {
         _planFiles.append(fileInfo.baseName());
     }
-    qSort(_planFiles);
+    std::sort(_planFiles.begin(), _planFiles.end());
 
     return _planFiles;
 }

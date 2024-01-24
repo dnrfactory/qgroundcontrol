@@ -17,6 +17,7 @@
 #include <QJsonObject>
 #include <QFile>
 #include <QJsonValue>
+#include <QtMath>
 #include <cmath>
 
 WeatherInfoProvider::WeatherInfoProvider(QObject* parent)

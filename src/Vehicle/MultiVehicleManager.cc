@@ -30,7 +30,7 @@ QGC_LOGGING_CATEGORY(MultiVehicleManagerLog, "MultiVehicleManagerLog")
 
 const char* MultiVehicleManager::_gcsHeartbeatEnabledKey = "gcsHeartbeatEnabled";
 
-const unsigned int MultiVehicleManager::_VEHICLE_FOR_UI_COUNT = 4;
+const int MultiVehicleManager::_VEHICLE_FOR_UI_COUNT = 4;
 const int MultiVehicleManager::_VEHICLE_FOR_UI_START_ID = 128;
 
 MultiVehicleManager::MultiVehicleManager(QGCApplication* app, QGCToolbox* toolbox)

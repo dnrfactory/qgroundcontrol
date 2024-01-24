@@ -10,6 +10,7 @@
 #pragma once
 
 #include <QObject>
+#include <QDateTime>
 
 class QNetworkAccessManager;
 class QNetworkReply;

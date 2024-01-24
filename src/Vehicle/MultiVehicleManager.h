@@ -45,8 +45,8 @@ public:
     Q_PROPERTY(bool                 gcsHeartBeatEnabled             READ gcsHeartbeatEnabled            WRITE setGcsHeartbeatEnabled    NOTIFY gcsHeartBeatEnabledChanged)
     Q_PROPERTY(Vehicle*             offlineEditingVehicle           READ offlineEditingVehicle                                          CONSTANT)
     Q_PROPERTY(QGeoCoordinate       lastKnownLocation               READ lastKnownLocation                                              NOTIFY lastKnownLocationChanged) //< Current vehicles last know location
-    Q_PROPERTY(QmlObjectListModel*  vehiclesForUi READ getVehiclesForUi NOTIFY vehiclesForUiChanged);
-	Q_PROPERTY(QList<QColor>        vehicleColorList READ getVehicleColorList NOTIFY vehicleColorListChanged);
+    Q_PROPERTY(QmlObjectListModel*  vehiclesForUi READ getVehiclesForUi NOTIFY vehiclesForUiChanged)
+    Q_PROPERTY(QList<QColor>        vehicleColorList READ getVehicleColorList NOTIFY vehicleColorListChanged)
 
     // Methods
 
@@ -131,7 +131,7 @@ private:
     static const int    _gcsHeartbeatRateMSecs = 1000;  ///< Heartbeat rate
     static const char*  _gcsHeartbeatEnabledKey;
 
-	static const unsigned int _VEHICLE_FOR_UI_COUNT;
+    static const int _VEHICLE_FOR_UI_COUNT;
 	static const int _VEHICLE_FOR_UI_START_ID;
 	QmlObjectListModel _vehiclesForUi;
 	QList<QColor> _vehicleColorList;
