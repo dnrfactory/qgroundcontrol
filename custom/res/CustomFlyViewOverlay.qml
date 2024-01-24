@@ -59,7 +59,7 @@ Item {
         anchors.top: parent.top
         anchors.right: parent.right
         height: parent.height / 15
-        width: ScreenTools.defaultFontPixelWidth * 40
+        width: ScreenTools.defaultFontPixelWidth * 50
         color: qgcPal.window
         opacity: 0.8
 

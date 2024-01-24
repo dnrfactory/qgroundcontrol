@@ -31,7 +31,7 @@ Item {
     id: _root
 
     width: parent.width
-    height: ScreenTools.defaultFontPixelWidth * 30
+    height: ScreenTools.defaultFontPixelWidth * 40
 
     readonly property real  _bottomPanelWidth:          ScreenTools.defaultFontPixelWidth * 35
 

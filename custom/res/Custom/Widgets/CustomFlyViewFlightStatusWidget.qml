@@ -41,12 +41,29 @@ Rectangle {
 
     property var mapControl
 
+    Connections {
+        target: batteryDetectTimer
+        onBatteryValueChanged: {
+            batteryValueItem[vehicleIndex].setValueText(
+               "%1(%2)"
+               .arg(voltage.toFixed(1))
+               .arg(percentage.toFixed(0)))
+        }
+    }
+
     function isConnectedIndex(index) {
         return index >= 0 && index < 4 && vehicles.get(index) !== null
     }
 
     function isValidIndex(index) {
         return index >= 0 && index < 4
+    }
+
+    function getGpsStr(idx) {
+        if (isConnectedIndex(idx)) {
+            return vehicles.get(idx).gps.count.rawValue
+        }
+        return "0"
     }
 
     function getAirSpeedStr(idx) {
@@ -58,9 +75,9 @@ Rectangle {
     }
 
     function getAltitudeStr(idx) {
-        var altitudeStr = "0"
+        var altitudeStr = "0.0"
         if (isConnectedIndex(idx)) {
-            altitudeStr = vehicles.get(idx).gps.count.rawValue
+            altitudeStr = vehicles.get(idx).altitudeRelative.rawValue.toFixed(1)
         }
         return "%1 m".arg(altitudeStr)
     }
@@ -104,63 +121,63 @@ Rectangle {
                 Loader {
                     sourceComponent: headerColNameComponent
                     onLoaded: {
-                        item.colIndex = 0
+                        item.colIndex = eVehicle
                         item.colName = Qt.binding(function() { return qsTr("Vehicle") })
                     }
                 }
                 Loader {
                     sourceComponent: headerColNameComponent
                     onLoaded: {
-                        item.colIndex = 1
+                        item.colIndex = eTakeOff
                         item.colName = Qt.binding(function() { return qsTr("Take-off Time") })
                     }
                 }
                 Loader {
                     sourceComponent: headerColNameComponent
                     onLoaded: {
-                        item.colIndex = 2
-                        item.colName = Qt.binding(function() { return qsTr("Conn. Status") })
+                        item.colIndex = eConnection
+                        item.colName = Qt.binding(function() { return qsTr("Connnection") })
                     }
                 }
                 Loader {
                     sourceComponent: headerColNameComponent
                     onLoaded: {
-                        item.colIndex = 3
-                        item.colName = Qt.binding(function() { return qsTr("Sat. Signal") })
+                        item.colIndex = eSatellite
+                        item.colName = Qt.binding(function() { return qsTr("GPS") })
                     }
                 }
                 Loader {
                     sourceComponent: headerColNameComponent
                     onLoaded: {
-                        item.colIndex = 4
+                        item.colIndex = eBattery
                         item.colName = Qt.binding(function() { return qsTr("Battery") })
                     }
                 }
                 Loader {
                     sourceComponent: headerColNameComponent
                     onLoaded: {
-                        item.colIndex = 5
+                        item.colIndex = eVelocity
                         item.colName = Qt.binding(function() { return qsTr("Air Speed") })
                     }
                 }
                 Loader {
                     sourceComponent: headerColNameComponent
                     onLoaded: {
-                        item.colIndex = 6
+                        item.colIndex = eAltitude
                         item.colName = Qt.binding(function() { return qsTr("Altitude") })
                     }
                 }
                 Loader {
                     sourceComponent: headerColNameComponent
                     onLoaded: {
-                        item.colIndex = 7
+                        item.colIndex = ePosition
                         item.colName = Qt.binding(function() { return qsTr("Current Position") })
                     }
                 }
                 Loader {
                     sourceComponent: headerColNameComponent
                     onLoaded: {
-                        item.colIndex = 8
+                        item.colIndex = eProgress
                         item.colName = Qt.binding(function() { return qsTr("Progress") })
                     }
                 }
@@ -192,6 +209,10 @@ Rectangle {
                         anchors.centerIn: parent
                         text: valueText
                     }
+
+                    function setValueText(value) {
+                        valueText = value
+                    }
                 }
             }
 
@@ -199,35 +220,35 @@ Rectangle {
                 Loader {
                     sourceComponent: valueComponent
                     onLoaded: {
-                        item.colIndex = 0
+                        item.colIndex = eVehicle
                         item.valueText = Qt.binding(function() { return "UAV %1".arg(index) })
                     }
                 }
                 Loader {
                     sourceComponent: valueComponent
                     onLoaded: {
-                        item.colIndex = 1
+                        item.colIndex = eTakeOff
                         item.valueText = Qt.binding(function() { return isConnectedIndex(index) ? "" : "" })
                     }
                 }
                 Loader {
                     sourceComponent: valueComponent
                     onLoaded: {
-                        item.colIndex = 2
+                        item.colIndex = eConnection
                         item.valueText = Qt.binding(function() { return isConnectedIndex(index) ? "ON" : "OFF" })
                     }
                 }
                 Loader {
                     sourceComponent: valueComponent
                     onLoaded: {
-                        item.colIndex = 3
-                        item.valueText = Qt.binding(function() { return isConnectedIndex(index) ? vehicles.get(index).gps.count.rawValue : "0" })
+                        item.colIndex = eSatellite
+                        item.valueText = Qt.binding(function() { return getGpsStr(index) })
                     }
                 }
                 Loader {
                     sourceComponent: valueComponent
                     onLoaded: {
-                        item.colIndex = 4
+                        item.colIndex = eBattery
                         item.valueText = "0.0(0)"
                         root.batteryValueItem[index] = item
                     }
@@ -235,14 +256,14 @@ Rectangle {
                 Loader {
                     sourceComponent: valueComponent
                     onLoaded: {
-                        item.colIndex = 5
+                        item.colIndex = eVelocity
                         item.valueText = Qt.binding(function() { return getAirSpeedStr(index) })
                     }
                 }
                 Loader {
                     sourceComponent: valueComponent
                     onLoaded: {
-                        item.colIndex = 6
+                        item.colIndex = eAltitude
                         item.valueText = Qt.binding(function() { return getAltitudeStr(index) })
                     }
                 }
@@ -250,7 +271,7 @@ Rectangle {
                     id: locationLoader
                     sourceComponent: valueComponent
                     onLoaded: {
-                        item.colIndex = 7
+                        item.colIndex = ePosition
                         item.valueText = Qt.binding(function() { return getLocationStr(index) })
 
                         Qt.createQmlObject(`
@@ -282,7 +303,7 @@ Rectangle {
                 Loader {
                     sourceComponent: valueComponent
                     onLoaded: {
-                        item.colIndex = 8
+                        item.colIndex = eProgress
                         item.valueText = Qt.binding(function() { return isConnectedIndex(index) ? "" : "" })
                     }
                 }

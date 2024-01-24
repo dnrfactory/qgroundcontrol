@@ -43,7 +43,7 @@ Item {
 
     Row {
         id: bottomPanel
-        height: ScreenTools.defaultFontPixelWidth * 30
+        height: ScreenTools.defaultFontPixelWidth * 40
         anchors.bottom: parent.bottom
 
         property real divideLineThickness: 2

@@ -101,7 +101,7 @@ QGCListView {
                     font.pointSize: ScreenTools.mediumFontPointSize
                     font.bold: true
                     color: "black"
-                    leftPadding: 20
+                    leftPadding: 10
                 }
             }
             Rectangle {
@@ -128,13 +128,13 @@ QGCListView {
                                 font.bold: true
                                 color: "white"
                                 topPadding: 10
-                                leftPadding: 20
+                                leftPadding: 10
                             }
                             Text {
                                 text: nameText
                                 font.pointSize: ScreenTools.defaultFontPointSize
                                 color: "white"
-                                leftPadding: 20
+                                leftPadding: 10
                             }
                         }
 
@@ -151,7 +151,7 @@ QGCListView {
                             item.valueText = Qt.binding(function() {
                                 return isConnectedIndex(index) ? "ONLINE" : "OFFLINE"
                             })
-                            item.nameText = Qt.binding(function() { return qsTr("Connect status") })
+                            item.nameText = Qt.binding(function() { return qsTr("Connection") })
                         }
                     }
                     Loader {
@@ -181,7 +181,7 @@ QGCListView {
                         onLoaded: {
                             item.valueText = Qt.binding(function() {
                                 return isConnectedIndex(index) ?
-                                       vehicles.get(index).altitudeAboveTerr.rawValue.toFixed(0) : "0"
+                                       vehicles.get(index).altitudeRelative.rawValue.toFixed(1) : "0.0"
                             })
                             item.nameText = Qt.binding(function() { return qsTr("Altitude(m)") })
                         }
@@ -193,7 +193,7 @@ QGCListView {
                                 return isConnectedIndex(index) ?
                                        vehicles.get(index).gps.count.rawValue : "0"
                             })
-                            item.nameText = Qt.binding(function() { return qsTr("Satellite Signal") })
+                            item.nameText = Qt.binding(function() { return qsTr("GPS") })
                         }
                     }
                 }
