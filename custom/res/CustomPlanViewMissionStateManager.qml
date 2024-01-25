@@ -93,7 +93,9 @@ Item {
             processMissionEditEvent(eEventMissionEditResetButtonClicked)
             planMasterController.loadFromFile(filePath)
             planMasterController.fitViewportToItems()
-            missionController.setCurrentPlanViewSeqNum(0, true)
+            if (missionController.missionItemCount === 1) {
+                missionController.setCurrentPlanViewSeqNum(0, true)
+            }
         }
     }
 
@@ -272,7 +274,7 @@ Item {
                 break;
             case eMissionEditWayPointAdd:
             case eMissionEditMapControl:
-                if (missionController.getCorridorScanComplexItemIndex() == -1) {
+                if (missionController.getCorridorScanComplexItemIndex() === -1) {
                     planMasterController.planCreators.get(eCorridorScan).createPlan(mapCenter())
                 }
                 break;
@@ -280,6 +282,12 @@ Item {
             missionController.setCurrentPlanViewSeqNum(missionController.getCorridorScanComplexItemSeqNum(), true)
             break;
         case eMissionEditMapControl:
+            if (missionController.currentPlanViewSeqNum === 0) {
+                var takeoffMissionItem = missionController.takeoffMissionItem
+                if (takeoffMissionItem !== null) {
+                    missionController.setCurrentPlanViewSeqNum(takeoffMissionItem.sequenceNumber, true)
+                }
+            }
             break;
         }
 
@@ -311,7 +319,9 @@ Item {
                 else {
                     planMasterController.loadFromFile(filePath)
                     planMasterController.fitViewportToItems()
-                    missionController.setCurrentPlanViewSeqNum(0, true)
+                    if (missionController.missionItemCount === 1) {
+                        missionController.setCurrentPlanViewSeqNum(0, true)
+                    }
                 }
             }
         }

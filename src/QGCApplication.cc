@@ -84,6 +84,7 @@
 #include "QGCCameraManager.h"
 #include "CameraCalc.h"
 #include "VisualMissionItem.h"
+#include "TakeoffMissionItem.h"
 #include "EditPositionDialogController.h"
 #include "FactValueSliderListModel.h"
 #include "ShapeFileHelper.h"
@@ -474,6 +475,7 @@ void QGCApplication::_initCommon()
 
     qmlRegisterUncreatableType<MissionItem>         (kQGroundControl,                       1, 0, "MissionItem",                kRefOnly);
     qmlRegisterUncreatableType<VisualMissionItem>   (kQGroundControl,                       1, 0, "VisualMissionItem",          kRefOnly);
+    qmlRegisterUncreatableType<TakeoffMissionItem>  (kQGroundControl,                       1, 0, "TakeoffMissionItem",         kRefOnly);
     qmlRegisterUncreatableType<FlightPathSegment>   (kQGroundControl,                       1, 0, "FlightPathSegment",          kRefOnly);
     qmlRegisterUncreatableType<QmlObjectListModel>  (kQGroundControl,                       1, 0, "QmlObjectListModel",         kRefOnly);
     qmlRegisterUncreatableType<MissionCommandTree>  (kQGroundControl,                       1, 0, "MissionCommandTree",         kRefOnly);
