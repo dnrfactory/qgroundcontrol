@@ -78,6 +78,7 @@ MapQuickItem {
             anchors.fill: vehicleIcon
             source: vehicleIcon
             color: vehicle ? vehicle.mapItemColor : "tranparent"
+            visible: _adsbVehicle === false
         }
 
         QGCMapLabel {
