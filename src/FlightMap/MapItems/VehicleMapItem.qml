@@ -73,11 +73,14 @@ MapQuickItem {
                 origin.y:       vehicleIcon.height / 2
                 angle:          isNaN(heading) ? 0 : heading
             }
+            visible: colorOverlay.visible === false
         }
         ColorOverlay {
+            id: colorOverlay
             anchors.fill: vehicleIcon
             source: vehicleIcon
             color: vehicle ? vehicle.mapItemColor : "tranparent"
+            transform: vehicleIcon.transform
             visible: _adsbVehicle === false
         }
 
