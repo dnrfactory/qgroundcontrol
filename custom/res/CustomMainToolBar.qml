@@ -91,11 +91,8 @@ Rectangle {
             Layout.preferredWidth:  parent.height
             text:                   "Setting"
             icon.source:            "/res/custom/img/TitleBarVehicleSetting"
-            onPressed: checked = true
-            onReleased: checked = false
-            onHoveredChanged: checked = false
-
-            onClicked: mainWindow.showToolSelectDialog()
+            checkable:              false
+            onClicked:              mainWindow.showToolSelectDialog()
         }
     }
 

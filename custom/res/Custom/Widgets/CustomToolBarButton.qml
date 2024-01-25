@@ -27,11 +27,18 @@ Button {
     readonly property real _mainToolBarButtonIconHeight: ScreenTools.toolbarHeight - ScreenTools.defaultFontPixelWidth * 3.5 - _mainToolBarButtonSpacing // mainToolBarButtonIconHeight :    52
     readonly property real _mainToolBarButtonSpacing: 5                                                                                                 // _mainToolBarButtonSpacing :       5
     readonly property real _mainToolBarButtonFontSize: ScreenTools.defaultFontPixelWidth * 1.5                                                          // _mainToolBarButtonFontSize :     12
+    readonly property color pressedColor: "cadetblue"
 
     background: Rectangle {
         anchors.fill:   parent
-        color: button.checked ? qgcPal.button : Qt.rgba(0,0,0,0)
+        color: button.pressed ? pressedColor : (button.checked ? qgcPal.button : Qt.rgba(0,0,0,0))
         radius: ScreenTools.defaultFontPixelWidth
+
+        Behavior on color {
+            ColorAnimation {
+                duration: 200
+            }
+        }
     }
 
     contentItem: Column {
