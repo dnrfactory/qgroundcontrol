@@ -24,6 +24,7 @@ Row {
     readonly property real panelMargin: 2
 
     property var mapControl
+    property bool isMultiVehicleMode
 
     spacing: 0
 
@@ -44,6 +45,7 @@ Row {
         id: customArmPanel
         height: parent.height
         width: parent.width * 0.1 - panelMargin
+        isMultiVehicleMode: root.isMultiVehicleMode
     }
     Rectangle { width: panelMargin; height: parent.height; color: "white"; opacity: 0.8 }
     Rectangle {
@@ -87,6 +89,7 @@ Row {
                 PhotoVideoControl {
                     anchors.centerIn: parent
                     width: parent.width
+                    height: parent.height
                     visible: true
                 }
             }

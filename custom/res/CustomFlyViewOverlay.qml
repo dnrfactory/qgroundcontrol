@@ -36,6 +36,7 @@ Item {
     property var parentToolInsets               // These insets tell you what screen real estate is available for positioning the controls in your overlay
     property var totalToolInsets:   _toolInsets // These are the insets for your custom overlay additions
     property var mapControl
+    property bool isMultiVehicleMode: vehicleListControlPanel.currentIndex === 1
 
     // since this file is a placeholder for the custom layer in a standard build, we will just pass through the parent insets
     QGCToolInsets {
@@ -63,28 +64,34 @@ Item {
         color: qgcPal.window
         opacity: 0.8
 
+        property int currentIndex: 0
+
         Row {
             anchors.centerIn: parent
             spacing: vehicleListControlPanel.width * 0.1
-            QGCButton {
+            CustomButton {
                 id: vehicleListControlSingleButton
                 width: vehicleListControlPanel.width * 0.4
                 height: vehicleListControlPanel.height * 0.6
                 backRadius: 10
                 text: qsTr("Single")
                 pointSize: ScreenTools.mediumFontPointSize
+                isSelected: vehicleListControlPanel.currentIndex === 0
                 onClicked: {
                     console.log("Single Button clicked")
+                    vehicleListControlPanel.currentIndex = 0
                 }
             }
-            QGCButton {
+            CustomButton {
                 width: vehicleListControlSingleButton.width
                 height: vehicleListControlSingleButton.height
                 backRadius: vehicleListControlSingleButton.backRadius
                 text: qsTr("Multi")
                 pointSize: ScreenTools.mediumFontPointSize
+                isSelected: vehicleListControlPanel.currentIndex === 1
                 onClicked: {
                     console.log("Multi Button clicked")
+                    vehicleListControlPanel.currentIndex = 1
                 }
             }
         }
@@ -105,5 +112,6 @@ Item {
         id: bottomWidget
         anchors.bottom: parent.bottom
         mapControl: _root.mapControl
+        isMultiVehicleMode: _root.isMultiVehicleMode
     }
 }

@@ -30,9 +30,7 @@ Rectangle {
     readonly property int planViewToolbar:  1
     readonly property int simpleToolbar:    2
 
-    property var    _activeVehicle:     QGroundControl.multiVehicleManager.activeVehicle
-    property bool   _communicationLost: _activeVehicle ? _activeVehicle.vehicleLinkManager.communicationLost : false
-    property color  _mainStatusBGColor: qgcPal.brandingPurple
+    property var _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
 
     //    toolbarHeight: defaultFontPixelHeight * 3 * 1.5                                                                       // mainToolBarRowLayoutTopMargin    : 81
     readonly property int _mainToolBarRowLayoutHeight:       ScreenTools.toolbarHeight - _mainToolBarRowLayoutTopMargin * 2 // mainToolBarRowLayoutHeight       : 73
@@ -44,12 +42,7 @@ Rectangle {
     property int rebootCount: 0
 
     function dropMessageIndicatorTool() {
-        if (currentToolbar === flyViewToolbar) {
-            indicatorLoader.item.dropMessageIndicatorTool();
-        }
     }
-
-    QGCPalette { id: qgcPal }
 
     RowLayout {
         id:                     viewButtonRow
@@ -76,7 +69,6 @@ Rectangle {
             ButtonGroup.group:      toolbarButtonGroup
             onClicked:              mainWindow.showFlyView()
         }
-
         CustomToolBarButton {
             Layout.preferredHeight: parent.height
             Layout.preferredWidth:  parent.height
@@ -85,7 +77,6 @@ Rectangle {
             ButtonGroup.group:      toolbarButtonGroup
             onClicked:              mainWindow.showPlanView()
         }
-
         CustomToolBarButton {
             Layout.preferredHeight: parent.height
             Layout.preferredWidth:  parent.height

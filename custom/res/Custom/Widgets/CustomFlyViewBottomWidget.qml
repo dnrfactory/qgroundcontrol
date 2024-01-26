@@ -49,6 +49,7 @@ Item {
     property real   _statusTextFontSize:    ScreenTools.mediumFontPointSize
 
     property var mapControl
+    property bool isMultiVehicleMode
 
     function formatMessage(message) {
         message = message.replace(new RegExp("<#E>", "g"), "color: " + qgcPal.warningText + "; font: " + (ScreenTools.defaultFontPointSize.toFixed(0) - 1) + "pt monospace;");
@@ -99,6 +100,7 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
             mapControl: _root.mapControl
+            isMultiVehicleMode: _root.isMultiVehicleMode
         }
         CustomFlyViewFlightStatusWidget {
             Layout.fillWidth: true

@@ -30,13 +30,13 @@ import QGroundControl.Vehicle       1.0
 Rectangle {
     id: root
 
+    property bool isMultiVehicleMode
+
     property real  _bottomPanelTopPadding: 20
     property real  _bottomPanelMargin: 20
-    
-    property var    _activeVehicle:         QGroundControl.multiVehicleManager.activeVehicle
-    property color  _statusTextColor:       "white"
-    property real   _statusTextFontSize:    ScreenTools.mediumFontPointSize
-    
+
+    property var   _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+
     height:                 _bottomPanelHeight
     width:                  (_bottomPanelWidth/2 - 4)
     color:                  qgcPal.window
@@ -52,70 +52,87 @@ Rectangle {
     }
 
     Column {
-        spacing:            _bottomPanelTopPadding/2
+        spacing: _bottomPanelTopPadding/2
         anchors.centerIn: parent
-        anchors.margins:    _bottomPanelMargin
+        anchors.margins: _bottomPanelMargin
 
         QGCLabel{
             id :                        customStatusLabel
-            text:                       customMainStatusText()
-            font.pointSize:             _statusTextFontSize
+            text:                       mainStatusTextArray[mainStatus]
+            font.pointSize:             ScreenTools.mediumFontPointSize
             font.bold :                 true
-            color:                      _statusTextColor
+            color:                      mainStatusColorArray[mainStatus]
             anchors.horizontalCenter:   parent.horizontalCenter
 
+            property string _commLostText:       qsTr("Communication Lost")
+            property string _readyToFlyText:     qsTr("Ready To Fly")
+            property string _notReadyToFlyText:  qsTr("Not Ready")
+            property string _disconnectedText:   qsTr("Disconnected")
+            property string _armedText:          qsTr("Armed")
+            property string _flyingText:         qsTr("Flying")
+            property string _waitingText:        qsTr("Waiting")
 
-            property string _commLostText:      qsTr("Communication Lost")
-            property string _readyToSailText:   qsTr("Ready To Sail")
-            property string _notReadyToSailText: qsTr("Not Ready")
-            property string _disconnectedText:  qsTr("Disconnected")
-            property string _armedText:         qsTr("Armed")
-            property string _sailingText:       qsTr("Sailing")
-            property string _waitingText:       qsTr("Waiting")
+            property int mainStatus: getMainStatus()
 
-            function customMainStatusText() {
-                if (_activeVehicle) {
-                    if (_communicationLost) {
-                        _statusTextColor = "red"
-                        _statusTextFontSize = ScreenTools.defaultFontPointSize
-                        return customStatusLabel._commLostText
-                    }
-                    if (_activeVehicle.armed) {
-                        _statusTextColor = "green"
-                        _statusTextFontSize = ScreenTools.mediumFontPointSize
-                        if (_activeVehicle.flying) {
-                            return customStatusLabel._sailingText
-                        } else if (_activeVehicle.landing) {
-                            return customStatusLabel._waitingText
-                        } else {
-                            return customStatusLabel._armedText
-                        }
-                    } else {
-                        _statusTextFontSize = ScreenTools.mediumFontPointSize
-                        if (_activeVehicle.readyToFlyAvailable) {
-                            if (_activeVehicle.readyToFly) {
-                                _statusTextColor = "green"
-                                return customStatusLabel._readyToSailText
-                            } else {
-                                _statusTextColor = "yellow"
-                                return customStatusLabel._notReadyToSailText
-                            }
-                        } else {
-                            // Best we can do is determine readiness based on AutoPilot component setup and health indicators from SYS_STATUS
-                            if (_activeVehicle.allSensorsHealthy && _activeVehicle.autopilot.setupComplete) {
-                                _statusTextColor = "green"
-                                return customStatusLabel._readyToSailText
-                            } else {
-                                _statusTextColor = "yellow"
-                                return customStatusLabel._notReadyToSailText
-                            }
-                        }
-                    }
-                } else {
-                    _statusTextColor = "gray"
-                    _statusTextFontSize = ScreenTools.mediumFontPointSize
-                    return customStatusLabel._disconnectedText
+            readonly property int eMainStatusCommLost: 0
+            readonly property int eMainStatusReadyToFly: 1
+            readonly property int eMainStatusNotReadyToFly: 2
+            readonly property int eMainStatusDisconnected: 3
+            readonly property int eMainStatusArmed: 4
+            readonly property int eMainStatusFlying: 5
+            readonly property int eMainStatusWaiting: 6
+
+            readonly property var mainStatusTextArray: [
+                qsTr("Communication Lost"),
+                qsTr("Ready To Fly"),
+                qsTr("Not Ready"),
+                qsTr("Disconnected"),
+                qsTr("Armed"),
+                qsTr("Flying"),
+                qsTr("Waiting")
+            ]
+            readonly property var mainStatusColorArray: [
+                "red",
+                "green",
+                "yellow",
+                "gray",
+                "green",
+                "green",
+                "green"
+            ]
+
+            function getMainStatus() {
+                if (_activeVehicle === null || _activeVehicle === undefined) {
+                    return eMainStatusDisconnected
                 }
+
+                if (_communicationLost) {
+                    return eMainStatusCommLost
+                }
+
+                if (_activeVehicle.armed) {
+                    if (_activeVehicle.flying) {
+                        return eMainStatusFlying
+                    }
+                    if (_activeVehicle.landing) {
+                        return eMainStatusWaiting
+                    }
+                    return eMainStatusArmed
+                }
+
+                if (_activeVehicle.readyToFlyAvailable) {
+                    if (_activeVehicle.readyToFly) {
+                        return eMainStatusReadyToFly
+                    }
+                    return eMainStatusNotReadyToFly
+                }
+                // Best we can do is determine readiness based on
+                // AutoPilot component setup and health indicators from SYS_STATUS
+                if (_activeVehicle.allSensorsHealthy
+                    && _activeVehicle.autopilot.setupComplete) {
+                    return eMainStatusReadyToFly
+                }
+                return eMainStatusNotReadyToFly
             }
         }
 
@@ -128,28 +145,28 @@ Rectangle {
             enabled: _activeVehicle
 
             Rectangle{
-                id:roundRectangle
+                id: roundRectangle
                 width: parent.width * 0.8
-                height:parent.height * 0.5
+                height: parent.height * 0.5
                 radius: height
                 color: "white"
                 anchors.centerIn: parent
 
                 QGCLabel{
-                    text:           qsTr("ON")
+                    text: qsTr("ON")
                     font.pointSize: ScreenTools.mediumFontPointSize
-                    font.bold :     true
-                    color : switchCirle.state == "disActiveVehicle" ? "gray" : "black"
+                    font.bold: true
+                    color: switchCirle.state == "disActiveVehicle" ? "gray" : "black"
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.leftMargin: 7
                 }
 
                 QGCLabel{
-                    text:           qsTr("OFF")
+                    text: qsTr("OFF")
                     font.pointSize: ScreenTools.mediumFontPointSize
-                    font.bold :     true
-                    color : switchCirle.state == "disActiveVehicle" ? "gray" : "black"
+                    font.bold: true
+                    color: switchCirle.state == "disActiveVehicle" ? "gray" : "black"
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.rightMargin: 7
@@ -165,7 +182,6 @@ Rectangle {
                 state : "leftOff"
 
                 states:[
-
                     State {
                         name: "disActiveVehicle"
                         PropertyChanges {
@@ -205,21 +221,24 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
 
-                readonly property int actionArm: 4
-                readonly property int actionDisarm: 5
-                readonly property int actionStartMission: 12
-                readonly property int actionResumeMission: 14
+                readonly property int actionArm:                        4
+                readonly property int actionDisarm:                     5
+                readonly property int actionStartMission:               12
+                readonly property int actionResumeMission:              14
+                readonly property int actionPause:                      17
+                readonly property int actionMVPause:                    18
+                readonly property int actionMVStartMission:             19
 
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
 
                 onClicked: {
-                    switchCirle.state == "leftOff" ? _guidedController.executeAction(actionArm) : _guidedController.executeAction(actionDisarm)
+                    _guidedController.executeAction(switchCirle.state == "leftOff" ? actionArm : actionDisarm)
                 }
             }
         }
 
-        QGCButton {
+        CustomButton {
             width: root.width * 0.8
             height: width / 3
             backRadius: 10
@@ -232,7 +251,7 @@ Rectangle {
             }
         }
 
-        QGCButton {
+        CustomButton {
             width: root.width * 0.8
             height: width / 3
             backRadius: 10
