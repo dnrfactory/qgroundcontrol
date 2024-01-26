@@ -226,9 +226,6 @@ void CustomPlugin::paletteOverride(QString colorName, QGCPalette::PaletteColorIn
     if (colorName == QStringLiteral("window")) {
         colorInfo[QGCPalette::Dark][QGCPalette::ColorGroupEnabled]   = QColor("#161C41");
     }
-    else if (colorName == QStringLiteral("windowShade")) {
-        colorInfo[QGCPalette::Dark][QGCPalette::ColorGroupEnabled]   = QColor("#313A70");
-    }
     else if (colorName == QStringLiteral("button")) {
         colorInfo[QGCPalette::Dark][QGCPalette::ColorGroupEnabled]   = QColor("#313A70");
         colorInfo[QGCPalette::Dark][QGCPalette::ColorGroupDisabled]  = QColor("darkgrey");
