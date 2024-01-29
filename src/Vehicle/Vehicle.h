@@ -300,6 +300,7 @@ public:
     Q_PROPERTY(Fact* altitudeTuningSetpoint READ altitudeTuningSetpoint CONSTANT)
     Q_PROPERTY(Fact* xTrackError        READ xTrackError        CONSTANT)
     Q_PROPERTY(Fact* rangeFinderDist    READ rangeFinderDist    CONSTANT)
+    Q_PROPERTY(Fact* flightTime         READ flightTime         CONSTANT)
     Q_PROPERTY(Fact* flightDistance     READ flightDistance     CONSTANT)
     Q_PROPERTY(Fact* distanceToHome     READ distanceToHome     CONSTANT)
     Q_PROPERTY(Fact* timeToHome         READ timeToHome         CONSTANT)
@@ -696,6 +697,7 @@ public:
     Fact* altitudeTuningSetpoint            () { return &_altitudeTuningSetpointFact; }
     Fact* xTrackError                       () { return &_xTrackErrorFact; }
     Fact* rangeFinderDist                   () { return &_rangeFinderDistFact; }
+    Fact* flightTime () { return &_flightTimeFact; }
     Fact* flightDistance                    () { return &_flightDistanceFact; }
     Fact* distanceToHome                    () { return &_distanceToHomeFact; }
     Fact* timeToHome                        () { return &_timeToHomeFact; }

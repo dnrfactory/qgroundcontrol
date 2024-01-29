@@ -37,6 +37,34 @@ Rectangle {
         return index >= 0 && index < 4 && vehicles.get(index) !== null
     }
 
+    function getFlightTime(index) {
+        var timeStr = "00:00:00"
+        if (isConnectedIndex(index)) {
+            var vehicle = vehicles.get(index)
+
+            var seconds = vehicle.flightTime.rawValue.toFixed(0)
+            var hours = Math.floor(seconds / 3600)
+            var minutes = Math.floor((seconds % 3600) / 60);
+            var remainingSeconds = seconds % 60;
+
+            var hStr = hours < 10 ? "0" + hours : hours
+            var mStr = minutes < 10 ? "0" + minutes : minutes
+            var sStr = remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds
+
+            timeStr = hStr + ":" + mStr + ":" + sStr
+        }
+        return timeStr
+    }
+
+    function getFlightDistance(index) {
+        var distance = "0.0"
+        if (isConnectedIndex(index)) {
+            var vehicle = vehicles.get(index)
+            var distance = vehicle.flightDistance.rawValue.toFixed(1)
+        }
+        return "%1 m".arg(distance)
+    }
+
     QGCListView {
         id: listView
         anchors.fill: parent
@@ -131,14 +159,14 @@ Rectangle {
                     sourceComponent: valueComponent
                     onLoaded: {
                         item.colIndex = 1
-                        item.valueText = Qt.binding(function() { return isConnectedIndex(index) ? "" : "" })
+                        item.valueText = Qt.binding(function() { return getFlightTime(index) })
                     }
                 }
                 Loader {
                     sourceComponent: valueComponent
                     onLoaded: {
                         item.colIndex = 2
-                        item.valueText = Qt.binding(function() { return isConnectedIndex(index) ? "" : "" })
+                        item.valueText = Qt.binding(function() { return getFlightDistance(index) })
                     }
                 }
                 Loader {
