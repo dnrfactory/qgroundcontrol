@@ -166,57 +166,73 @@ Rectangle {
                         );
                     }
                 }
-                Loader {
-                    id: fligthVideoLoader
-                    sourceComponent: valueComponent
-                    onLoaded: {
-                        item.colIndex = 4
-                        item.valueText = Qt.binding(function() { return isConnectedIndex(index) ? "" : "" })
+                Item {
+                    id: fligthVideoItem
+                    property string valueText
+                    property int colIndex: 4
 
-                        Qt.createQmlObject(`
-                            import QGroundControl.Controls 1.0
+                    height: root.height / 5
+                    width: listView.width * itemWidthRatio[colIndex]
 
-                            QGCButton {
-                                anchors.right: parent.right
-                                anchors.verticalCenter: parent.verticalCenter
-                                anchors.rightMargin: 170
-                                width: 60
-                                height: parent.height * 0.5
-                                backRadius: 4
-                                text: qsTr("Folder")
-                                enabled: isConnectedIndex(index)
-                                onClicked: {
-                                    console.log("FlightVideo Folder Button clicked")
-                                }
+                    Row {
+                        anchors.verticalCenter: parent.verticalCenter
+                        padding: 20
+                        layoutDirection: Qt.RightToLeft
+                        width: parent.width
+
+                        spacing: 10
+
+                        QGCButton {
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: 60
+                            height: fligthVideoItem.height * 0.5
+                            backRadius: 4
+                            text: qsTr("Play")
+                            onClicked: {
+                                console.log("FlightVideo Play Button clicked")
                             }
-                            `,
-                            fligthVideoLoader,
-                            ""
-                        );
+                        }
 
-                        Qt.createQmlObject(`
-                            import QGroundControl.Controls 1.0
+                        QGCButton {
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: 60
+                            height: fligthVideoItem.height * 0.5
+                            backRadius: 4
+                            text: qsTr("Folder")
+                            onClicked: {
+                                console.log("FlightVideo Folder Button clicked")
 
-                            QGCButton {
-                                anchors.right: parent.right
-                                anchors.verticalCenter: parent.verticalCenter
-                                anchors.rightMargin: 100
-                                width: 60
-                                height: parent.height * 0.5
-                                backRadius: 4
-                                text: qsTr("Play")
-                                enabled: isConnectedIndex(index)
-                                onClicked: {
-                                    console.log("FlightVideo Play Button clicked")
-                                }
+                                fileDialog.openForLoad()
+                                fileDialog.acceptedForLoad.connect(onAcceptedForLoad)
                             }
-                            `,
-                            fligthVideoLoader,
-                            ""
-                        );
+                            function onAcceptedForLoad(file) {
+                                console.log(file)
+                                videoPathLabel.text = file
+                            }
+                        }
+
+                        QGCLabel {
+                            id: videoPathLabel
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: fligthVideoItem.width
+                            height: fligthVideoItem.height
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignRight
+                            text: ""
+                        }
                     }
                 }
             }
         }
+    }
+
+    QGCFileDialog {
+        id: fileDialog
+        title: qsTr("Choose the Flight video file")
+        folder: QGroundControl.settingsManager.appSettings.videoSavePath
+        selectExisting: true
+        selectFolder: false
+        onAcceptedForLoad: console.log(file)
+        nameFilters: ["Video files (*.mkv *.mov *.mp4)"]
     }
 }
