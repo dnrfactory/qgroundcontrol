@@ -37,6 +37,24 @@ Rectangle {
 
     property var   _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
 
+    readonly property int actionArm:                        4
+    readonly property int actionDisarm:                     5
+    readonly property int actionStartMission:               12
+    readonly property int actionResumeMission:              14
+    readonly property int actionPause:                      17
+    readonly property int actionMVPause:                    18
+    readonly property int actionMVStartMission:             19
+
+    readonly property int eMainStatusCommLost: 0
+    readonly property int eMainStatusReadyToFly: 1
+    readonly property int eMainStatusNotReadyToFly: 2
+    readonly property int eMainStatusDisconnected: 3
+    readonly property int eMainStatusArmed: 4
+    readonly property int eMainStatusFlying: 5
+    readonly property int eMainStatusWaiting: 6
+
+    property int mainStatus: getMainStatus()
+
     height:                 _bottomPanelHeight
     width:                  (_bottomPanelWidth/2 - 4)
     color:                  qgcPal.window
@@ -49,6 +67,40 @@ Rectangle {
     property bool _vehicleArmed: _activeVehicle ? _activeVehicle.armed : false
     on_VehicleArmedChanged: {
         _vehicleArmed ? switchCirle.state = "rightOn" : switchCirle.state = "leftOff"
+    }
+
+    function getMainStatus() {
+        if (_activeVehicle === null || _activeVehicle === undefined) {
+            return eMainStatusDisconnected
+        }
+
+        if (_communicationLost) {
+            return eMainStatusCommLost
+        }
+
+        if (_activeVehicle.armed) {
+            if (_activeVehicle.flying) {
+                return eMainStatusFlying
+            }
+            if (_activeVehicle.landing) {
+                return eMainStatusWaiting
+            }
+            return eMainStatusArmed
+        }
+
+        if (_activeVehicle.readyToFlyAvailable) {
+            if (_activeVehicle.readyToFly) {
+                return eMainStatusReadyToFly
+            }
+            return eMainStatusNotReadyToFly
+        }
+        // Best we can do is determine readiness based on
+        // AutoPilot component setup and health indicators from SYS_STATUS
+        if (_activeVehicle.allSensorsHealthy
+            && _activeVehicle.autopilot.setupComplete) {
+            return eMainStatusReadyToFly
+        }
+        return eMainStatusNotReadyToFly
     }
 
     Column {
@@ -72,16 +124,6 @@ Rectangle {
             property string _flyingText:         qsTr("Flying")
             property string _waitingText:        qsTr("Waiting")
 
-            property int mainStatus: getMainStatus()
-
-            readonly property int eMainStatusCommLost: 0
-            readonly property int eMainStatusReadyToFly: 1
-            readonly property int eMainStatusNotReadyToFly: 2
-            readonly property int eMainStatusDisconnected: 3
-            readonly property int eMainStatusArmed: 4
-            readonly property int eMainStatusFlying: 5
-            readonly property int eMainStatusWaiting: 6
-
             readonly property var mainStatusTextArray: [
                 qsTr("Communication Lost"),
                 qsTr("Ready To Fly"),
@@ -100,40 +142,6 @@ Rectangle {
                 "green",
                 "green"
             ]
-
-            function getMainStatus() {
-                if (_activeVehicle === null || _activeVehicle === undefined) {
-                    return eMainStatusDisconnected
-                }
-
-                if (_communicationLost) {
-                    return eMainStatusCommLost
-                }
-
-                if (_activeVehicle.armed) {
-                    if (_activeVehicle.flying) {
-                        return eMainStatusFlying
-                    }
-                    if (_activeVehicle.landing) {
-                        return eMainStatusWaiting
-                    }
-                    return eMainStatusArmed
-                }
-
-                if (_activeVehicle.readyToFlyAvailable) {
-                    if (_activeVehicle.readyToFly) {
-                        return eMainStatusReadyToFly
-                    }
-                    return eMainStatusNotReadyToFly
-                }
-                // Best we can do is determine readiness based on
-                // AutoPilot component setup and health indicators from SYS_STATUS
-                if (_activeVehicle.allSensorsHealthy
-                    && _activeVehicle.autopilot.setupComplete) {
-                    return eMainStatusReadyToFly
-                }
-                return eMainStatusNotReadyToFly
-            }
         }
 
         Rectangle {
@@ -221,14 +229,6 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
 
-                readonly property int actionArm:                        4
-                readonly property int actionDisarm:                     5
-                readonly property int actionStartMission:               12
-                readonly property int actionResumeMission:              14
-                readonly property int actionPause:                      17
-                readonly property int actionMVPause:                    18
-                readonly property int actionMVStartMission:             19
-
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
 
@@ -239,15 +239,106 @@ Rectangle {
         }
 
         CustomButton {
+            id: btnMissionStartPause
+            readonly property int eBtnStateDisabled: 0
+            readonly property int eBtnStateStartMission: 1
+            readonly property int eBtnStatePause: 2
+            readonly property int eBtnStateResume: 3
+            readonly property int eBtnStateDiconnect: 4
+
+            property bool pauseOrResumeFlag: true // true: pause, false: resume
+
+            Connections {
+                target: root
+                onMainStatusChanged: {
+                    if (mainStatus === eMainStatusNotReadyToFly
+                       || mainStatus === eMainStatusCommLost
+                       || mainStatus === eMainStatusDisconnected
+                       || mainStatus === eMainStatusReadyToFly
+                       || mainStatus === eMainStatusArmed) {
+                       btnMissionStartPause.pauseOrResumeFlag = true
+                    }
+                }
+            }
+
+            property int btnState: {
+                switch (root.mainStatus) {
+                case eMainStatusNotReadyToFly:
+                case eMainStatusReadyToFly:
+                case eMainStatusArmed:
+                    return eBtnStateStartMission;
+                case eMainStatusFlying:
+                case eMainStatusWaiting:
+                    return pauseOrResumeFlag ? eBtnStatePause : eBtnStateResume;
+                case eMainStatusCommLost:
+                    return eBtnStateDiconnect;
+                case eMainStatusDisconnected:
+                default:
+                    return eBtnStateDisabled;
+                }
+            }
+
+            property var btnTextArray: [
+                qsTr("Start mission"),
+                qsTr("Start mission"),
+                qsTr("Pause"),
+                qsTr("Resume"),
+                qsTr("Disconnect")
+            ]
+
             width: root.width * 0.8
             height: width / 3
             backRadius: 10
             anchors.horizontalCenter: parent.horizontalCenter
-            enabled: _activeVehicle
-            text: qsTr("Pause")
+            enabled: _activeVehicle && btnState !== eBtnStateDisabled
+            text: btnTextArray[btnState]
             pointSize: ScreenTools.mediumFontPointSize
             onClicked: {
                 console.log("Pause Button clicked")
+
+                switch (btnState) {
+                case eBtnStateStartMission:
+                    if (isMultiVehicleMode === false) {
+                        _activeVehicle.startMission()
+                    }
+                    else {
+                        _guidedController.executeAction(actionMVStartMission)
+                    }
+                    break;
+                case eBtnStatePause:
+                    if (isMultiVehicleMode === false) {
+                        _activeVehicle.pauseVehicle()
+                    }
+                    else {
+                        _guidedController.executeAction(actionMVPause)
+                    }
+                    pauseOrResumeFlag = false
+                    break;
+                case eBtnStateResume:
+                    if (isMultiVehicleMode === false) {
+                        _activeVehicle.startMission()
+                    }
+                    else {
+                        _guidedController.executeAction(actionMVStartMission)
+                    }
+                    pauseOrResumeFlag = true
+                    break;
+                case eBtnStateDiconnect:
+                    if (isMultiVehicleMode === false) {
+                        _activeVehicle.closeVehicle()
+                    }
+                    else {
+                        var mvm = QGroundControl.multiVehicleManager
+                        var rowCont = mvm.vehiclesForUi.rowCount()
+                        for (var i = 0; i < rowCont; i ++) {
+                            var vehicle = mvm.vehiclesForUi.get(i)
+                            if (vehicle !== null) {
+                                vehicle.closeVehicle()
+                            }
+                        }
+                    }
+                    break;
+                }
             }
         }
 
