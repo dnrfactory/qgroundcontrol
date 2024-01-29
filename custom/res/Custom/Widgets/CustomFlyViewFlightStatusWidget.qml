@@ -66,10 +66,10 @@ Rectangle {
         return "0"
     }
 
-    function getAirSpeedStr(idx) {
+    function getGroundSpeedStr(idx) {
         var airSpeedStr = "0"
         if (isConnectedIndex(idx)) {
-            airSpeedStr = vehicles.get(idx).airSpeed.rawValue.toFixed(1)
+            airSpeedStr = vehicles.get(idx).groundSpeed.rawValue.toFixed(1)
         }
         return "%1 km/h".arg(airSpeedStr)
     }
@@ -89,7 +89,7 @@ Rectangle {
             latitudeStr = vehicles.get(idx).gps.lat.rawValue.toFixed(2)
             longitudeStr = vehicles.get(idx).gps.lon.rawValue.toFixed(2)
 
-            console.log("getLocationStr lat:%1, lon:%2".arg(vehicles.get(idx).gps.lat.rawValue).arg(vehicles.get(idx).gps.lon.rawValue))
+            //console.log("getLocationStr lat:%1, lon:%2".arg(vehicles.get(idx).gps.lat.rawValue).arg(vehicles.get(idx).gps.lon.rawValue))
         }
         return "%1 %2  /%3 %4".arg(qsTr("Lat.")).arg(latitudeStr).arg("Lon.").arg(longitudeStr)
     }
@@ -157,7 +157,7 @@ Rectangle {
                     sourceComponent: headerColNameComponent
                     onLoaded: {
                         item.colIndex = eVelocity
-                        item.colName = Qt.binding(function() { return qsTr("Air Speed") })
+                        item.colName = Qt.binding(function() { return qsTr("Ground Speed") })
                     }
                 }
                 Loader {
@@ -257,7 +257,7 @@ Rectangle {
                     sourceComponent: valueComponent
                     onLoaded: {
                         item.colIndex = eVelocity
-                        item.valueText = Qt.binding(function() { return getAirSpeedStr(index) })
+                        item.valueText = Qt.binding(function() { return getGroundSpeedStr(index) })
                     }
                 }
                 Loader {
