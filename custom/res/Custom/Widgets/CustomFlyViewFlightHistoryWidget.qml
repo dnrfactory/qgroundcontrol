@@ -10,6 +10,7 @@
 import QtQuick                  2.12
 import QtQuick.Controls         2.4
 import QtQuick.Window           2.2
+import QtMultimedia             5.5
 
 import QGroundControl               1.0
 import QGroundControl.Controls      1.0
@@ -190,6 +191,8 @@ Rectangle {
                             text: qsTr("Play")
                             onClicked: {
                                 console.log("FlightVideo Play Button clicked")
+
+                                mediaPlayer.play()
                             }
                         }
 
@@ -208,6 +211,7 @@ Rectangle {
                             function onAcceptedForLoad(file) {
                                 console.log(file)
                                 videoPathLabel.text = file
+                                mediaPlayer.source = file
                             }
                         }
 
@@ -228,11 +232,21 @@ Rectangle {
 
     QGCFileDialog {
         id: fileDialog
-        title: qsTr("Choose the Flight video file")
+        title: qsTr("Choose the flight video file")
         folder: QGroundControl.settingsManager.appSettings.videoSavePath
         selectExisting: true
         selectFolder: false
         onAcceptedForLoad: console.log(file)
         nameFilters: ["Video files (*.mkv *.mov *.mp4)"]
+    }
+
+    MediaPlayer {
+        id: mediaPlayer
+    }
+
+    VideoOutput {
+        id: videoOutput
+        anchors.fill: parent
+        source: mediaPlayer
     }
 }
