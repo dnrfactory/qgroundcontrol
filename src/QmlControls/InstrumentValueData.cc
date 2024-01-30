@@ -76,6 +76,7 @@ void InstrumentValueData::clearFact(void)
     _text.clear();
     _icon.clear();
     _showUnits = true;
+    _uiDecimalPlaces = -1;
 
     emit factValueNamesChanged  ();
     emit factChanged            (_fact);
@@ -84,6 +85,7 @@ void InstrumentValueData::clearFact(void)
     emit textChanged            (_text);
     emit iconChanged            (_icon);
     emit showUnitsChanged       (_showUnits);
+    emit uiDecimalPlacesChanged ();
 }
 
 void InstrumentValueData::_setFactWorker(void)
@@ -184,6 +186,12 @@ void InstrumentValueData::setRangeOpacities(const QVariantList& rangeOpacities)
 {
     _rangeOpacities = rangeOpacities;
     emit rangeOpacitiesChanged(rangeOpacities);
+}
+
+void InstrumentValueData::setUiDecimalPlaces(const int uiDecimalPlaces)
+{
+    _uiDecimalPlaces = uiDecimalPlaces;
+    emit uiDecimalPlacesChanged();
 }
 
 void InstrumentValueData::_resetRangeInfo(void)

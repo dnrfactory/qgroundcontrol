@@ -50,6 +50,7 @@ public:
     Q_PROPERTY(QColor               currentColor        MEMBER _currentColor                                NOTIFY currentColorChanged)
     Q_PROPERTY(double               currentOpacity      MEMBER _currentOpacity                              NOTIFY currentOpacityChanged)
     Q_PROPERTY(QString              currentIcon         MEMBER _currentIcon                                 NOTIFY currentIconChanged)
+    Q_PROPERTY(int uiDecimalPlaces READ getUiDecimalPlaces NOTIFY uiDecimalPlacesChanged)
 
     Q_INVOKABLE void    setFact         (const QString& factGroupName, const QString& factName);
     Q_INVOKABLE void    clearFact       (void);
@@ -80,6 +81,8 @@ public:
     void            setRangeIcons           (const QVariantList& rangeIcons);
     void            setRangeOpacities       (const QVariantList& rangeOpacities);
 
+    void setUiDecimalPlaces(const int uiDecimalPlaces);
+    int getUiDecimalPlaces(void) const { return _uiDecimalPlaces; }
 
     static const char*  vehicleFactGroupName;
 
@@ -100,6 +103,7 @@ signals:
     void currentColorChanged    (const QColor& currentColor);
     void currentOpacityChanged  (double currentOpacity);
     void currentIconChanged     (const QString& currentIcon);
+    void uiDecimalPlacesChanged(void);
 
 private slots:
     void _resetRangeInfo        (void);
@@ -141,9 +145,10 @@ private:
     QVariantList        _rangeIcons;                        ///< QString resource name
     QVariantList        _rangeOpacities;                    /// double opacity value
 
+    int _uiDecimalPlaces = -1;
+
     // These are user facing string for the various enums.
     static const QStringList _rangeTypeNames;
-
 };
 
 QML_DECLARE_TYPE(InstrumentValueData)

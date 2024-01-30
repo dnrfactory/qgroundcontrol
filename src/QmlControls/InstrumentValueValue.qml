@@ -43,7 +43,13 @@ ColumnLayout {
 
         function valueText() {
             if (instrumentValueData.fact) {
-                return instrumentValueData.fact.enumOrValueString + (instrumentValueData.showUnits ? " " + instrumentValueData.fact.units : "")
+                var uiDecimalPlaces = instrumentValueData.uiDecimalPlaces
+                var rawValue = instrumentValueData.fact.rawValue
+                var valueString = uiDecimalPlaces > 0 && isNaN(rawValue) === false ?
+                    rawValue.toFixed(uiDecimalPlaces) :
+                    instrumentValueData.fact.enumOrValueString
+
+                return valueString + (instrumentValueData.showUnits ? " " + instrumentValueData.fact.units : "")
             } else {
                 return qsTr("--.--")
             }

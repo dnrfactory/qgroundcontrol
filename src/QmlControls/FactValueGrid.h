@@ -123,6 +123,7 @@ private:
     static const char* _rangeColorsKey;
     static const char* _rangeIconsKey;
     static const char* _rangeOpacitiesKey;
+    static const char* _uiDecimalPlacesKey;
 
     static const char* _deprecatedGroupKey;
 };

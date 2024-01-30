@@ -29,6 +29,7 @@ const char* FactValueGrid::_rangeValuesKey      = "rangeValues";
 const char* FactValueGrid::_rangeColorsKey      = "rangeColors";
 const char* FactValueGrid::_rangeIconsKey       = "rangeIcons";
 const char* FactValueGrid::_rangeOpacitiesKey   = "rangeOpacities";
+const char* FactValueGrid::_uiDecimalPlacesKey  = "uiDecimalPlacesKey";
 
 const char* FactValueGrid::_deprecatedGroupKey =  "ValuesWidget";
 
@@ -117,6 +118,7 @@ void FactValueGrid::_saveValueData(QSettings& settings, InstrumentValueData* val
     settings.setValue(_showUnitsKey,    value->showUnits());
     settings.setValue(_iconKey,         value->icon());
     settings.setValue(_rangeTypeKey,    value->rangeType());
+    settings.setValue(_uiDecimalPlacesKey, value->getUiDecimalPlaces());
 
     if (value->rangeType() != InstrumentValueData::NoRangeInfo) {
         settings.setValue(_rangeValuesKey, value->rangeValues());
@@ -151,6 +153,7 @@ void FactValueGrid::_loadValueData(QSettings& settings, InstrumentValueData* val
     value->setShowUnits (settings.value(_showUnitsKey, true).toBool());
     value->setIcon      (settings.value(_iconKey).toString());
     value->setRangeType (settings.value(_rangeTypeKey, InstrumentValueData::NoRangeInfo).value<InstrumentValueData::RangeType>());
+    value->setUiDecimalPlaces(settings.value(_uiDecimalPlacesKey).toInt());
 
     if (value->rangeType() != InstrumentValueData::NoRangeInfo) {
         value->setRangeValues(settings.value(_rangeValuesKey).value<QVariantList>());
@@ -182,6 +185,7 @@ void FactValueGrid::_connectSaveSignals(InstrumentValueData* value)
     connect(value, &InstrumentValueData::rangeColorsChanged,    this, &FactValueGrid::_saveSettings);
     connect(value, &InstrumentValueData::rangeOpacitiesChanged, this, &FactValueGrid::_saveSettings);
     connect(value, &InstrumentValueData::rangeIconsChanged,     this, &FactValueGrid::_saveSettings);
+    connect(value, &InstrumentValueData::uiDecimalPlacesChanged,this, &FactValueGrid::_saveSettings);
 }
 
 void FactValueGrid::appendRow(void)
