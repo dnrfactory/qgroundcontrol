@@ -71,9 +71,8 @@ Rectangle {
             defaultSettingsGroup:   telemetryBarDefaultSettingsGroup
 
             width: root.width
-            height: root.height - vehiclaNameLabel.height
-
-            itemVerticalSpacing: root.itemVerticalSpacing
+            height: root.height - vehiclaNameLabel.height - itemVerticalSpacing * 1.8
+            gridItemHeight: height / 5
         }
     }
 }
