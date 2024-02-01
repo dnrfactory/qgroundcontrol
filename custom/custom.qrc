@@ -37,6 +37,7 @@
         <file alias="Custom/Widgets/CustomButton.qml">res/Custom/Widgets/CustomButton.qml</file>
         <file alias="Custom/Widgets/CustomBatteryDetectTimer.qml">res/Custom/Widgets/CustomBatteryDetectTimer.qml</file>
         <file alias="Custom/Widgets/CustomPanel.qml">res/Custom/Widgets/CustomPanel.qml</file>
+        <file alias="Custom/Widgets/CustomVideoOutPanel.qml">res/Custom/Widgets/CustomVideoOutPanel.qml</file>		
         <file alias="Custom/Widgets/qmldir">res/Custom/Widgets/qmldir</file>
     </qresource>
     <qresource prefix="/qml">

@@ -10,7 +10,6 @@
 import QtQuick                  2.12
 import QtQuick.Controls         2.4
 import QtQuick.Window           2.2
-import QtMultimedia             5.5
 
 import QGroundControl               1.0
 import QGroundControl.Controls      1.0
@@ -24,12 +23,15 @@ CustomPanel {
 
     property var vehicles: QGroundControl.multiVehicleManager.vehiclesForUi
     property var itemWidthRatio: [0.1, 0.3, 0.1, 0.1, 0.4]
+    property var videoPathArray: ["", "", "", ""]
 
     property int eVehicle: 0
     property int eTime: 1
     property int eDistance: 2
     property int ePath: 3
     property int eVideo: 4
+
+    signal videoPathArrayItemChanged();
 
     function isConnectedIndex(index) {
         return index >= 0 && index < 4 && vehicles.get(index) !== null
@@ -216,9 +218,8 @@ CustomPanel {
                             backRadius: 4
                             text: qsTr("Play")
                             onClicked: {
-                                console.log("FlightVideo Play Button clicked")
-
-                                mediaPlayer.play()
+                                videoOutPanel.mediaSource = videoPathArray[index]
+                                videoOutPanel.play()
                             }
                         }
 
@@ -229,15 +230,8 @@ CustomPanel {
                             backRadius: 4
                             text: qsTr("Folder")
                             onClicked: {
-                                console.log("FlightVideo Folder Button clicked")
-
+                                fileDialog.videoIndex = index
                                 fileDialog.openForLoad()
-                                fileDialog.acceptedForLoad.connect(onAcceptedForLoad)
-                            }
-                            function onAcceptedForLoad(file) {
-                                console.log(file)
-                                videoPathLabel.text = file
-                                mediaPlayer.source = file
                             }
                         }
 
@@ -248,7 +242,11 @@ CustomPanel {
                             height: fligthVideoItem.height
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignRight
-                            text: ""
+                            text: videoPathArray[index]
+
+                            Component.onCompleted: root.videoPathArrayItemChanged.connect(
+                                function() { text = videoPathArray[index] }
+                            )
                         }
                     }
                 }
@@ -262,17 +260,19 @@ CustomPanel {
         folder: QGroundControl.settingsManager.appSettings.videoSavePath
         selectExisting: true
         selectFolder: false
-        onAcceptedForLoad: console.log(file)
+        onAcceptedForLoad: {
+            videoPathArray[videoIndex] = file
+            videoPathArrayItemChanged()
+        }
         nameFilters: ["Video files (*.mkv *.mov *.mp4)"]
+
+        property int videoIndex: 0
     }
 
-    MediaPlayer {
-        id: mediaPlayer
-    }
-
-    VideoOutput {
-        id: videoOutput
-        anchors.fill: parent
-        source: mediaPlayer
+    CustomVideoOutPanel {
+        id: videoOutPanel
+        height: parent.height
+        width: (16 / 9) * height
+        x: listView.width * (1 - itemWidthRatio[eVideo])
     }
 }
