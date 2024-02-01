@@ -21,10 +21,8 @@ import QGroundControl.ScreenTools   1.0
 //import QGroundControl.QGCPositionManager    1.0
 import WeatherInfoProvider 1.0
 
-Rectangle {
+CustomPanel {
     id: root
-    color: qgcPal.window
-    opacity: 0.8
 
     //property var gcsPosition: QGroundControl.qgcPositionManger.gcsPosition
     property var mapCenterPosition

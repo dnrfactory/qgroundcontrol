@@ -27,11 +27,8 @@ import QGroundControl.Palette       1.0
 import QGroundControl.ScreenTools   1.0
 import QGroundControl.Vehicle       1.0
 
-Rectangle {
+CustomPanel {
     id: root
-
-    color: qgcPal.window
-    opacity: 0.8
 
     property real btnWidth: width * 0.1
     property real btnHeight: height * 0.15

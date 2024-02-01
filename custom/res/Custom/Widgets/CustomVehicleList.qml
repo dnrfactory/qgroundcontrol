@@ -97,19 +97,17 @@ QGCListView {
                 Text {
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
-                    text: "UAV " + index
+                    text: "UAV " + (index + 1)
                     font.pointSize: ScreenTools.mediumFontPointSize
                     font.bold: true
                     color: "black"
                     leftPadding: 10
                 }
             }
-            Rectangle {
+            CustomPanel {
                 id: vehicleInfoPanel
                 width: parent.width
                 height: parent.height * 0.8
-                color: qgcPal.window
-                opacity: 0.8
                 border.color: root.currentIndex == index ? "red" : vehicleNameBar.color
                 border.width: isConnectedIndex(index) ? 3 : 0
 

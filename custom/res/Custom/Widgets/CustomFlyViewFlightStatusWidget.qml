@@ -19,10 +19,8 @@ import QGroundControl.FlightMap     1.0
 import QGroundControl.Palette       1.0
 import QGroundControl.Vehicle       1.0
 
-Rectangle {
+CustomPanel {
     id: root
-    color: qgcPal.window
-    opacity: 0.8
 
     property var colorList: QGroundControl.multiVehicleManager.vehicleColorList
     property var vehicles: QGroundControl.multiVehicleManager.vehiclesForUi

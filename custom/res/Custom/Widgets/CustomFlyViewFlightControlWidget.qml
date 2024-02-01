@@ -48,12 +48,10 @@ Row {
         isMultiVehicleMode: root.isMultiVehicleMode
     }
     Rectangle { width: panelMargin; height: parent.height; color: "white"; opacity: 0.8 }
-    Rectangle {
+    CustomPanel {
         id: instrumentPanel
         width: parent.width * 0.1 - panelMargin
         height: parent.height
-        color: qgcPal.window
-        opacity: 0.8
 
         FlyViewInstrumentPanel {
             anchors.centerIn: parent
@@ -83,7 +81,7 @@ Row {
                 width: root.width * 0.4 * 0.6 - panelMargin
             }
             Rectangle { width: panelMargin; height: parent.height; color: "white"; opacity: 0.8 }
-            Item {
+            CustomPanel {
                 height: root.height * 0.7
                 width: root.width * 0.4 * 0.4
                 PhotoVideoControl {

@@ -16,10 +16,8 @@ import QGroundControl.Vehicle       1.0
 import QGroundControl.Controls      1.0
 import QGroundControl.Palette       1.0
 
-Rectangle {
+CustomPanel {
     id: root
-    color: qgcPal.window
-    opacity: 0.8
 
     property var activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
     property string vehicleName: "UAV 0"

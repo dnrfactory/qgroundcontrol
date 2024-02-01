@@ -16,11 +16,9 @@ import QGroundControl.Controls          1.0
 import QGroundControl.FactControls      1.0
 import QGroundControl.Palette           1.0
 
-Rectangle {
+CustomPanel {
     id: root
     height: parent.height
-	color: qgcPal.window
-	opacity: 0.8
 
     readonly property real verticalMargin: 40
     readonly property real itemSpacing: 20

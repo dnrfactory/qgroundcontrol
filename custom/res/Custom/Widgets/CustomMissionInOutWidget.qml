@@ -74,12 +74,10 @@ Column {
             buttonClicked(eButtonSendPlan)
         }
     }
-	Rectangle {
+	CustomPanel {
         id: uavButtonGroup
 		width: parent.width
         height: parent.height * 0.25 - divideLineThickness
-        color: qgcPal.button
-        opacity: 0.8
 
         property var colorList: QGroundControl.multiVehicleManager.vehicleColorList
         property int currentIndex: -1

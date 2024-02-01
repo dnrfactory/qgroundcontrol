@@ -18,11 +18,9 @@ import QGroundControl.Controllers       1.0
 import QGroundControl.ShapeFileHelper   1.0
 import QGroundControl.Vehicle           1.0
 
-Rectangle {
+CustomPanel {
     id: root
     height: parent.height
-	color: qgcPal.window
-	opacity: 0.8
 
     readonly property real verticalMargin: 40 + 4 * 3
     readonly property real horizontalMargin: 40 + 4 * 3

@@ -27,7 +27,7 @@ import QGroundControl.Palette       1.0
 import QGroundControl.ScreenTools   1.0
 import QGroundControl.Vehicle       1.0
 
-Rectangle {
+CustomPanel {
     id: root
 
     property bool isMultiVehicleMode
@@ -57,8 +57,6 @@ Rectangle {
 
     height:                 _bottomPanelHeight
     width:                  (_bottomPanelWidth/2 - 4)
-    color:                  qgcPal.window
-    opacity:                0.8
 
     on_ActiveVehicleChanged: {
         _activeVehicle ? switchCirle.state = "leftOff" : switchCirle.state = "disActiveVehicle"
@@ -144,12 +142,11 @@ Rectangle {
             ]
         }
 
-        Rectangle {
+        Item {
             id: armswitch
-            color: "transparent"
             width: parent.width * 0.9
             height: width / 2
-            anchors.horizontalCenter:   parent.horizontalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
             enabled: _activeVehicle
 
             Rectangle{
@@ -183,8 +180,8 @@ Rectangle {
 
             Rectangle {
                 id: switchCirle
-                width: parent.height
-                height:width
+                width: parent.height * 0.7
+                height: width
                 radius: height
                 anchors.verticalCenter: parent.verticalCenter
                 state : "leftOff"

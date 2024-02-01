@@ -25,11 +25,9 @@ import QGroundControl.Palette           1.0
 import QGroundControl.Controllers       1.0
 import QGroundControl.ShapeFileHelper   1.0
 
-Rectangle {
+CustomPanel {
     id: root
     height: parent.height
-	color: qgcPal.window
-	opacity: 0.8
 
     property var planMasterController
 

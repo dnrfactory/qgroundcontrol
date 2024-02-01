@@ -27,16 +27,13 @@ import QGroundControl.Palette       1.0
 import QGroundControl.ScreenTools   1.0
 import QGroundControl.Vehicle       1.0
 
-Rectangle {
+CustomPanel {
     id:                     root
 
     property real _bottomPanelLeftPadding: 16
     property real _bottomPanelMargin: 20
     property var _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
     property string flightMode: _activeVehicle ? _activeVehicle.flightMode : ""
-    
-    color:                  qgcPal.window
-    opacity:                0.8
 
     function updateMode(){
         switch(flightMode){
@@ -77,7 +74,7 @@ Rectangle {
             id : buttonWrap
             width : parent.width - modeLabel.width - _bottomPanelMargin
             height: parent.height
-            anchors.leftMargin: _bottomPanelMargin            
+            anchors.leftMargin: _bottomPanelMargin
 
             Row {
                 anchors.fill:       parent
