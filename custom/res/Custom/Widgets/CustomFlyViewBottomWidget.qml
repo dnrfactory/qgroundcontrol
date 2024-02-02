@@ -51,6 +51,12 @@ Item {
     property var mapControl
     property bool isMultiVehicleMode
 
+    signal videoPlayButtonClicked(string mediaSource);
+
+    Component.onCompleted: {
+        historyWidget.videoPlayButtonClicked.connect(_root.videoPlayButtonClicked)
+    }
+
     function formatMessage(message) {
         message = message.replace(new RegExp("<#E>", "g"), "color: " + qgcPal.warningText + "; font: " + (ScreenTools.defaultFontPointSize.toFixed(0) - 1) + "pt monospace;");
         message = message.replace(new RegExp("<#I>", "g"), "color: " + qgcPal.warningText + "; font: " + (ScreenTools.defaultFontPointSize.toFixed(0) - 1) + "pt monospace;");
@@ -109,6 +115,7 @@ Item {
             mapControl: _root.mapControl
         }
         CustomFlyViewFlightHistoryWidget {
+            id: historyWidget
             Layout.fillWidth: true
             Layout.fillHeight: true
         }

@@ -26,9 +26,9 @@ Column {
     height: parent.height
 
     property var eventHandler
-	property real divideLineThickness: 2
-	property var vehicles: QGroundControl.multiVehicleManager.vehiclesForUi
-	property var activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+    property real divideLineThickness: 2
+    property var vehicles: QGroundControl.multiVehicleManager.vehiclesForUi
+    property var activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
 
     readonly property int eButtonSendPlan: 0
     readonly property int eButtonImportPlan: 1
@@ -74,7 +74,7 @@ Column {
             buttonClicked(eButtonSendPlan)
         }
     }
-	CustomPanel {
+    CustomPanel {
         id: uavButtonGroup
 		width: parent.width
         height: parent.height * 0.25 - divideLineThickness
@@ -87,48 +87,53 @@ Column {
             CustomButton {
                 property int index
 
-		        width: root.width *0.25 - divideLineThickness
-		        height: uavButtonGroup.height
-		        text: qsTr("UAV %1").arg(index)
-		        pointSize: ScreenTools.mediumFontPointSize
-		        normalColor: uavButtonGroup.colorList[index]
-		        hightlightColor: normalColor
-		        checked: uavButtonGroup.currentIndex === index
-		        scale: uavButtonGroup.currentIndex === index ? 1 : 0.8
-		        backRadius: 4
-		        enabled: isConnectedIndex(index)
-		        onClicked: {
-		            setUavCurrentIndex(index)
-		        }
-		    }
+                width: root.width *0.25 - divideLineThickness
+                height: uavButtonGroup.height
+                text: qsTr("UAV %1").arg(index)
+                pointSize: ScreenTools.mediumFontPointSize
+                normalColor: uavButtonGroup.colorList[index]
+                hightlightColor: normalColor
+                checked: uavButtonGroup.currentIndex === index
+                scale: uavButtonGroup.currentIndex === index ? 1 : 0.8
+                backRadius: 4
+                enabled: isConnectedIndex(index)
+                onClicked: {
+                    setUavCurrentIndex(index)
+                }
+                Behavior on scale {
+                    NumberAnimation {
+                        duration: 100
+                    }
+                }
+            }
         }
 
-	    Row {
-			height: parent.height
+        Row {
+            height: parent.height
 
             spacing: divideLineThickness
 
-			Loader {
-	            sourceComponent: uavButtonComponent
+        	Loader {
+                sourceComponent: uavButtonComponent
                 onLoaded: item.index = 0
             }
-			Loader {
-	            sourceComponent: uavButtonComponent
+        	Loader {
+                sourceComponent: uavButtonComponent
                 onLoaded: item.index = 1
             }
-			Loader {
-	            sourceComponent: uavButtonComponent
+        	Loader {
+                sourceComponent: uavButtonComponent
                 onLoaded: item.index = 2
             }
-			Loader {
-	            sourceComponent: uavButtonComponent
+        	Loader {
+                sourceComponent: uavButtonComponent
                 onLoaded: item.index = 3
             }
 
             Component.onCompleted: updateActiveVehicle()
-	    }
-	}
-	Rectangle { width: parent.width; height: divideLineThickness; color: "white"; opacity: 0.8 }
+        }
+    }
+    Rectangle { width: parent.width; height: divideLineThickness; color: "white"; opacity: 0.8 }
     CustomButton {
         width: parent.width
         height: parent.height * 0.25 - divideLineThickness

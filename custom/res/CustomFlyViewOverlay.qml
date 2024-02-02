@@ -102,6 +102,7 @@ Item {
     }
 
     CustomVehicleList {
+        id: vehicleList
         width: vehicleListControlPanel.width
         anchors.right: parent.right
         anchors.top: vehicleListControlPanel.bottom
@@ -113,5 +114,18 @@ Item {
         anchors.bottom: parent.bottom
         mapControl: _root.mapControl
         isMultiVehicleMode: _root.isMultiVehicleMode
+
+        onVideoPlayButtonClicked: {
+            videoOutPanel.mediaSource = mediaSource
+            videoOutPanel.play()
+        }
+    }
+
+    CustomVideoOutPanel {
+        id: videoOutPanel
+        height: bottomWidget.height
+        width: (16 / 9) * height
+        anchors.bottom: bottomWidget.top
+        anchors.right: vehicleList.left
     }
 }

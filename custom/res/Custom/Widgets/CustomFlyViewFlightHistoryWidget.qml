@@ -17,6 +17,7 @@ import QGroundControl.Controllers   1.0
 import QGroundControl.FlightDisplay 1.0
 import QGroundControl.FlightMap     1.0
 import QGroundControl.Palette       1.0
+import QGroundControl.ScreenTools   1.0
 
 CustomPanel {
     id: root
@@ -32,6 +33,7 @@ CustomPanel {
     property int eVideo: 4
 
     signal videoPathArrayItemChanged();
+    signal videoPlayButtonClicked(string mediaSource);
 
     function isConnectedIndex(index) {
         return index >= 0 && index < 4 && vehicles.get(index) !== null
@@ -85,6 +87,7 @@ CustomPanel {
                     QGCLabel {
                         anchors.centerIn: parent
                         text: colName
+                        font.pointSize: ScreenTools.mediumFontPointSize
                     }
                 }
             }
@@ -143,6 +146,7 @@ CustomPanel {
                     QGCLabel {
                         anchors.centerIn: parent
                         text: valueText
+                        font.pointSize: ScreenTools.mediumFontPointSize
                     }
                 }
             }
@@ -218,8 +222,9 @@ CustomPanel {
                             backRadius: 4
                             text: qsTr("Play")
                             onClicked: {
-                                videoOutPanel.mediaSource = videoPathArray[index]
-                                videoOutPanel.play()
+                                //videoOutPanel.mediaSource = videoPathArray[index]
+                                //videoOutPanel.play()
+                                videoPlayButtonClicked(videoPathArray[index])
                             }
                         }
 
@@ -267,12 +272,5 @@ CustomPanel {
         nameFilters: ["Video files (*.mkv *.mov *.mp4)"]
 
         property int videoIndex: 0
-    }
-
-    CustomVideoOutPanel {
-        id: videoOutPanel
-        height: parent.height
-        width: (16 / 9) * height
-        x: listView.width * (1 - itemWidthRatio[eVideo])
     }
 }
