@@ -18,6 +18,7 @@ import QGroundControl.FlightDisplay 1.0
 import QGroundControl.FlightMap     1.0
 import QGroundControl.Palette       1.0
 import QGroundControl.Vehicle       1.0
+import QGroundControl.ScreenTools   1.0
 
 CustomPanel {
     id: root
@@ -65,9 +66,9 @@ CustomPanel {
     }
 
     function getGroundSpeedStr(idx) {
-        var airSpeedStr = "0"
+        var airSpeedStr = "0.0"
         if (isConnectedIndex(idx)) {
-            airSpeedStr = vehicles.get(idx).groundSpeed.rawValue.toFixed(1)
+            airSpeedStr = vehicles.get(idx).groundSpeed.enumOrValueString
         }
         return "%1 km/h".arg(airSpeedStr)
     }
@@ -112,6 +113,7 @@ CustomPanel {
                     QGCLabel {
                         anchors.centerIn: parent
                         text: colName
+                        font.pointSize: ScreenTools.mediumFontPointSize
                     }
                 }
             }
@@ -206,6 +208,7 @@ CustomPanel {
                     QGCLabel {
                         anchors.centerIn: parent
                         text: valueText
+                        font.pointSize: ScreenTools.mediumFontPointSize
                     }
 
                     function setValueText(value) {
