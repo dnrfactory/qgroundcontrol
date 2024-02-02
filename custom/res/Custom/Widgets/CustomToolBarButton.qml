@@ -27,7 +27,7 @@ Button {
     readonly property real _mainToolBarButtonIconHeight: ScreenTools.toolbarHeight - ScreenTools.defaultFontPixelWidth * 3.5 - _mainToolBarButtonSpacing // mainToolBarButtonIconHeight :    52
     readonly property real _mainToolBarButtonSpacing: 5                                                                                                 // _mainToolBarButtonSpacing :       5
     readonly property real _mainToolBarButtonFontSize: ScreenTools.defaultFontPixelWidth * 1.5                                                          // _mainToolBarButtonFontSize :     12
-    readonly property color pressedColor: "cadetblue"
+    readonly property color pressedColor: Qt.darker(qgcPal.button, 1.5)
 
     background: Rectangle {
         anchors.fill:   parent
@@ -36,7 +36,7 @@ Button {
 
         Behavior on color {
             ColorAnimation {
-                duration: 200
+                duration: 100
             }
         }
     }

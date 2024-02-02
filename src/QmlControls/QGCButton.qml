@@ -26,7 +26,7 @@ Button {
     property alias wrapMode:            text.wrapMode
     property alias horizontalAlignment: text.horizontalAlignment
 
-    property bool   _showHighlight:     pressed | hovered | checked
+    property bool   _showHighlight:     hovered | checked
 
     property int _horizontalPadding:    ScreenTools.defaultFontPixelWidth
     property int _verticalPadding:      Math.round(ScreenTools.defaultFontPixelHeight * heightFactor)
@@ -40,13 +40,13 @@ Button {
         radius:         backRadius
         border.width:   showBorder ? 1 : 0
         border.color:   qgcPal.buttonText
-        color:          _showHighlight ?
-                            qgcPal.buttonHighlight :
-                            (primary ? qgcPal.primaryButton : qgcPal.button)
+        color: pressed ? Qt.darker(qgcPal.buttonHighlight, 1.5) :
+                         (_showHighlight ? qgcPal.buttonHighlight :
+                                          (primary ? qgcPal.primaryButton : qgcPal.button))
 
         Behavior on color {
             ColorAnimation {
-                duration: 200
+                duration: 100
             }
         }
     }

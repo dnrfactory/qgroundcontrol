@@ -31,7 +31,7 @@ Button {
 
     property color hightlightColor: qgcPal.buttonHighlight
     property color normalColor: qgcPal.button
-    property color pressedColor: "cadetblue"
+    property color pressedColor: Qt.darker(hightlightColor, 1.5)
 
     QGCPalette { id: qgcPal; colorGroupEnabled: enabled }
 
@@ -41,11 +41,12 @@ Button {
         implicitHeight: ScreenTools.implicitButtonHeight
         radius:         backRadius
         color:          pressed ? pressedColor : (_showHighlight ? hightlightColor : normalColor)
-        opacity: 0.8
+
+        property var btnColor: pressed ? pressedColor : (_showHighlight ? hightlightColor : normalColor)
 
         Behavior on color {
             ColorAnimation {
-                duration: 200
+                duration: 100
             }
         }
     }
