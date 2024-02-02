@@ -37,7 +37,7 @@ CustomPanel {
         }
         else {
             var vIndex = activeVehicle.id - 128
-            vehicleName = "UAV %1".arg(vIndex)
+            vehicleName = "UAV %1".arg(vIndex + 1)
             if (vIndex >= 0 && vIndex < 4) {
                 vehicleNameColor = colorList[vIndex]
             }
