@@ -83,10 +83,13 @@ Item {
             anchors.rightMargin: root.itemMargin
             width: 40
             height: 40
-            backRadius: 4
+            backRadius: 8
             opacity: hovered ? 1 : 0
 
             text: "\u2715"
+            pointSize: 20
+            normalColor: "transparent"
+            hightlightColor: "lightgrey"
 
             Behavior on opacity {
                 NumberAnimation {
