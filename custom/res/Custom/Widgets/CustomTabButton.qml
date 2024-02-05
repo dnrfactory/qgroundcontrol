@@ -43,7 +43,12 @@ T.TabButton {
 
     background: Rectangle {
         implicitHeight: 40
-        color: qgcPal.window
-        opacity: 0.9
+        color: "#E6161C41"
+    }
+
+    Behavior on height {
+        NumberAnimation {
+            duration: 100
+        }
     }
 }

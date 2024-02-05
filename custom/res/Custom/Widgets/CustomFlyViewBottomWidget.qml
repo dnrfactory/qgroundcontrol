@@ -27,7 +27,7 @@ import QGroundControl.Palette       1.0
 import QGroundControl.ScreenTools   1.0
 import QGroundControl.Vehicle       1.0
 
-Item {
+CustomPanel {
     id: _root
 
     width: parent.width

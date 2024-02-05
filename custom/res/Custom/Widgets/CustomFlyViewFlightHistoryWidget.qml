@@ -19,7 +19,7 @@ import QGroundControl.FlightMap     1.0
 import QGroundControl.Palette       1.0
 import QGroundControl.ScreenTools   1.0
 
-CustomPanel {
+Item {
     id: root
 
     property var vehicles: QGroundControl.multiVehicleManager.vehiclesForUi
@@ -272,5 +272,9 @@ CustomPanel {
         nameFilters: ["Video files (*.mkv *.mov *.mp4)"]
 
         property int videoIndex: 0
+    }
+
+    CustomVisibleAnimator {
+        animationTarget: root
     }
 }

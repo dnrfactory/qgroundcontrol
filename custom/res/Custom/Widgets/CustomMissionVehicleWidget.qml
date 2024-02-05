@@ -18,7 +18,7 @@ import QGroundControl.Controllers       1.0
 import QGroundControl.ShapeFileHelper   1.0
 import QGroundControl.Vehicle           1.0
 
-CustomPanel {
+Item {
     id: root
     height: parent.height
 

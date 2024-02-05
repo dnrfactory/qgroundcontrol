@@ -41,10 +41,15 @@ Item {
         anchors.fill: bottomPanel
     }
 
+    CustomPanel {
+        anchors.fill: bottomPanel
+    }
+
     Row {
         id: bottomPanel
         height: ScreenTools.defaultFontPixelWidth * 40
         anchors.bottom: parent.bottom
+        visible: root.visible
 
         property real divideLineThickness: 2
 
@@ -74,5 +79,9 @@ Item {
             width: root.width * 0.2
             planMasterController: planView._planMasterController
         }
+    }
+
+    CustomVisibleAnimator {
+        animationTarget: bottomPanel
     }
 }

@@ -74,7 +74,7 @@ Column {
             buttonClicked(eButtonSendPlan)
         }
     }
-    CustomPanel {
+    Item {
         id: uavButtonGroup
 		width: parent.width
         height: parent.height * 0.25 - divideLineThickness

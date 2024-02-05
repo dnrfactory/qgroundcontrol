@@ -21,7 +21,7 @@ import QGroundControl.ScreenTools   1.0
 //import QGroundControl.QGCPositionManager    1.0
 import WeatherInfoProvider 1.0
 
-CustomPanel {
+Item {
     id: root
 
     //property var gcsPosition: QGroundControl.qgcPositionManger.gcsPosition

@@ -27,7 +27,7 @@ import QGroundControl.Palette       1.0
 import QGroundControl.ScreenTools   1.0
 import QGroundControl.Vehicle       1.0
 
-CustomPanel {
+Item {
     id:                     root
 
     property real _bottomPanelLeftPadding: 16

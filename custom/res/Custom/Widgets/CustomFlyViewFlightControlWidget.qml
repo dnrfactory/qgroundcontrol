@@ -48,7 +48,7 @@ Row {
         isMultiVehicleMode: root.isMultiVehicleMode
     }
     Rectangle { width: panelMargin; height: parent.height; color: "white"; opacity: 0.8 }
-    CustomPanel {
+    Item {
         id: instrumentPanel
         width: parent.width * 0.1 - panelMargin
         height: parent.height
@@ -81,7 +81,7 @@ Row {
                 width: root.width * 0.4 * 0.6 - panelMargin
             }
             Rectangle { width: panelMargin; height: parent.height; color: "white"; opacity: 0.8 }
-            CustomPanel {
+            Item {
                 height: root.height * 0.7
                 width: root.width * 0.4 * 0.4
                 PhotoVideoControl {
@@ -92,5 +92,9 @@ Row {
                 }
             }
         }
+    }
+
+    CustomVisibleAnimator {
+        animationTarget: root
     }
 }
