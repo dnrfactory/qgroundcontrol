@@ -54,8 +54,12 @@ CustomPanel {
         }
     }
 
+    on_ActiveVehicleChanged: {
+        updateMode()
+    }
+
     onFlightModeChanged: {
-        updateMode();
+        updateMode()
     }
 
     Row {

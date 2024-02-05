@@ -43,7 +43,6 @@ public:
     CustomPlanViewOptions(CustomOptions* options, QObject* parent = nullptr);
 
     bool    				showToolStrip       (void) const final;
-	bool    				showTerrainStatus  (void) const final;
 };
 
 class CustomOptions : public QGCOptions

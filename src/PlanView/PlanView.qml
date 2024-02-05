@@ -760,20 +760,18 @@ Item {
             anchors.leftMargin: 0
             anchors.left:       mapScale.left
             anchors.right:      rightPanel.left
-            anchors.bottom:     parent.bottom
+            anchors.bottom:     bottomPanelTop.top
             height:             ScreenTools.defaultFontPixelHeight * 7
             missionController:  _missionController
             visible:            _internalVisible && _editingLayer === _layerMission
                                 && QGroundControl.corePlugin.options.showMissionStatus
-                                && QGroundControl.corePlugin.options.planView.showTerrainStatus
 
             onSetCurrentSeqNum: _missionController.setCurrentPlanViewSeqNum(seqNum, true)
 
-            property bool _internalVisible: _planViewSettings.showMissionItemStatus.rawValue
+            property bool _internalVisible: false
 
             function toggleVisible() {
                 _internalVisible = !_internalVisible
-                _planViewSettings.showMissionItemStatus.rawValue = _internalVisible
             }
         }
 
@@ -794,6 +792,11 @@ Item {
             anchors.fill: parent
             planView: _root
             missionEditEventHandler: _planViewMissionStateManager
+        }
+
+        Item {
+            id: bottomPanelTop
+            y: parent.height - customLayer.bottomPanelHeight
         }
     }
 

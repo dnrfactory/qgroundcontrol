@@ -41,7 +41,7 @@ protected:
 	virtual bool    showPhotoVideoControl         () const { return true; }
     virtual bool    guidedBarShowEmergencyStop  () const { return true; }
     virtual bool    guidedBarShowOrbit          () const { return true; }
-    virtual bool    guidedBarShowROI            () const { return true; }	
+    virtual bool    guidedBarShowROI            () const { return true; }
 
     QGCOptions* _options;
 
@@ -58,11 +58,9 @@ public:
     QGCPlanViewOptions(QGCOptions* options, QObject* parent = nullptr);
 
 	Q_PROPERTY(bool                     showToolStrip            READ showToolStrip           CONSTANT)
-    Q_PROPERTY(bool                     showTerrainStatus        READ showTerrainStatus      CONSTANT)
 
 protected:
     virtual bool    showToolStrip() const { return true; }
-    virtual bool    showTerrainStatus() const { return true; }
 
 	QGCOptions* _options;
 };
@@ -170,7 +168,7 @@ public:
     virtual float   devicePixelDensity              () const { return 0.0f; }
 
     virtual QGCFlyViewOptions* flyViewOptions       ();
-	virtual QGCPlanViewOptions* planViewOptions       ();	
+	virtual QGCPlanViewOptions* planViewOptions       ();
 
 signals:
     void showSensorCalibrationCompassChanged    (bool show);

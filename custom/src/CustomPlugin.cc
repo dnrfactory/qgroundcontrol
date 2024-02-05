@@ -74,11 +74,6 @@ bool CustomPlanViewOptions::showToolStrip(void) const
     return false;
 }
 
-bool CustomPlanViewOptions::showTerrainStatus(void) const
-{
-    return false;
-}
-
 CustomOptions::CustomOptions(CustomPlugin*, QObject* parent)
     : QGCOptions(parent)
 {
