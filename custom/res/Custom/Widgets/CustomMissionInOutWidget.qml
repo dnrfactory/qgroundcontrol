@@ -30,6 +30,13 @@ Column {
     property var vehicles: QGroundControl.multiVehicleManager.vehiclesForUi
     property var activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
 
+    property var _planMasterController: globals.planMasterControllerPlanView
+    property bool _controllerValid: _planMasterController !== undefined && _planMasterController !== null
+    property bool _controllerOffline: _controllerValid ? _planMasterController.offline : true
+    property var _controllerDirty: _controllerValid ? _planMasterController.dirty : false
+    property var  _controllerSyncInProgress: _controllerValid ? _planMasterController.syncInProgress : false
+    property real _controllerProgressPct: _controllerValid ? _planMasterController.missionController.progressPct : 0
+
     readonly property int eButtonSendPlan: 0
     readonly property int eButtonImportPlan: 1
     readonly property int eButtonSavePlan: 2
@@ -38,6 +45,8 @@ Column {
 
     onActiveVehicleChanged: updateActiveVehicle()
     Component.onCompleted: updateActiveVehicle()
+    on_ControllerSyncInProgressChanged: console.log("on_ControllerSyncInProgressChanged:" + _controllerSyncInProgress)
+    on_ControllerProgressPctChanged: console.log("on_ControllerProgressPctChanged:" + _controllerProgressPct)
 
     function isConnectedIndex(index) {
         return index >= 0 && index < 4 && vehicles.get(index) !== null
@@ -67,12 +76,14 @@ Column {
         id: sendPlanButton
         width: parent.width
         height: parent.height * 0.25
-        text: qsTr("Send plan")
+        text: _controllerDirty ? qsTr("Upload Required") : qsTr("Upload")
         pointSize: ScreenTools.mediumFontPointSize
         enabled: activeVehicle !== null
         onClicked: {
             buttonClicked(eButtonSendPlan)
         }
+
+        blinking: _controllerDirty && !_controllerSyncInProgress
     }
     Item {
         id: uavButtonGroup

@@ -23,8 +23,9 @@ Button {
     property alias wrapMode:            text.wrapMode
     property alias horizontalAlignment: text.horizontalAlignment
 
-    property bool   isSelected: false
-    property bool   _showHighlight:     hovered | checked | isSelected
+    property bool isSelected: false
+    property bool _showHighlight:     hovered | checked | isSelected
+    property bool blinking: false
 
     property int _horizontalPadding:    ScreenTools.defaultFontPixelWidth
     property int _verticalPadding:      Math.round(ScreenTools.defaultFontPixelHeight * heightFactor)
@@ -48,6 +49,16 @@ Button {
             ColorAnimation {
                 duration: 100
             }
+        }
+
+        ColorAnimation on color {
+            easing.type: Easing.OutQuart
+            from: control.normalColor
+            to: control.hightlightColor
+            loops: Animation.Infinite
+            running: blinking && !control.hovered
+            alwaysRunToEnd: false
+            duration: 2000
         }
     }
 
