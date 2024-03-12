@@ -150,7 +150,7 @@ void MultiVehicleManager::_vehicleHeartbeatInfo(LinkInterface* link, int vehicle
 
     QColor vehicleColor = vehicle->getMapItemColor();
     if (vehicleId >= _VEHICLE_FOR_UI_START_ID
-        && vehicleId < _VEHICLE_FOR_UI_START_ID + _VEHICLE_FOR_UI_COUNT - 1) {
+        && vehicleId < _VEHICLE_FOR_UI_START_ID + _VEHICLE_FOR_UI_COUNT) {
         vehicleColor = _vehicleColorList.at(vehicleId - _VEHICLE_FOR_UI_START_ID);
     }
     vehicle->setMapItemColor(vehicleColor);
