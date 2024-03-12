@@ -37,6 +37,7 @@ Item {
 
     property var   _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
 
+    readonly property int actionRTL:                        1
     readonly property int actionArm:                        4
     readonly property int actionDisarm:                     5
     readonly property int actionStartMission:               12
@@ -349,6 +350,7 @@ Item {
             pointSize: ScreenTools.mediumFontPointSize
             onClicked: {
                 console.log("Home Return Button clicked")
+                _guidedController.executeAction(actionRTL)
             }
         }
     }
