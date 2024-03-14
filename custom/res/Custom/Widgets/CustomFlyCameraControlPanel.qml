@@ -44,6 +44,61 @@ Item {
         width: parent.width * 0.6
         height: parent.height
 
+        states: [
+            State {
+                name: "idle"
+                when: !upButton.pressed && !downButton.pressed && !leftButton.pressed && !rightButton.pressed
+                PropertyChanges { target: gimbalTimer; running: false }
+            },
+            State {
+                name: "up"
+                when: upButton.pressed
+                PropertyChanges { target: gimbalTimer; running: true }
+            },
+            State {
+                name: "down"
+                when: downButton.pressed
+                PropertyChanges { target: gimbalTimer; running: true }
+            },
+            State {
+                name: "left"
+                when: leftButton.pressed
+                PropertyChanges { target: gimbalTimer; running: true }
+            },
+            State {
+                name: "right"
+                when: rightButton.pressed
+                PropertyChanges { target: gimbalTimer; running: true }
+            }
+        ]
+
+        onStateChanged: {
+            console.log("onStatesChanged gimbalPanel.state: " + gimbalPanel.state)
+        }
+
+        Timer {
+            id: gimbalTimer
+            interval: 100
+            repeat: true
+            onTriggered: {
+                console.log("gimbalTimer onTriggered. gimbalPanel.state: " + gimbalPanel.state)
+                switch (gimbalPanel.state) {
+                case "up":
+                    _activeVehicle.gimbalPitchStep(1)
+                    break
+                case "down":
+                    _activeVehicle.gimbalPitchStep(-1)
+                    break
+                case "left":
+                    _activeVehicle.gimbalYawStep(-1)
+                    break
+                case "right":
+                    _activeVehicle.gimbalYawStep(1)
+                    break
+                }
+            }
+        }
+
         QGCLabel {
             id: gimbalLabel
             text: qsTr("Gimbal")
@@ -101,7 +156,7 @@ Item {
                 }
             }
             QGCButton {
-                id: rirghtButton
+                id: rightButton
                 anchors.top: upButton.bottom
                 anchors.left: resetButton.right
                 anchors.topMargin: root.btnSpacing
