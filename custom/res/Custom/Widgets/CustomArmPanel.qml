@@ -87,6 +87,13 @@ Item {
             return eMainStatusArmed
         }
 
+        if (_activeVehicle.healthAndArmingCheckReport.supported) {
+            if (_activeVehicle.healthAndArmingCheckReport.canArm) {
+                return eMainStatusReadyToFly
+            }
+            return eMainStatusNotReadyToFly
+        }
+
         if (_activeVehicle.readyToFlyAvailable) {
             if (_activeVehicle.readyToFly) {
                 return eMainStatusReadyToFly
@@ -291,6 +298,7 @@ Item {
             enabled: _activeVehicle && btnState !== eBtnStateDisabled
             text: btnTextArray[btnState]
             pointSize: ScreenTools.mediumFontPointSize
+            normalColor: "black"
             onClicked: {
                 console.log("Pause Button clicked")
 
@@ -348,6 +356,7 @@ Item {
             enabled: _activeVehicle
             text: qsTr("Home Return")
             pointSize: ScreenTools.mediumFontPointSize
+            normalColor: "black"
             onClicked: {
                 console.log("Home Return Button clicked")
                 _guidedController.executeAction(actionRTL)

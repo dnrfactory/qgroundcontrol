@@ -113,7 +113,7 @@ Item {
             width: gimbalPanel.width - x
             height: root.controlHeight
 
-            QGCButton {
+            CustomButton {
                 id: upButton
                 x: root.btnWidth + root.btnSpacing
                 y: root.btnSpacing
@@ -122,11 +122,12 @@ Item {
                 backRadius: root.btnRadius
                 iconSource: "/res/custom/img/ArrowUp"
                 enabled : _activeVehicle
+                normalColor: "black"
                 onClicked: {
                     console.log("upButton clicked")
                 }
             }
-            QGCButton {
+            CustomButton {
                 id: leftButton
                 anchors.top: upButton.bottom
                 anchors.topMargin: root.btnSpacing
@@ -135,11 +136,12 @@ Item {
                 backRadius: root.btnRadius
                 iconSource: "/res/custom/img/ArrowLeft"
                 enabled : _activeVehicle
+                normalColor: "black"
                 onClicked: {
                     console.log("leftButton clicked")
                 }
             }
-            QGCButton {
+            CustomButton {
                 id: resetButton
                 anchors.top: upButton.bottom
                 anchors.left: leftButton.right
@@ -151,11 +153,12 @@ Item {
                 text: "\u25CF"
                 pointSize: ScreenTools.mediumFontPointSize
                 enabled : _activeVehicle
+                normalColor: "black"
                 onClicked: {
                     console.log("resetButton clicked")
                 }
             }
-            QGCButton {
+            CustomButton {
                 id: rightButton
                 anchors.top: upButton.bottom
                 anchors.left: resetButton.right
@@ -166,11 +169,12 @@ Item {
                 backRadius: root.btnRadius
                 iconSource: "/res/custom/img/ArrowRight"
                 enabled : _activeVehicle
+                normalColor: "black"
                 onClicked: {
                     console.log("rightButton clicked")
                 }
             }
-            QGCButton {
+            CustomButton {
                 id: downButton
                 anchors.top: resetButton.bottom
                 anchors.left: resetButton.left
@@ -180,6 +184,7 @@ Item {
                 backRadius: root.btnRadius
                 iconSource: "/res/custom/img/ArrowDown"
                 enabled : _activeVehicle
+                normalColor: "black"
                 onClicked: {
                     console.log("downButton clicked")
                 }
@@ -206,7 +211,7 @@ Item {
             width: zoomPanel.width
             height: root.controlHeight
 
-            QGCButton {
+            CustomButton {
                 id: zoomInButton
                 anchors.horizontalCenter: zoomControl.horizontalCenter
                 y: root.btnSpacing
@@ -216,11 +221,12 @@ Item {
                 text: "+"
                 pointSize: ScreenTools.mediumFontPointSize
                 enabled : _activeVehicle
+                normalColor: "black"
                 onClicked: {
                     console.log("zoomInButton clicked")
                 }
             }
-            QGCButton {
+            CustomButton {
                 id: zoomOutButton
                 anchors.horizontalCenter: zoomControl.horizontalCenter
                 anchors.top: zoomInButton.bottom
@@ -231,11 +237,12 @@ Item {
                 text: "-"
                 pointSize: ScreenTools.mediumFontPointSize
                 enabled : _activeVehicle
+                normalColor: "black"
                 onClicked: {
                     console.log("zoomOutButton clicked")
                 }
             }
-            QGCButton {
+            CustomButton {
                 id: zoomResetButton
                 anchors.horizontalCenter: zoomControl.horizontalCenter
                 anchors.top: zoomOutButton.bottom
@@ -246,6 +253,7 @@ Item {
                 text: "\u25CF"
                 pointSize: ScreenTools.mediumFontPointSize
                 enabled : _activeVehicle
+                normalColor: "black"
                 onClicked: {
                     console.log("zoomResetButton clicked")
                 }
