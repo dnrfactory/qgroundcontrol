@@ -64,11 +64,74 @@ QGCListView {
         }
     }
 
+    readonly property int eMainStatusDisconnected: 0
+    readonly property int eMainStatusCommLost: 1
+    readonly property int eMainStatusReadyToFly: 2
+    readonly property int eMainStatusNotReadyToFly: 3
+    readonly property int eMainStatusArmed: 4
+    readonly property int eMainStatusFlying: 5
+    readonly property int eMainStatusWaiting: 6
+
+    readonly property var mainStatusTextArray: [
+        "",
+        qsTr("Communication Lost"),
+        qsTr("Ready To Fly"),
+        qsTr("Not Ready"),
+        qsTr("Armed"),
+        qsTr("Flying"),
+        qsTr("Waiting")
+    ]
+
+    function getVehicleMainStatus(index) {
+        var vehicle = vehicles.get(index)
+
+        if (vehicle === null || vehicle === undefined) {
+            return eMainStatusDisconnected
+        }
+
+        if (vehicle.vehicleLinkManager.communicationLost) {
+            return eMainStatusCommLost
+        }
+
+        if (vehicle.armed) {
+            if (vehicle.flying) {
+                return eMainStatusFlying
+            }
+            if (vehicle.landing) {
+                return eMainStatusWaiting
+            }
+            return eMainStatusArmed
+        }
+
+        if (vehicle.healthAndArmingCheckReport.supported) {
+            if (vehicle.healthAndArmingCheckReport.canArm) {
+                return eMainStatusReadyToFly
+            }
+            return eMainStatusNotReadyToFly
+        }
+
+        if (vehicle.readyToFlyAvailable) {
+            if (vehicle.readyToFly) {
+                return eMainStatusReadyToFly
+            }
+            return eMainStatusNotReadyToFly
+        }
+        // Best we can do is determine readiness based on
+        // AutoPilot component setup and health indicators from SYS_STATUS
+        if (vehicle.allSensorsHealthy
+            && vehicle.autopilot.setupComplete) {
+            return eMainStatusReadyToFly
+        }
+        return eMainStatusNotReadyToFly
+    }
+
     delegate: Item {
         id: listItem
         width: root.width
         height: root.height / 4
         enabled: { console.log("listItem enabled:%1".arg(isConnectedIndex(index))); isConnectedIndex(index) }
+
+        opacity: isConnectedIndex(index) ? 1 : 0.4
 
         MouseArea {
             anchors.fill: listItem
@@ -97,7 +160,7 @@ QGCListView {
                 Text {
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
-                    text: "UAV " + (index + 1)
+                    text: "UAV " + (index + 1) + "    " + mainStatusTextArray[getVehicleMainStatus(index)]
                     font.pointSize: ScreenTools.mediumFontPointSize
                     font.bold: true
                     color: "black"
@@ -173,6 +236,13 @@ QGCListView {
                     }
                     Loader {
                         sourceComponent: factViewComponent
+                        onLoaded: {
+                            item.valueText = Qt.binding(function() {
+                                return isConnectedIndex(index) ?
+                                       vehicles.get(index).flightMode : ""
+                            })
+                            item.nameText = Qt.binding(function() { return qsTr("Flight mode") })
+                        }
                     }
                     Loader {
                         sourceComponent: factViewComponent
