@@ -4,6 +4,8 @@ import QtQuick.Controls.Styles  1.4
 
 import QGroundControl.Palette 1.0
 import QGroundControl.ScreenTools 1.0
+import QGroundControl.Controls 1.0
+
 
 Button {
     id:             control
@@ -19,6 +21,8 @@ Button {
     property bool   iconLeft:       false
     property real   backRadius:     0
     property real   heightFactor:   0.5
+    property string iconSource
+    property real iconSourceScale: 1
 
     property alias wrapMode:            text.wrapMode
     property alias horizontalAlignment: text.horizontalAlignment
@@ -63,9 +67,24 @@ Button {
     }
 
     contentItem: Item {
-        implicitWidth:  text.implicitWidth
+        implicitWidth:  text.implicitWidth + icon.width
         implicitHeight: text.implicitHeight
         baselineOffset: text.y + text.baselineOffset
+
+        QGCColoredImage {
+            id:                     icon
+            source:                 control.iconSource
+            height:                 source === "" ? 0 : text.height * iconSourceScale
+            width:                  height
+            color:                  text.color
+            fillMode:               Image.PreserveAspectFit
+            sourceSize.height:      height
+            anchors.left:           control.iconLeft ? parent.left : undefined
+            anchors.leftMargin:     control.iconLeft ? ScreenTools.defaultFontPixelWidth : undefined
+            anchors.right:          !control.iconLeft ? parent.right : undefined
+            anchors.rightMargin:    !control.iconLeft ? ScreenTools.defaultFontPixelWidth : undefined
+            anchors.verticalCenter: parent.verticalCenter
+        }
 
         Text {
             id:                     text
