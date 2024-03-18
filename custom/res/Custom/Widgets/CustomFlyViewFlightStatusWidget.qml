@@ -85,8 +85,8 @@ Item {
         var latitudeStr = "--.--"
         var longitudeStr = "--.--"
         if (isConnectedIndex(idx)) {
-            latitudeStr = vehicles.get(idx).gps.lat.rawValue.toFixed(2)
-            longitudeStr = vehicles.get(idx).gps.lon.rawValue.toFixed(2)
+            latitudeStr = vehicles.get(idx).gps.lat.rawValue.toFixed(4)
+            longitudeStr = vehicles.get(idx).gps.lon.rawValue.toFixed(4)
 
             //console.log("getLocationStr lat:%1, lon:%2".arg(vehicles.get(idx).gps.lat.rawValue).arg(vehicles.get(idx).gps.lon.rawValue))
         }

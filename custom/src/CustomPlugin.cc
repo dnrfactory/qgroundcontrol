@@ -272,13 +272,13 @@ void CustomPlugin::factValueGridCreateDefaultSettings(const QString& defaultSett
     value->setFact("gps", "lat");
     value->setText(tr("Latitude"));
     value->setShowUnits(true);
-    value->setUiDecimalPlaces(2);
+    value->setUiDecimalPlaces(4);
 
     value = column->value<InstrumentValueData*>(rowIndex++);
     value->setFact("gps", "lon");
     value->setText(tr("Longitude"));
     value->setShowUnits(true);
-    value->setUiDecimalPlaces(2);
+    value->setUiDecimalPlaces(4);
 
     value = column->value<InstrumentValueData*>(rowIndex++);
     value->setFact("Vehicle", "DistanceToHome");
@@ -299,7 +299,7 @@ void CustomPlugin::factValueGridCreateDefaultSettings(const QString& defaultSett
     value->setShowUnits(true);
 
     value = column->value<InstrumentValueData*>(rowIndex++);
-    value->setFact("battery1", "voltage");
+    value->setFact("battery0", "voltage");
     value->setText(tr("Voltage"));
     value->setShowUnits(true);
 
