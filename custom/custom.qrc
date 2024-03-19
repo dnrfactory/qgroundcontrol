@@ -1,21 +1,21 @@
 <RCC>
-    <qresource prefix="custom/img">
+    <qresource prefix="/custom/img">
         <file alias="CustomAppIcon.png">res/Images/CustomAppIcon.png</file>
     </qresource>
-	<qresource prefix="/res/custom/img">
-		<file alias="FlightModeButtonManual.svg">res/imgs/FlightModeButtonManual.svg</file>
-		<file alias="FlightModeButtonAuto.svg">res/imgs/FlightModeButtonAuto.svg</file>
-		<file alias="FlightModeButtonLoiter.svg">res/imgs/FlightModeButtonLoiter.svg</file>
-		<file alias="TitleBarFlight.svg">res/imgs/TitleBarFlight.svg</file>
-		<file alias="TitleBarMissionPlan.svg">res/imgs/TitleBarMissionPlan.svg</file>
-		<file alias="TitleBarVehicleSetting.svg">res/imgs/TitleBarVehicleSetting.svg</file>
-		<file alias="DnrLogo.svg">res/imgs/DnrLogo.svg</file>
-		<file alias="ArrowUp.svg">res/imgs/ArrowUp.svg</file>
-		<file alias="ArrowDown.svg">res/imgs/ArrowDown.svg</file>
-		<file alias="ArrowLeft.svg">res/imgs/ArrowLeft.svg</file>
-		<file alias="ArrowRight.svg">res/imgs/ArrowRight.svg</file>
-	</qresource>
-    <qresource prefix="Custom/Widgets">
+    <qresource prefix="/res/custom/img">
+        <file alias="FlightModeButtonManual.svg">res/imgs/FlightModeButtonManual.svg</file>
+        <file alias="FlightModeButtonAuto.svg">res/imgs/FlightModeButtonAuto.svg</file>
+        <file alias="FlightModeButtonLoiter.svg">res/imgs/FlightModeButtonLoiter.svg</file>
+        <file alias="TitleBarFlight.svg">res/imgs/TitleBarFlight.svg</file>
+        <file alias="TitleBarMissionPlan.svg">res/imgs/TitleBarMissionPlan.svg</file>
+        <file alias="TitleBarVehicleSetting.svg">res/imgs/TitleBarVehicleSetting.svg</file>
+        <file alias="DnrLogo.svg">res/imgs/DnrLogo.svg</file>
+        <file alias="ArrowUp.svg">res/imgs/ArrowUp.svg</file>
+        <file alias="ArrowDown.svg">res/imgs/ArrowDown.svg</file>
+        <file alias="ArrowLeft.svg">res/imgs/ArrowLeft.svg</file>
+        <file alias="ArrowRight.svg">res/imgs/ArrowRight.svg</file>
+    </qresource>
+    <qresource prefix="/Custom/Widgets">
         <file alias="Custom/Widgets/CustomToolBarButton.qml">res/Custom/Widgets/CustomToolBarButton.qml</file>
         <file alias="Custom/Widgets/CustomFlyViewBottomWidget.qml">res/Custom/Widgets/CustomFlyViewBottomWidget.qml</file>
         <file alias="Custom/Widgets/CustomWeatherPanel.qml">res/Custom/Widgets/CustomWeatherPanel.qml</file>
@@ -38,15 +38,16 @@
         <file alias="Custom/Widgets/CustomBatteryDetectTimer.qml">res/Custom/Widgets/CustomBatteryDetectTimer.qml</file>
         <file alias="Custom/Widgets/CustomPanel.qml">res/Custom/Widgets/CustomPanel.qml</file>
         <file alias="Custom/Widgets/CustomVideoOutPanel.qml">res/Custom/Widgets/CustomVideoOutPanel.qml</file>
-        <file alias="Custom/Widgets/CustomVisibleAnimator.qml">res/Custom/Widgets/CustomVisibleAnimator.qml</file>		
+        <file alias="Custom/Widgets/CustomVisibleAnimator.qml">res/Custom/Widgets/CustomVisibleAnimator.qml</file>
+        <file alias="Custom/Widgets/CustomArmSwitch.qml">res/Custom/Widgets/CustomArmSwitch.qml</file>
         <file alias="Custom/Widgets/qmldir">res/Custom/Widgets/qmldir</file>
     </qresource>
     <qresource prefix="/qml">
         <file alias="QGroundControl/FlightDisplay/FlyViewCustomLayer.qml">res/CustomFlyViewOverlay.qml</file>
         <file alias="PlanViewCustomLayer.qml">res/CustomPlanViewOverlay.qml</file>
         <file alias="QGroundControl/Controls/MainToolBar.qml">res/CustomMainToolBar.qml</file>
-		<file alias="QGroundControl/Controls/HorizontalFactValueGrid.qml">res/CustomHorizontalFactValueGrid.qml</file>
-		<file alias="CustomPlanViewMissionStateManager.qml">res/CustomPlanViewMissionStateManager.qml</file>
+        <file alias="QGroundControl/Controls/HorizontalFactValueGrid.qml">res/CustomHorizontalFactValueGrid.qml</file>
+        <file alias="CustomPlanViewMissionStateManager.qml">res/CustomPlanViewMissionStateManager.qml</file>
     </qresource>
     <qresource prefix="/qmlimages">
         <file alias="vehicleArrowOpaque.svg">res/Images/UAV.svg</file>

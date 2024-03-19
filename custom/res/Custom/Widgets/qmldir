@@ -23,3 +23,4 @@ CustomBatteryDetectTimer 1.0 CustomBatteryDetectTimer.qml
 CustomPanel 1.0 CustomPanel.qml
 CustomVideoOutPanel 1.0 CustomVideoOutPanel.qml
 CustomVisibleAnimator 1.0 CustomVisibleAnimator.qml
+CustomArmSwitch 1.0 CustomArmSwitch.qml

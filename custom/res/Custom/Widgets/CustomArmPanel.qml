@@ -59,14 +59,14 @@ Item {
     height:                 _bottomPanelHeight
     width:                  (_bottomPanelWidth/2 - 4)
 
-    on_ActiveVehicleChanged: {
+    /*on_ActiveVehicleChanged: {
         _activeVehicle ? switchCirle.state = "leftOff" : switchCirle.state = "disActiveVehicle"
     }
 
     property bool _vehicleArmed: _activeVehicle ? _activeVehicle.armed : false
     on_VehicleArmedChanged: {
         _vehicleArmed ? switchCirle.state = "rightOn" : switchCirle.state = "leftOff"
-    }
+    }*/
 
     function getMainStatus() {
         if (_activeVehicle === null || _activeVehicle === undefined) {
@@ -151,6 +151,15 @@ Item {
         }
 
         Item {
+            width: parent.width
+            height: width / 2
+            CustomArmSwitch {
+                vehicle: _activeVehicle
+                width: parent.width * 0.9
+            }
+        }
+
+        /*Item {
             id: armswitch
             width: parent.width * 0.9
             height: width / 2
@@ -241,7 +250,7 @@ Item {
                     _guidedController.executeAction(switchCirle.state == "leftOff" ? actionArm : actionDisarm)
                 }
             }
-        }
+        }*/
 
         CustomButton {
             id: btnMissionStartPause

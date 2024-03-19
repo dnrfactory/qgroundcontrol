@@ -206,13 +206,21 @@ QGCListView {
                 }
                 Grid {
                     columns: 3
-                    Loader {
+                    /*Loader {
                         sourceComponent: factViewComponent
                         onLoaded: {
                             item.valueText = Qt.binding(function() {
                                 return isConnectedIndex(index) ? "ONLINE" : "OFFLINE"
                             })
                             item.nameText = Qt.binding(function() { return qsTr("Connection") })
+                        }
+                    }*/
+                    Item {
+                        width: vehicleInfoPanel.width / 3
+                        height: vehicleInfoPanel.height / 2
+                        CustomArmSwitch {
+                            vehicle: vehicles.get(index)
+                            width: parent.width * 0.9
                         }
                     }
                     Loader {
