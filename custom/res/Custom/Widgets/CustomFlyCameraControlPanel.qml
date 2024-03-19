@@ -150,12 +150,17 @@ Item {
                 width: root.btnWidth
                 height: root.btnHeight
                 backRadius: root.btnRadius
-                text: "\u25CF"
-                pointSize: ScreenTools.mediumFontPointSize
                 enabled : _activeVehicle
                 normalColor: "black"
                 onClicked: {
                     console.log("resetButton clicked")
+                }
+                Rectangle {
+                    anchors.centerIn: parent
+                    height: parent.height * 0.5
+                    width: height
+                    color: "white"
+                    radius: height * 0.5
                 }
             }
             CustomButton {
@@ -219,7 +224,8 @@ Item {
                 height: root.btnHeight
                 backRadius: root.btnRadius
                 text: "+"
-                pointSize: ScreenTools.mediumFontPointSize
+                pointSize: ScreenTools.largeFontPointSize
+                boldFont: true
                 enabled : _activeVehicle
                 normalColor: "black"
                 onClicked: {
@@ -235,7 +241,8 @@ Item {
                 height: root.btnHeight
                 backRadius: root.btnRadius
                 text: "-"
-                pointSize: ScreenTools.mediumFontPointSize
+                pointSize: ScreenTools.largeFontPointSize
+                boldFont: true
                 enabled : _activeVehicle
                 normalColor: "black"
                 onClicked: {
@@ -250,12 +257,17 @@ Item {
                 width: root.btnWidth
                 height: root.btnHeight
                 backRadius: root.btnRadius
-                text: "\u25CF"
-                pointSize: ScreenTools.mediumFontPointSize
                 enabled : _activeVehicle
                 normalColor: "black"
                 onClicked: {
                     console.log("zoomResetButton clicked")
+                }
+                Rectangle {
+                    anchors.centerIn: parent
+                    height: parent.height * 0.5
+                    width: height
+                    color: "white"
+                    radius: height * 0.5
                 }
             }
         }
