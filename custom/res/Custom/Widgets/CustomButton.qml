@@ -37,15 +37,16 @@ Button {
     property color hightlightColor: qgcPal.buttonHighlight
     property color normalColor: qgcPal.button
     property color pressedColor: Qt.darker(hightlightColor, 1.5)
+    property color disabledColor: qgcPal.button
 
     QGCPalette { id: qgcPal; colorGroupEnabled: enabled }
 
     background: Rectangle {
-        id:             backRect
-        implicitWidth:  ScreenTools.implicitButtonWidth
+        id: backRect
+        implicitWidth: ScreenTools.implicitButtonWidth
         implicitHeight: ScreenTools.implicitButtonHeight
-        radius:         backRadius
-        color:          pressed ? pressedColor : (_showHighlight ? hightlightColor : normalColor)
+        radius: backRadius
+        color: !enabled ? disabledColor : (pressed ? pressedColor : (_showHighlight ? hightlightColor : normalColor))
 
         property var btnColor: pressed ? pressedColor : (_showHighlight ? hightlightColor : normalColor)
 

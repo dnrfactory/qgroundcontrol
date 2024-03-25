@@ -40,6 +40,7 @@
         <file alias="Custom/Widgets/CustomVideoOutPanel.qml">res/Custom/Widgets/CustomVideoOutPanel.qml</file>
         <file alias="Custom/Widgets/CustomVisibleAnimator.qml">res/Custom/Widgets/CustomVisibleAnimator.qml</file>
         <file alias="Custom/Widgets/CustomArmSwitch.qml">res/Custom/Widgets/CustomArmSwitch.qml</file>
+        <file alias="Custom/Widgets/CustomArmSwitchMulti.qml">res/Custom/Widgets/CustomArmSwitchMulti.qml</file>
         <file alias="Custom/Widgets/qmldir">res/Custom/Widgets/qmldir</file>
     </qresource>
     <qresource prefix="/qml">

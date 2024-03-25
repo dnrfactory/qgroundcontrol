@@ -59,15 +59,6 @@ Item {
     height:                 _bottomPanelHeight
     width:                  (_bottomPanelWidth/2 - 4)
 
-    /*on_ActiveVehicleChanged: {
-        _activeVehicle ? switchCirle.state = "leftOff" : switchCirle.state = "disActiveVehicle"
-    }
-
-    property bool _vehicleArmed: _activeVehicle ? _activeVehicle.armed : false
-    on_VehicleArmedChanged: {
-        _vehicleArmed ? switchCirle.state = "rightOn" : switchCirle.state = "leftOff"
-    }*/
-
     function getMainStatus() {
         if (_activeVehicle === null || _activeVehicle === undefined) {
             return eMainStatusDisconnected
@@ -151,106 +142,15 @@ Item {
         }
 
         Item {
-            width: parent.width
-            height: width / 2
-            CustomArmSwitch {
+            width: parent.width * 0.9
+            height: width * 0.4
+            CustomArmSwitchMulti {
+                isMultiVehicleMode: root.isMultiVehicleMode
+                vehicles: QGroundControl.multiVehicleManager.vehiclesForUi
                 vehicle: _activeVehicle
-                width: parent.width * 0.9
+                width: parent.width
             }
         }
-
-        /*Item {
-            id: armswitch
-            width: parent.width * 0.9
-            height: width / 2
-            anchors.horizontalCenter: parent.horizontalCenter
-            enabled: _activeVehicle
-
-            Rectangle{
-                id: roundRectangle
-                width: parent.width * 0.8
-                height: parent.height * 0.5
-                radius: height
-                color: "white"
-                anchors.centerIn: parent
-
-                QGCLabel{
-                    text: qsTr("ON")
-                    font.pointSize: ScreenTools.mediumFontPointSize
-                    font.bold: true
-                    color: switchCirle.state == "disActiveVehicle" ? "gray" : "black"
-                    anchors.left: parent.left
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.leftMargin: 7
-                }
-
-                QGCLabel{
-                    text: qsTr("OFF")
-                    font.pointSize: ScreenTools.mediumFontPointSize
-                    font.bold: true
-                    color: switchCirle.state == "disActiveVehicle" ? "gray" : "black"
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.rightMargin: 7
-                }
-            }
-
-            Rectangle {
-                id: switchCirle
-                width: parent.height * 0.7
-                height: width
-                radius: height
-                anchors.verticalCenter: parent.verticalCenter
-                state : "leftOff"
-
-                states:[
-                    State {
-                        name: "disActiveVehicle"
-                        PropertyChanges {
-                            target: switchCirle;
-                            color: "gray";
-                        }
-                        AnchorChanges{
-                            target: switchCirle;
-                            anchors.left: parent.left
-                        }
-                    },
-                    State {
-                        name: "leftOff"
-                        PropertyChanges {
-                            target: switchCirle;
-                            color: "red";
-                        }
-                        AnchorChanges{
-                            target: switchCirle;
-                            anchors.left: parent.left
-                        }
-                    },
-                    State {
-                        name: "rightOn"
-                        PropertyChanges {
-                            target: switchCirle;
-                            color: "#00DC30";
-                        }
-                        AnchorChanges{
-                            target: switchCirle;
-                            anchors.right: parent.right
-                        }
-                    }
-                ]
-            }
-
-            MouseArea {
-                anchors.fill: parent
-
-                hoverEnabled: true
-                cursorShape: Qt.PointingHandCursor
-
-                onClicked: {
-                    _guidedController.executeAction(switchCirle.state == "leftOff" ? actionArm : actionDisarm)
-                }
-            }
-        }*/
 
         CustomButton {
             id: btnMissionStartPause
@@ -301,7 +201,7 @@ Item {
             ]
 
             width: root.width * 0.8
-            height: width / 3
+            height: root.height * 0.15
             backRadius: 10
             anchors.horizontalCenter: parent.horizontalCenter
             enabled: _activeVehicle && btnState !== eBtnStateDisabled
@@ -344,8 +244,8 @@ Item {
                     }
                     else {
                         var mvm = QGroundControl.multiVehicleManager
-                        var rowCont = mvm.vehiclesForUi.rowCount()
-                        for (var i = 0; i < rowCont; i ++) {
+                        var rowCount = mvm.vehiclesForUi.rowCount()
+                        for (var i = 0; i < rowCount; i ++) {
                             var vehicle = mvm.vehiclesForUi.get(i)
                             if (vehicle !== null) {
                                 vehicle.closeVehicle()
@@ -359,7 +259,7 @@ Item {
 
         CustomButton {
             width: root.width * 0.8
-            height: width / 3
+            height: root.height * 0.15
             backRadius: 10
             anchors.horizontalCenter: parent.horizontalCenter
             enabled: _activeVehicle
@@ -368,7 +268,49 @@ Item {
             normalColor: "black"
             onClicked: {
                 console.log("Home Return Button clicked")
-                _guidedController.executeAction(actionRTL)
+                if (isMultiVehicleMode === false) {
+                    _guidedController.executeAction(actionRTL)
+                }
+                else {
+                    var mvm = QGroundControl.multiVehicleManager
+                    var rowCont = mvm.vehiclesForUi.rowCount()
+                    for (var i = 0; i < rowCont; i ++) {
+                        var vehicle = mvm.vehiclesForUi.get(i)
+                        if (vehicle !== null) {
+                            vehicle.guidedModeRTL(false)
+                        }
+                    }
+                }
+            }
+        }
+
+        Row {
+            id: takeoffLandButtonGroup
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: _bottomPanelTopPadding/2
+            CustomButton {
+                width: root.width * 0.4 - takeoffLandButtonGroup.spacing * 0.5
+                height: root.height * 0.15
+                backRadius: 10
+                enabled: _activeVehicle
+                text: qsTr("Takeoff")
+                pointSize: ScreenTools.mediumFontPointSize
+                normalColor: "black"
+                onClicked: {
+                    console.log("Takeoff Button clicked")
+                }
+            }
+            CustomButton {
+                width: root.width * 0.4 - takeoffLandButtonGroup.spacing * 0.5
+                height: root.height * 0.15
+                backRadius: 10
+                enabled: _activeVehicle
+                text: qsTr("Land")
+                pointSize: ScreenTools.mediumFontPointSize
+                normalColor: "black"
+                onClicked: {
+                    console.log("Land Button clicked")
+                }
             }
         }
     }

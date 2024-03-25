@@ -33,6 +33,8 @@ QGCListView {
     property var activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
     property var batteryValueItem: [null, null, null, null]
 
+    readonly property int commonPadding: 10
+
     onActiveVehicleChanged: updateActiveVehicle()
     Component.onCompleted: updateActiveVehicle()
 
@@ -80,6 +82,15 @@ QGCListView {
         qsTr("Armed"),
         qsTr("Flying"),
         qsTr("Waiting")
+    ]
+    readonly property var mainStatusColorArray: [
+        "gray",
+        "red",
+        "green",
+        "yellow",
+        "green",
+        "green",
+        "green"
     ]
 
     function getVehicleMainStatus(index) {
@@ -160,11 +171,20 @@ QGCListView {
                 Text {
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
-                    text: "UAV " + (index + 1) + "    " + mainStatusTextArray[getVehicleMainStatus(index)]
+                    text: "UAV " + (index + 1)
                     font.pointSize: ScreenTools.mediumFontPointSize
                     font.bold: true
                     color: "black"
-                    leftPadding: 10
+                    leftPadding: commonPadding
+                }
+                Text {
+                    anchors.left: parent.left
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: mainStatusTextArray[getVehicleMainStatus(index)]
+                    font.pointSize: ScreenTools.mediumFontPointSize
+                    font.bold: true
+                    color: mainStatusColorArray[getVehicleMainStatus(index)]
+                    leftPadding: parent.width / 3 + commonPadding
                 }
             }
             CustomPanel {
@@ -188,14 +208,14 @@ QGCListView {
                                 font.pointSize: ScreenTools.mediumFontPointSize
                                 font.bold: true
                                 color: "white"
-                                topPadding: 10
-                                leftPadding: 10
+                                topPadding: commonPadding
+                                leftPadding: commonPadding
                             }
                             Text {
                                 text: nameText
                                 font.pointSize: ScreenTools.defaultFontPointSize
                                 color: "white"
-                                leftPadding: 10
+                                leftPadding: commonPadding
                             }
                         }
 
@@ -206,15 +226,6 @@ QGCListView {
                 }
                 Grid {
                     columns: 3
-                    /*Loader {
-                        sourceComponent: factViewComponent
-                        onLoaded: {
-                            item.valueText = Qt.binding(function() {
-                                return isConnectedIndex(index) ? "ONLINE" : "OFFLINE"
-                            })
-                            item.nameText = Qt.binding(function() { return qsTr("Connection") })
-                        }
-                    }*/
                     Item {
                         width: vehicleInfoPanel.width / 3
                         height: vehicleInfoPanel.height / 2

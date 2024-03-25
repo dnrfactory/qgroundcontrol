@@ -24,7 +24,32 @@ Item {
     height: width / 2
     anchors.centerIn: parent
 
+    property bool isMultiVehicleMode: false
     property var vehicle
+    property var vehicles
+
+    function getVehicleState(vehicle_) {
+        if (vehicle_ !== null && vehicle_ !== undefined) {
+            return vehicle_.armed ? "armed" : "disarmed"
+        }
+        return "inactive"
+    }
+
+
+    function getMultiVehiclesState() {
+        var rowCount = vehicles.rowCount()
+        for (var i = 0; i < rowCount; i ++) {
+            var vehicle_ = vehicles.get(i)
+            var state_ = getVehicleState(vehicle_)
+            if (state_ === "inactive") {
+                return "inactive"
+            }
+            if (state_ === "disarmed") {
+                return "disarmed"
+            }
+        }
+        return "armed"
+    }
 
     Rectangle{
         id: roundRectangle
@@ -69,8 +94,18 @@ Item {
         cursorShape: Qt.PointingHandCursor
 
         onClicked: {
-            if (vehicle !== null && vehicle !== undefined) {
-                vehicle.armed = true
+            if (isMultiVehicleMode) {
+                var rowCount = vehicles.rowCount()
+                for (var i = 0; i < rowCount; i ++) {
+                    var vehicle_ = vehicles.get(i)
+                    if (vehicle_ !== null && vehicle_ !== undefined) {
+                        vehicle_.armed = true
+                    }
+                }
+            } else {
+                if (vehicle !== null && vehicle !== undefined) {
+                    vehicle.armed = true
+                }
             }
         }
     }
@@ -78,7 +113,14 @@ Item {
     states:[
         State {
             name: "InactiveVehicle"
-            when: vehicle === null || vehicle === undefined
+            when: {
+                if (isMultiVehicleMode) {
+                    return getMultiVehiclesState() === "inactive"
+                }
+                else {
+                    (vehicle === null || vehicle === undefined)
+                }
+            }
             PropertyChanges {
                 target: root
                 enabled: false
@@ -104,7 +146,14 @@ Item {
         },
         State {
             name: "Disarmed"
-            when: vehicle !== null && vehicle !== undefined && vehicle.armed === false
+            when: {
+                if (isMultiVehicleMode) {
+                    return getMultiVehiclesState() === "disarmed"
+                }
+                else {
+                    (vehicle !== null && vehicle !== undefined && vehicle.armed === false)
+                }
+            }
             PropertyChanges {
                 target: root
                 enabled: true
@@ -130,7 +179,12 @@ Item {
         },
         State {
             name: "Armed"
-            when: vehicle !== null && vehicle !== undefined && vehicle.armed
+            when: {
+                if (isMultiVehicleMode) {
+                    return getMultiVehiclesState() === "armed"
+                }
+                (vehicle !== null && vehicle !== undefined && vehicle.armed)
+            }
             PropertyChanges {
                 target: root
                 enabled: false

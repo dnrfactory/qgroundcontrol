@@ -159,7 +159,7 @@ Item {
                     anchors.centerIn: parent
                     height: parent.height * 0.5
                     width: height
-                    color: "white"
+                    color: parent.enabled ? "white" : "lightgrey"
                     radius: height * 0.5
                 }
             }
@@ -266,7 +266,7 @@ Item {
                     anchors.centerIn: parent
                     height: parent.height * 0.5
                     width: height
-                    color: "white"
+                    color: parent.enabled ? "white" : "lightgrey"
                     radius: height * 0.5
                 }
             }
