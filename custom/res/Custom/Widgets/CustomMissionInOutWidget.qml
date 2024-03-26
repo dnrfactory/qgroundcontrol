@@ -84,6 +84,49 @@ Column {
         }
 
         blinking: _controllerDirty && !_controllerSyncInProgress
+
+        Rectangle {
+            id: progressPopup
+            anchors.fill: parent
+            visible: false
+            color: parent.normalColor
+
+            property var progress: root._controllerProgressPct
+
+            QGCLabel {
+                id: progressLabel
+                anchors.centerIn: parent
+                font.pointSize: ScreenTools.mediumFontPointSize
+            }
+
+            Timer {
+                id: progressPopupTimer
+                interval: 3000
+                onTriggered: {
+                    progressPopup.visible = false
+                }
+            }
+
+            onProgressChanged: {
+                if (progress === 1) {
+                    progressLabel.text = qsTr("Done")
+                    progressPopupTimer.start()
+                }
+                else if (progress > 0) {
+                    progressLabel.text = qsTr("Uploading %1 \%").arg((progress * 100).toFixed(0))
+                    progressPopup.visible = true
+                }
+            }
+
+            DeadMouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    console.log("DeadMouseArea onClicked")
+                    progressPopup.visible = false
+                    progressPopupTimer.stop()
+                }
+            }
+        }
     }
     Item {
         id: uavButtonGroup

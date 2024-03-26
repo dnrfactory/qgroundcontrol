@@ -74,7 +74,6 @@ Item {
 
         Image {
             id: weatherIcon
-            property int testflag: 0
 
             anchors.centerIn: parent
             sourceSize.width: parent.width * 0.5
@@ -97,22 +96,6 @@ Item {
                     return "/res/custom/img/WeatherSnow.svg"
                 }
                 return ""
-
-                /*switch(weatherIcon.testflag%5) {
-                case 0: return "/res/custom/img/WeatherClear.svg"
-                case 1: return "/res/custom/img/WeatherPartlyCloudy.svg"
-                case 2: return "/res/custom/img/WeatherCloudy.svg"
-                case 3: return "/res/custom/img/WeatherRainy.svg"
-                case 4: return "/res/custom/img/WeatherSnow.svg"
-                }
-                return ""*/
-            }
-
-            MouseArea {
-                anchors.fill:   parent
-                onClicked: {
-                    weatherIcon.testflag++
-                }
             }
         }
     }
