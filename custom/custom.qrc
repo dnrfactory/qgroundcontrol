@@ -14,6 +14,11 @@
         <file alias="ArrowDown.svg">res/imgs/ArrowDown.svg</file>
         <file alias="ArrowLeft.svg">res/imgs/ArrowLeft.svg</file>
         <file alias="ArrowRight.svg">res/imgs/ArrowRight.svg</file>
+		<file alias="WeatherClear.svg">res/imgs/WeatherClear.svg</file>
+		<file alias="WeatherCloudy.svg">res/imgs/WeatherCloudy.svg</file>
+		<file alias="WeatherPartlyCloudy.svg">res/imgs/WeatherPartlyCloudy.svg</file>
+		<file alias="WeatherRainy.svg">res/imgs/WeatherRainy.svg</file>
+		<file alias="WeatherSnow.svg">res/imgs/WeatherSnow.svg</file>
     </qresource>
     <qresource prefix="/Custom/Widgets">
         <file alias="Custom/Widgets/CustomToolBarButton.qml">res/Custom/Widgets/CustomToolBarButton.qml</file>

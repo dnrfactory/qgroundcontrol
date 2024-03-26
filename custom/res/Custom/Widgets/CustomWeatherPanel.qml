@@ -66,24 +66,54 @@ Item {
         verticalAlignment: Text.AlignVCenter
     }
 
-    Text {
+    Item {
         anchors.top: locationText.bottom
         anchors.left: parent.left
         height: root.height * 0.75
         width: parent.width / 2
-        text: skyCodeToString(WeatherInfoProvider.sky)
-        font.pointSize: ScreenTools.largeFontPointSize
-        color: "white"
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
 
-        function skyCodeToString(skyCode) {
-            switch(skyCode) {
-            case 1: return qsTr("Clear");
-            case 3: return qsTr("Partly Cloudy");
-            case 4: return qsTr("Cloudy");
+        Image {
+            id: weatherIcon
+            property int testflag: 0
+
+            anchors.centerIn: parent
+            sourceSize.width: parent.width * 0.5
+            source: {
+                switch (WeatherInfoProvider.rainType) {
+                case 0:
+                    switch(WeatherInfoProvider.sky) {
+                    case 3: return "/res/custom/img/WeatherPartlyCloudy.svg"
+                    case 4: return "/res/custom/img/WeatherCloudy.svg"
+                    case 1: return "/res/custom/img/WeatherClear.svg"
+                    }
+                    break
+                case 1:
+                case 2:
+                case 5:
+                case 6:
+                    return "/res/custom/img/WeatherRainy.svg"
+                case 3:
+                case 7:
+                    return "/res/custom/img/WeatherSnow.svg"
+                }
+                return ""
+
+                /*switch(weatherIcon.testflag%5) {
+                case 0: return "/res/custom/img/WeatherClear.svg"
+                case 1: return "/res/custom/img/WeatherPartlyCloudy.svg"
+                case 2: return "/res/custom/img/WeatherCloudy.svg"
+                case 3: return "/res/custom/img/WeatherRainy.svg"
+                case 4: return "/res/custom/img/WeatherSnow.svg"
+                }
+                return ""*/
             }
-            return "--"
+
+            MouseArea {
+                anchors.fill:   parent
+                onClicked: {
+                    weatherIcon.testflag++
+                }
+            }
         }
     }
 

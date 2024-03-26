@@ -53,7 +53,8 @@ class WeatherInfoProvider : public QObject
         int sky; // sky status 1: clear 2: cloudy 4: blur
         int wind; // wind speed m/s
         int temperature; // celsius
-        int rain; // 1hour rain
+        int rainType;
+        float rain; // 1hour rain
 
         WeatherUiData(void) : sky(0), wind(0), temperature(0), rain(0) {}
     };
@@ -71,6 +72,7 @@ public:
     Q_PROPERTY(int sky READ getSky NOTIFY notifyWeatherData)
     Q_PROPERTY(int wind READ getWind NOTIFY notifyWeatherData)
     Q_PROPERTY(int temperature READ getTemperature NOTIFY notifyWeatherData)
+    Q_PROPERTY(int rainType READ getRainType NOTIFY notifyWeatherData)
     Q_PROPERTY(int rain READ getRain NOTIFY notifyWeatherData)
     Q_PROPERTY(bool valid READ isValid NOTIFY notifyWeatherData)
 
@@ -80,6 +82,7 @@ public:
     int getSky(void) const { return _weatherUiData.sky; }
     int getWind(void) const { return _weatherUiData.wind; }
     int getTemperature(void) const { return _weatherUiData.temperature; }
+    int getRainType(void) const { return _weatherUiData.rainType; }
     int getRain(void) const { return _weatherUiData.rain; }
     bool isValid(void) const { return _isValid; }
 

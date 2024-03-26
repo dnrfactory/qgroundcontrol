@@ -105,6 +105,23 @@ void WeatherInfoProvider::onNetworkReply(QNetworkReply* reply)
     reply->deleteLater();
 }
 
+static float getFloatFromStr(QString& str)
+{
+    QString numberStr;
+    for (const QChar &ch : str) {
+        if (ch.isDigit() || ch == '.') {
+            numberStr += ch;
+        } else if (!numberStr.isEmpty()) {
+            break;
+        }
+    }
+
+    if (!numberStr.isEmpty()) {
+        return numberStr.toFloat();
+    }
+    return 0.0f;
+}
+
 void WeatherInfoProvider::parseWeatherJson(const QByteArray& jsonData)
 {
     QJsonParseError jsonError;
@@ -145,14 +162,14 @@ void WeatherInfoProvider::parseWeatherJson(const QByteArray& jsonData)
         QString fcstDate = itemObj.value("fcstDate").toString();
         QString fcstTime = itemObj.value("fcstTime").toString();
         QString fcstValue = itemObj.value("fcstValue").toString();
-/*
-        qDebug() << "baseDate:" << baseDate
+
+        /*qDebug() << "baseDate:" << baseDate
             << "baseTime:" << baseTime
             << "category:" << category
             << "fctsDate:" << fcstDate
             << "fctsTime:" << fcstTime
-            << "fcstValue:" << fcstValue;
-*/
+            << "fcstValue:" << fcstValue;*/
+
         QDateTime dt = QDateTime::fromString(QString("%1%2").arg(fcstDate).arg(fcstTime), QString("yyyyMMddhhmm"));
         //qDebug() << "dt: " << dt.toString("yyMMddhhmm");
 
@@ -188,7 +205,8 @@ void WeatherInfoProvider::parseWeatherJson(const QByteArray& jsonData)
     _weatherUiData.sky = wd.sky.toInt();
     _weatherUiData.wind = wd.wsd.toInt();
     _weatherUiData.temperature = wd.t1h.toInt();
-    _weatherUiData.rain = wd.rn1.toInt();
+    _weatherUiData.rainType = wd.pty.toInt();
+    _weatherUiData.rain = getFloatFromStr(wd.rn1);
 
     _isValid = true;
 
@@ -196,6 +214,7 @@ void WeatherInfoProvider::parseWeatherJson(const QByteArray& jsonData)
             << "sky:" << _weatherUiData.sky
             << "wind:" << _weatherUiData.wind
             << "temperature:" << _weatherUiData.temperature
+            << "rainType:" << _weatherUiData.rainType
             << "rain:" << _weatherUiData.rain;
 
     notifyWeatherData();
