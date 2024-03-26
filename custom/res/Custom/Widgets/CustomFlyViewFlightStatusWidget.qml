@@ -281,7 +281,7 @@ Item {
                             QGCButton {
                                 anchors.right: parent.right
                                 anchors.verticalCenter: parent.verticalCenter
-                                anchors.rightMargin: 100
+                                anchors.rightMargin: 80
                                 width: 60
                                 height: parent.height * 0.5
                                 backRadius: 4

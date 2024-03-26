@@ -298,6 +298,20 @@ Item {
                 normalColor: "black"
                 onClicked: {
                     console.log("Takeoff Button clicked")
+
+                    if (isMultiVehicleMode === false) {
+                        _activeVehicle.flightMode = "Takeoff"
+                    }
+                    else {
+                        var mvm = QGroundControl.multiVehicleManager
+                        var rowCont = mvm.vehiclesForUi.rowCount()
+                        for (var i = 0; i < rowCont; i ++) {
+                            var vehicle = mvm.vehiclesForUi.get(i)
+                            if (vehicle !== null) {
+                                vehicle.flightMode = "Takeoff"
+                            }
+                        }
+                    }
                 }
             }
             CustomButton {
@@ -310,6 +324,20 @@ Item {
                 normalColor: "black"
                 onClicked: {
                     console.log("Land Button clicked")
+
+                    if (isMultiVehicleMode === false) {
+                        _activeVehicle.flightMode = "Land"
+                    }
+                    else {
+                        var mvm = QGroundControl.multiVehicleManager
+                        var rowCont = mvm.vehiclesForUi.rowCount()
+                        for (var i = 0; i < rowCont; i ++) {
+                            var vehicle = mvm.vehiclesForUi.get(i)
+                            if (vehicle !== null) {
+                                vehicle.flightMode = "Land"
+                            }
+                        }
+                    }
                 }
             }
         }
