@@ -80,7 +80,11 @@ MapQuickItem {
             anchors.fill: vehicleIcon
             source: vehicleIcon
             color: vehicle ? vehicle.mapItemColor : "tranparent"
-            transform: vehicleIcon.transform
+            transform: Rotation {
+                origin.x:       vehicleIcon.width  / 2
+                origin.y:       vehicleIcon.height / 2
+                angle:          isNaN(heading) ? 0 : heading
+            }
             visible: _adsbVehicle === false
         }
 
