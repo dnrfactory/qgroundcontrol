@@ -36,28 +36,18 @@ Item {
     readonly property real itemSpacing: 4
 
     signal missionItemClicked(string fileName)
+    signal shortcutAddItemClicked()
 
-    function updateFileList() {
-        var fileNameList = planMasterController.planFileNames
-        var missionFileModelCount = missionFileModel.count
-
-        for (var i = 0; i < missionFileModelCount; i++) {
-            if (i < fileNameList.length) {
-                missionFileModel.setProperty(i, "value", fileNameList[i]);
-            } else {
-                missionFileModel.setProperty(i, "value", "+");
-            }
-        }
-    }
-
-    function initFileList() {
-        var fileNameList = planMasterController.planFileNames
+    function updateShortcutList() {
+        var shortcutList = planMasterController.shortcutList
         var fileIndex = 0
+
+        missionFileModel.clear()
 
         for (var i = 0; i < 10; ++i) {
             for (var j = 0; j < 4; ++j) {
-                if (fileIndex < fileNameList.length) {
-                    missionFileModel.append({row: i, col: j, value: fileNameList[fileIndex]});
+                if (fileIndex < shortcutList.length) {
+                    missionFileModel.append({row: i, col: j, value: shortcutList[fileIndex]});
                 }
                 else {
                     missionFileModel.append({row: i, col: j, value: "+"});
@@ -71,7 +61,10 @@ Item {
         target: planMasterController
         onCurrentPlanFileChanged: {
             console.log("CustomMissionShortcutWidget onCurrentPlanFileChanged")
-            updateFileList()
+        }
+        onShortcutListChanged: {
+            console.log("CustomMissionShortcutWidget onShortcutListChanged")
+            updateShortcutList()
         }
     }
 
@@ -79,7 +72,7 @@ Item {
         id: missionFileModel
 
         Component.onCompleted: {
-            initFileList()
+            updateShortcutList()
         }
     }
 
@@ -111,10 +104,10 @@ Item {
                 onClicked: {
                     console.log("missionFile Button Clicked. file name: %1".arg(model.value))
                     if (model.value === "+") {
-                        return
+                        shortcutAddItemClicked()
+                    } else {
+                        missionItemClicked(model.value)
                     }
-
-                    missionItemClicked(model.value)
                 }
             }
         }

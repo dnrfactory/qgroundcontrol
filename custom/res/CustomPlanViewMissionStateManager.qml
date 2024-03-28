@@ -60,6 +60,7 @@ Item {
         missionCreator.buttonClicked.connect(handleEventMissionCreator)
         missionInOutWidget.buttonClicked.connect(handleEventMissionInOutWidget)
         missionShortCutWidget.missionItemClicked.connect(onMissionItemClicked)
+        missionShortCutWidget.shortcutAddItemClicked.connect(onShortcutAddItemClicked)
     }
 
     Connections {
@@ -96,6 +97,18 @@ Item {
             if (missionController.missionItemCount === 1) {
                 missionController.setCurrentPlanViewSeqNum(0, true)
             }
+        }
+    }
+
+    function onShortcutAddItemClicked() {
+        var filePath = planMasterController.currentPlanFileBaseName
+        if (filePath.length == 0) {
+            if (!planMasterController.syncInProgress && planMasterController.containsItems) {
+                planMasterController.saveToSelectedFileAndAddToShortcut()
+            }
+        }
+        else {
+            planMasterController.addToShortcutList(filePath)
         }
     }
 

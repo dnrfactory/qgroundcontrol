@@ -51,8 +51,9 @@ public:
     Q_PROPERTY(QStringList              loadNameFilters         READ loadNameFilters                        CONSTANT)                       ///< File filter list loading plan files
     Q_PROPERTY(QStringList              saveNameFilters         READ saveNameFilters                        CONSTANT)                       ///< File filter list saving plan files
     Q_PROPERTY(QmlObjectListModel*      planCreators            MEMBER _planCreators                        NOTIFY planCreatorsChanged)
-	Q_PROPERTY(QStringList              planFileNames READ getPlanFileNames NOTIFY planFileNamesChanged)
+    Q_PROPERTY(QStringList              planFileNames READ getPlanFileNames NOTIFY planFileNamesChanged)
     Q_PROPERTY(QString                  currentPlanFileBaseName READ currentPlanFileBaseName                NOTIFY currentPlanFileChanged)
+    Q_PROPERTY(QStringList              shortcutList READ getShortcutList NOTIFY shortcutListChanged)
 
     /// Should be called immediately upon Component.onCompleted.
     Q_INVOKABLE void start(void);
@@ -82,6 +83,7 @@ public:
     Q_INVOKABLE void saveToKml(const QString& filename);
     Q_INVOKABLE void removeAll(void);                       ///< Removes all from controller only, synce required to remove from vehicle
     Q_INVOKABLE void removeAllFromVehicle(void);            ///< Removes all from vehicle and controller
+    Q_INVOKABLE void addToShortcutList(const QString& filename);
 
     MissionController*      missionController(void)     { return &_missionController; }
     GeoFenceController*     geoFenceController(void)    { return &_geoFenceController; }
@@ -106,8 +108,9 @@ public:
     Vehicle* controllerVehicle(void) { return _controllerVehicle; }
     Vehicle* managerVehicle(void) { return _managerVehicle; }
 
-	QStringList getPlanFileNames(void);
+    QStringList getPlanFileNames(void);
     QString     currentPlanFileBaseName (void) const { return _currentPlanFileBaseName; }
+    QStringList getShortcutList(void);
 
     static const int    kPlanFileVersion;
     static const char*  kPlanFileType;
@@ -126,6 +129,7 @@ signals:
     void promptForPlanUsageOnVehicleChange  (void);
 
 	void planFileNamesChanged(void);
+    void shortcutListChanged(void);
 
 private slots:
     void _activeVehicleChanged      (Vehicle* activeVehicle);
@@ -157,6 +161,7 @@ private:
     bool                    _deleteWhenSendCompleted =  false;
     QmlObjectListModel*     _planCreators =             nullptr;
 
-	QStringList _planFiles;
+    QStringList _planFiles;
     QString _currentPlanFileBaseName;
+    QStringList _shortcutList;
 };

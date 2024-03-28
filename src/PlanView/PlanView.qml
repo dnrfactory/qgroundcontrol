@@ -238,6 +238,18 @@ Item {
             fileDialog.openForSave()
         }
 
+        function saveToSelectedFileAndAddToShortcut() {
+            if (!checkReadyForSaveUpload(true /* save */)) {
+                return
+            }
+            fileDialog.title =          qsTr("Save plan and add to shortcut")
+            fileDialog.planFiles =      true
+            fileDialog.addToShortcut =  true
+            fileDialog.selectExisting = false
+            fileDialog.nameFilters =    _planMasterController.saveNameFilters
+            fileDialog.openForSave()
+        }
+
         function fitViewportToItems() {
             mapFitFunctions.fitMapViewportToMissionItems()
         }
@@ -312,10 +324,17 @@ Item {
         folder:         _appSettings ? _appSettings.missionSavePath : ""
 
         property bool planFiles: true    ///< true: working with plan files, false: working with kml file
+        property bool addToShortcut: false
 
         onAcceptedForSave: {
             if (planFiles) {
                 _planMasterController.saveToFile(file)
+                if (addToShortcut) {
+                    _planMasterController.addToShortcutList(file)
+                    addToShortcut = false
+
+                    _planMasterController.shortcutList
+                }
             } else {
                 _planMasterController.saveToKml(file)
             }
