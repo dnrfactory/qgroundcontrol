@@ -76,14 +76,14 @@ Column {
         id: sendPlanButton
         width: parent.width
         height: parent.height * 0.25
-        text: _controllerDirty ? qsTr("Upload Required") : qsTr("Upload")
+        text: activeVehicle !== null && _controllerDirty ? qsTr("Upload Required") : qsTr("Upload")
         pointSize: ScreenTools.mediumFontPointSize
         enabled: activeVehicle !== null
         onClicked: {
             buttonClicked(eButtonSendPlan)
         }
 
-        blinking: _controllerDirty && !_controllerSyncInProgress
+        blinking: activeVehicle !== null && _controllerDirty && !_controllerSyncInProgress
 
         Rectangle {
             id: progressPopup
@@ -201,8 +201,9 @@ Column {
     CustomButton {
         width: parent.width
         height: parent.height * 0.25
-        text: qsTr("Save plan as different name")
+        text: qsTr("Save as...")
         pointSize: ScreenTools.mediumFontPointSize
+        enabled: !_controllerSyncInProgress && _planMasterController.containsItems
         onClicked: {
             buttonClicked(eButtonSavePlan)
         }
