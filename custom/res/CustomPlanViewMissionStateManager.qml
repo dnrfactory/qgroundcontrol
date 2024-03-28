@@ -61,6 +61,7 @@ Item {
         missionInOutWidget.buttonClicked.connect(handleEventMissionInOutWidget)
         missionShortCutWidget.missionItemClicked.connect(onMissionItemClicked)
         missionShortCutWidget.shortcutAddItemClicked.connect(onShortcutAddItemClicked)
+        missionShortCutWidget.shortcutRemoveItemClicked.connect(onShortcutRemoveItemClicked)
     }
 
     Connections {
@@ -110,6 +111,10 @@ Item {
         else {
             planMasterController.addToShortcutList(filePath)
         }
+    }
+
+    function onShortcutRemoveItemClicked(fileName) {
+        planMasterController.removeFromShortcutList(fileName)
     }
 
     function handleEventMissionCreator(index) {

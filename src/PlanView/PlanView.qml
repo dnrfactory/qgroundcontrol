@@ -332,8 +332,6 @@ Item {
                 if (addToShortcut) {
                     _planMasterController.addToShortcutList(file)
                     addToShortcut = false
-
-                    _planMasterController.shortcutList
                 }
             } else {
                 _planMasterController.saveToKml(file)

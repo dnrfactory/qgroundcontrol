@@ -552,13 +552,45 @@ void PlanMasterController::addToShortcutList(const QString& filename)
         return;
     }
 
-    if (!shortcutFile.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
+    if (!shortcutFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
         qDebug() << "can't open shortcut.txt";
         return;
     }
 
     _shortcutList.append(fileBaseName);
+
+    QTextStream out(&shortcutFile);
+    for (const QString& filePath : _shortcutList) {
+        out << filePath << '\n';
+    }
+
+    shortcutFile.close();
+
+    emit shortcutListChanged();
+}
+
+void PlanMasterController::removeFromShortcutList(const QString& filename)
+{
+    qDebug() << "PlanMasterController::removeFromShortcutList " << filename;
+    AppSettings* appSettings = qgcApp()->toolbox()->settingsManager()->appSettings();
+    QString missionFilePath = appSettings->missionSavePath();
+    QDir directory(missionFilePath);
+    QFile shortcutFile(directory.absoluteFilePath("shortcut.txt"));
+
+    QFileInfo fileInfo(filename);
+    QString fileBaseName(fileInfo.baseName());
+
+    if (_shortcutList.contains(fileBaseName) == false) {
+        qDebug() << "file does not exist in shortcut list. " << fileBaseName;
+        return;
+    }
+
+    if (!shortcutFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "can't open shortcut.txt";
+        return;
+    }
+
+    _shortcutList.removeAll(fileBaseName);
 
     QTextStream out(&shortcutFile);
     for (const QString& filePath : _shortcutList)
@@ -712,23 +744,18 @@ QStringList PlanMasterController::getShortcutList(void)
     QDir directory(missionFilePath);
     QFile shortcutFile(directory.absoluteFilePath("shortcut.txt"));
 
-    if (!shortcutFile.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
+    if (!shortcutFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "can't open shortcut.txt";
         return _shortcutList;
     }
 
     QTextStream in(&shortcutFile);
-    while (!in.atEnd())
-    {
+    while (!in.atEnd()) {
         QString line = in.readLine();
         _shortcutList.append(line);
     }
 
     shortcutFile.close();
-
-    qDebug() << "shortcuts:";
-    qDebug() << _shortcutList;
 
     return _shortcutList;
 }

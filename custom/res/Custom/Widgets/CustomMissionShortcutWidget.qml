@@ -37,6 +37,7 @@ Item {
 
     signal missionItemClicked(string fileName)
     signal shortcutAddItemClicked()
+    signal shortcutRemoveItemClicked(string fileName)
 
     function updateShortcutList() {
         var shortcutList = planMasterController.shortcutList
@@ -107,6 +108,44 @@ Item {
                         shortcutAddItemClicked()
                     } else {
                         missionItemClicked(model.value)
+                    }
+                }
+
+                CustomButton {
+                    height: parent.height / 2
+                    width: height
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.topMargin: -6
+                    anchors.rightMargin: -6
+                    backRadius: 6
+                    text: "x"
+                    pointSize: ScreenTools.mediumFontPointSize
+                    _showHighlight: false
+                    opacity: 0
+                    visible: model.value !== "+"
+
+                    onClicked: {
+                        console.log("deleteButton clicked")
+                        shortcutRemoveItemClicked(model.value)
+                    }
+
+                    onHoveredChanged: {
+                        if (hovered) {
+                            opacityAnimator.running = true
+                        }
+                        else {
+                            opacityAnimator.running = false
+                            opacity = 0
+                        }
+                    }
+
+                    OpacityAnimator on opacity{
+                        id: opacityAnimator
+                        from: 0
+                        to: 1
+                        duration: 100
+                        running: false
                     }
                 }
             }
