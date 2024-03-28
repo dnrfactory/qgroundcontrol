@@ -544,18 +544,17 @@ void PlanMasterController::addToShortcutList(const QString& filename)
     QDir directory(missionFilePath);
     QFile shortcutFile(directory.absoluteFilePath("shortcut.txt"));
 
-    if (!shortcutFile.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        qDebug() << "can't open shortcut.txt";
-        return;
-    }
-
     QFileInfo fileInfo(filename);
     QString fileBaseName(fileInfo.baseName());
 
     if (_shortcutList.contains(fileBaseName)) {
         qDebug() << "already exist in shortcut list. " << fileBaseName;
-        shortcutFile.close();
+        return;
+    }
+
+    if (!shortcutFile.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        qDebug() << "can't open shortcut.txt";
         return;
     }
 
