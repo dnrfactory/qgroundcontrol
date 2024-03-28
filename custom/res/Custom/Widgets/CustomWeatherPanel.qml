@@ -76,7 +76,7 @@ Item {
             id: weatherIcon
 
             anchors.centerIn: parent
-            sourceSize.width: parent.width * 0.5
+            sourceSize.width: parent.width * 0.75
             source: {
                 switch (WeatherInfoProvider.rainType) {
                 case 0:
