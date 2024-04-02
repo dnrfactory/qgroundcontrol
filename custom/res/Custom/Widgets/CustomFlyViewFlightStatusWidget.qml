@@ -39,6 +39,8 @@ Item {
     property int eProgress: 8
 
     property var mapControl
+    property var _prevFlightTimeSec: [0, 0, 0, 0]
+    property var _takeoffTimeStr: ["00:00:00", "00:00:00", "00:00:00", "00:00:00"]
 
     Connections {
         target: batteryDetectTimer
@@ -56,6 +58,28 @@ Item {
 
     function isValidIndex(index) {
         return index >= 0 && index < 4
+    }
+
+    function getTakeoffTime(index) {
+        if (isConnectedIndex(index)) {
+            var vehicle = vehicles.get(index)
+            var flightTimeSec = vehicle.flightTime.rawValue.toFixed(0)
+
+            if (_prevFlightTimeSec[index] == 0 && flightTimeSec != 0) {
+                var currentDate = new Date();
+                var hours = currentDate.getHours();
+                var minutes = currentDate.getMinutes();
+                var seconds = currentDate.getSeconds();
+
+                var hStr = hours < 10 ? "0" + hours : hours
+                var mStr = minutes < 10 ? "0" + minutes : minutes
+                var sStr = seconds < 10 ? "0" + seconds : seconds
+
+                _takeoffTimeStr[index] = hStr + ":" + mStr + ":" + sStr
+            }
+            _prevFlightTimeSec[index] = flightTimeSec
+        }
+        return _takeoffTimeStr[index]
     }
 
     function getGpsStr(idx) {
@@ -229,7 +253,7 @@ Item {
                     sourceComponent: valueComponent
                     onLoaded: {
                         item.colIndex = eTakeOff
-                        item.valueText = Qt.binding(function() { return isConnectedIndex(index) ? "" : "" })
+                        item.valueText = Qt.binding(function() { return getTakeoffTime(index) })
                     }
                 }
                 Loader {
