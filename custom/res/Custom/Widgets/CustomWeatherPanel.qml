@@ -38,15 +38,12 @@ Item {
         anchors.right: parent.right
         anchors.topMargin: 10
         anchors.rightMargin: 10
-        text: "\u21BA"
+        text: "\u27F3"
         pointSize: ScreenTools.largeFontPointSize * 1.5
         boldFont: true
         backRadius: 10
 
         onClicked: {
-            /*console.log("CustomWeatherPanel clicked!! lon:%1, lat:%2"
-                        .arg(gcsPosition.longitude)
-                        .arg(gcsPosition.latitude))*/
             console.log("CustomWeatherPanel clicked!! lon:%1, lat:%2"
                         .arg(mapCenterPosition.longitude)
                         .arg(mapCenterPosition.latitude))
