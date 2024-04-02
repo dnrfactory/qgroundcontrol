@@ -50,6 +50,10 @@ Item {
         }
     }
 
+    function isConnectedIndex(index) {
+        return index >= 0 && index < 4 && vehicles.get(index) !== null
+    }
+
     function setPlanName(index, name) {
         switch (index) {
         case 0: vehiclesPlanName_0 = name
@@ -79,23 +83,22 @@ Item {
 
         Repeater {
             model: 4
-            Item {
-                width: root.width - horizontalMargin
-                height: (root.height - verticalMargin - column.spacing * 3) / 4
+            Rectangle {
+                width: root.width - root.horizontalMargin
+                height: (root.height - root.verticalMargin - column.spacing * 3) / 4
+                color: colorList[index]
+                opacity: isConnectedIndex(index) ? 1 : 0.3
+                radius: 4
 
-                Rectangle {
-                    anchors.fill: parent
-                    color: colorList[index]
-                    opacity: 0.3
-                    radius: 4
-                }
+                property var textColor: qgcPal.text
+
                 Text {
-                    width: parent.width / 2 - textPadding
+                    width: parent.width / 2 - root.textPadding
                     height: parent.height
                     anchors.left: parent.left
-                    anchors.leftMargin: textPadding
+                    anchors.leftMargin: root.textPadding
                     font.pointSize: ScreenTools.mediumFontPointSize
-                    color: qgcPal.text
+                    color: parent.textColor
                     text: "UAV %1".arg(index + 1)
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
@@ -104,18 +107,18 @@ Item {
                 Text {
                     anchors.fill: parent
                     font.pointSize: ScreenTools.mediumFontPointSize
-                    color: qgcPal.text
+                    color: parent.textColor
                     text: "-"
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                 }
                 Text {
-                    width: parent.width / 2 - textPadding
+                    width: parent.width / 2 - root.textPadding
                     height: parent.height
                     anchors.left: parent.horizontalCenter
                     anchors.leftMargin: textPadding
                     font.pointSize: ScreenTools.mediumFontPointSize
-                    color: qgcPal.text
+                    color: parent.textColor
                     text: getPlanName(index)
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
