@@ -26,6 +26,7 @@ Button {
 
     property alias wrapMode:            text.wrapMode
     property alias horizontalAlignment: text.horizontalAlignment
+    property alias elide: text.elide
 
     property bool isSelected: false
     property bool _showHighlight:     hovered | checked | isSelected
@@ -89,6 +90,7 @@ Button {
 
         Text {
             id:                     text
+            width:                  parent.width
             anchors.centerIn:       parent
             antialiasing:           true
             text:                   control.text
@@ -97,6 +99,7 @@ Button {
             font.bold:              control.boldFont
             color:                  _showHighlight ?
                                         qgcPal.buttonHighlightText : qgcPal.buttonText
+            horizontalAlignment:    Text.AlignHCenter
         }
     }
 }
