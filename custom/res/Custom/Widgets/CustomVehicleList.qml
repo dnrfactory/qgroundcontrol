@@ -45,6 +45,9 @@ QGCListView {
                "%1(%2)"
                .arg(voltage.toFixed(1))
                .arg(percentage.toFixed(0)))
+
+            batteryValueItem[vehicleIndex].setValueTextColor(
+                percentage > 60 ? "green" : (percentage > 20 ? "yellow" : "red"))
         }
     }
 
@@ -201,13 +204,14 @@ QGCListView {
                         height: vehicleInfoPanel.height / 2
                         property string valueText
                         property string nameText
+                        property var valueTextColor: "white"
                         Column {
                             spacing: 10
                             Text {
                                 text: valueText
                                 font.pointSize: ScreenTools.mediumFontPointSize
                                 font.bold: true
-                                color: "white"
+                                color: valueTextColor
                                 topPadding: commonPadding
                                 leftPadding: commonPadding
                             }
@@ -221,6 +225,9 @@ QGCListView {
 
                         function setValueText(value) {
                             valueText = value
+                        }
+                        function setValueTextColor(color) {
+                            valueTextColor = color
                         }
                     }
                 }
