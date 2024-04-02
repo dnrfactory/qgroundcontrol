@@ -101,6 +101,7 @@ Item {
                 text: model.value
                 pointSize: ScreenTools.mediumFontPointSize
                 backRadius: 4
+                elide: Text.ElideRight
 
                 onClicked: {
                     console.log("missionFile Button Clicked. file name: %1".arg(model.value))
