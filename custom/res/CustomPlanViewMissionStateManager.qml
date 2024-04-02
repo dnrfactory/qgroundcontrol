@@ -137,6 +137,9 @@ Item {
             }
             break;
         case missionInOutWidget.eButtonSavePlan:
+            planMasterController.saveToCurrent()
+            break;
+        case missionInOutWidget.eButtonSavePlanAs:
             planMasterController.saveToSelectedFile()
             break;
         }

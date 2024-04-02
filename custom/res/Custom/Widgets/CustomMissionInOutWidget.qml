@@ -40,6 +40,7 @@ Column {
     readonly property int eButtonSendPlan: 0
     readonly property int eButtonImportPlan: 1
     readonly property int eButtonSavePlan: 2
+    readonly property int eButtonSavePlanAs: 3
 
     signal buttonClicked(int index)
 
@@ -141,7 +142,7 @@ Column {
             CustomButton {
                 property int index
 
-                width: root.width *0.25 - divideLineThickness
+                width: root.width * 0.25 - divideLineThickness
                 height: uavButtonGroup.height
                 text: qsTr("UAV %1").arg(index)
                 pointSize: ScreenTools.mediumFontPointSize
@@ -198,14 +199,28 @@ Column {
         }
     }
     Rectangle { width: parent.width; height: divideLineThickness; color: "white"; opacity: 0.8 }
-    CustomButton {
-        width: parent.width
-        height: parent.height * 0.25
-        text: qsTr("Save as...")
-        pointSize: ScreenTools.mediumFontPointSize
-        enabled: !_controllerSyncInProgress && _planMasterController.containsItems
-        onClicked: {
-            buttonClicked(eButtonSavePlan)
+    Row {
+        CustomButton {
+            id: saveButton
+            width: root.width * 0.5 - divideLineThickness * 0.5
+            height: root.height * 0.25
+            text: qsTr("Save")
+            pointSize: ScreenTools.mediumFontPointSize
+            enabled: !_controllerSyncInProgress && _planMasterController.currentPlanFile !== ""
+            onClicked: {
+                buttonClicked(eButtonSavePlan)
+            }
+        }
+        Rectangle { width: divideLineThickness; height: parent.height; color: "white"; opacity: 0.8 }
+        CustomButton {
+            width: saveButton.width
+            height: saveButton.height
+            text: qsTr("Save as...")
+            pointSize: ScreenTools.mediumFontPointSize
+            enabled: !_controllerSyncInProgress && _planMasterController.containsItems
+            onClicked: {
+                buttonClicked(eButtonSavePlanAs)
+            }
         }
     }
 }
