@@ -32,7 +32,6 @@ Column {
 
     property var _planMasterController: globals.planMasterControllerPlanView
     property bool _controllerValid: _planMasterController !== undefined && _planMasterController !== null
-    property bool _controllerOffline: _controllerValid ? _planMasterController.offline : true
     property var _controllerDirty: _controllerValid ? _planMasterController.dirty : false
     property var  _controllerSyncInProgress: _controllerValid ? _planMasterController.syncInProgress : false
     property real _controllerProgressPct: _controllerValid ? _planMasterController.missionController.progressPct : 0
@@ -54,12 +53,14 @@ Column {
     }
 
     function updateActiveVehicle() {
+        var currentIndex_ = -1
         for (var i = 0; i < vehicles.rowCount(); i++) {
             if (vehicles.get(i) !== null && vehicles.get(i) === QGroundControl.multiVehicleManager.activeVehicle) {
-                uavButtonGroup.currentIndex = i
+                currentIndex_ = i
                 break;
             }
         }
+        uavButtonGroup.currentIndex = currentIndex_
     }
 
     function setUavCurrentIndex(index) {
@@ -144,7 +145,7 @@ Column {
 
                 width: root.width * 0.25 - divideLineThickness
                 height: uavButtonGroup.height
-                text: qsTr("UAV %1").arg(index)
+                text: qsTr("UAV %1").arg(index + 1)
                 pointSize: ScreenTools.mediumFontPointSize
                 normalColor: uavButtonGroup.colorList[index]
                 hightlightColor: normalColor
