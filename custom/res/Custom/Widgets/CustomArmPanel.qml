@@ -300,7 +300,7 @@ Item {
                     console.log("Takeoff Button clicked")
 
                     if (isMultiVehicleMode === false) {
-                        _activeVehicle.flightMode = "Takeoff"
+                        _activeVehicle.guidedModeTakeoff(_activeVehicle.minimumTakeoffAltitude())
                     }
                     else {
                         var mvm = QGroundControl.multiVehicleManager
@@ -308,7 +308,7 @@ Item {
                         for (var i = 0; i < rowCont; i ++) {
                             var vehicle = mvm.vehiclesForUi.get(i)
                             if (vehicle !== null) {
-                                vehicle.flightMode = "Takeoff"
+                                vehicle.guidedModeTakeoff(vehicle.minimumTakeoffAltitude())
                             }
                         }
                     }
@@ -326,7 +326,7 @@ Item {
                     console.log("Land Button clicked")
 
                     if (isMultiVehicleMode === false) {
-                        _activeVehicle.flightMode = "Land"
+                        _activeVehicle.guidedModeLand()
                     }
                     else {
                         var mvm = QGroundControl.multiVehicleManager
@@ -334,7 +334,7 @@ Item {
                         for (var i = 0; i < rowCont; i ++) {
                             var vehicle = mvm.vehiclesForUi.get(i)
                             if (vehicle !== null) {
-                                vehicle.flightMode = "Land"
+                                vehicle.guidedModeLand()
                             }
                         }
                     }
