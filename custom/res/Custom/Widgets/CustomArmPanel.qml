@@ -209,7 +209,7 @@ Item {
                         var rowCount = mvm.vehiclesForUi.rowCount()
                         for (var i = 0; i < rowCount; i ++) {
                             var vehicle = mvm.vehiclesForUi.get(i)
-                            if (vehicle !== null) {
+                            if (vehicle !== null && vehicle.vehicleLinkManager.communicationLost) {
                                 vehicle.closeVehicle()
                             }
                         }
