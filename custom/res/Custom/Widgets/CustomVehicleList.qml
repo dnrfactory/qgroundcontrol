@@ -163,14 +163,7 @@ QGCListView {
                 id: vehicleNameBar
                 width: parent.width
                 height: parent.height* 0.2
-                color: {
-                    console.log("===vehicle color list===")
-                    console.log(colorList[0])
-                    console.log(colorList[1])
-                    console.log(colorList[2])
-                    console.log(colorList[3])
-                    isValidIndex(index) ? colorList[index] : "transparent"
-                    }
+                color: isValidIndex(index) ? colorList[index] : "transparent"
                 Text {
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
