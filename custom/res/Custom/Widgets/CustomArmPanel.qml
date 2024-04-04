@@ -156,34 +156,16 @@ Item {
             id: btnMissionStartPause
             readonly property int eBtnStateDisabled: 0
             readonly property int eBtnStateStartMission: 1
-            readonly property int eBtnStatePause: 2
-            readonly property int eBtnStateResume: 3
-            readonly property int eBtnStateDiconnect: 4
-
-            property bool pauseOrResumeFlag: true // true: pause, false: resume
-
-            Connections {
-                target: root
-                onMainStatusChanged: {
-                    if (mainStatus === eMainStatusNotReadyToFly
-                       || mainStatus === eMainStatusCommLost
-                       || mainStatus === eMainStatusDisconnected
-                       || mainStatus === eMainStatusReadyToFly
-                       || mainStatus === eMainStatusArmed) {
-                       btnMissionStartPause.pauseOrResumeFlag = true
-                    }
-                }
-            }
+            readonly property int eBtnStateDiconnect: 2
 
             property int btnState: {
                 switch (root.mainStatus) {
                 case eMainStatusNotReadyToFly:
                 case eMainStatusReadyToFly:
                 case eMainStatusArmed:
-                    return eBtnStateStartMission;
                 case eMainStatusFlying:
                 case eMainStatusWaiting:
-                    return pauseOrResumeFlag ? eBtnStatePause : eBtnStateResume;
+                    return eBtnStateStartMission;
                 case eMainStatusCommLost:
                     return eBtnStateDiconnect;
                 case eMainStatusDisconnected:
@@ -195,8 +177,6 @@ Item {
             property var btnTextArray: [
                 qsTr("Start mission"),
                 qsTr("Start mission"),
-                qsTr("Pause"),
-                qsTr("Resume"),
                 qsTr("Disconnect")
             ]
 
@@ -209,36 +189,18 @@ Item {
             pointSize: ScreenTools.mediumFontPointSize
             normalColor: "black"
             onClicked: {
-                console.log("Pause Button clicked")
-
                 switch (btnState) {
                 case eBtnStateStartMission:
+                    console.log("Start Mission Button clicked")
                     if (isMultiVehicleMode === false) {
                         _activeVehicle.startMission()
                     }
                     else {
                         _guidedController.executeAction(actionMVStartMission)
                     }
-                    break;
-                case eBtnStatePause:
-                    if (isMultiVehicleMode === false) {
-                        _activeVehicle.pauseVehicle()
-                    }
-                    else {
-                        _guidedController.executeAction(actionMVPause)
-                    }
-                    pauseOrResumeFlag = false
-                    break;
-                case eBtnStateResume:
-                    if (isMultiVehicleMode === false) {
-                        _activeVehicle.startMission()
-                    }
-                    else {
-                        _guidedController.executeAction(actionMVStartMission)
-                    }
-                    pauseOrResumeFlag = true
                     break;
                 case eBtnStateDiconnect:
+                    console.log("Disconnect Button clicked")
                     if (isMultiVehicleMode === false) {
                         _activeVehicle.closeVehicle()
                     }
@@ -257,27 +219,49 @@ Item {
             }
         }
 
-        CustomButton {
-            width: root.width * 0.8
-            height: root.height * 0.15
-            backRadius: 10
+        Row {
+            id: pauseReturnButtonGroup
             anchors.horizontalCenter: parent.horizontalCenter
-            enabled: _activeVehicle
-            text: qsTr("Home Return")
-            pointSize: ScreenTools.mediumFontPointSize
-            normalColor: "black"
-            onClicked: {
-                console.log("Home Return Button clicked")
-                if (isMultiVehicleMode === false) {
-                    _guidedController.executeAction(actionRTL)
+            spacing: _bottomPanelTopPadding/2
+            CustomButton {
+                width: root.width * 0.4 - pauseReturnButtonGroup.spacing * 0.5
+                height: root.height * 0.15
+                backRadius: 10
+                enabled: _activeVehicle
+                text: qsTr("Pause")
+                pointSize: ScreenTools.mediumFontPointSize
+                normalColor: "black"
+                onClicked: {
+                    console.log("Pause Button clicked")
+                    if (isMultiVehicleMode === false) {
+                        _activeVehicle.pauseVehicle()
+                    }
+                    else {
+                        _guidedController.executeAction(actionMVPause)
+                    }
                 }
-                else {
-                    var mvm = QGroundControl.multiVehicleManager
-                    var rowCont = mvm.vehiclesForUi.rowCount()
-                    for (var i = 0; i < rowCont; i ++) {
-                        var vehicle = mvm.vehiclesForUi.get(i)
-                        if (vehicle !== null) {
-                            vehicle.guidedModeRTL(false)
+            }
+            CustomButton {
+                width: root.width * 0.4 - pauseReturnButtonGroup.spacing * 0.5
+                height: root.height * 0.15
+                backRadius: 10
+                enabled: _activeVehicle
+                text: qsTr("Return")
+                pointSize: ScreenTools.mediumFontPointSize
+                normalColor: "black"
+                onClicked: {
+                    console.log("Return Button clicked")
+                    if (isMultiVehicleMode === false) {
+                        _guidedController.executeAction(actionRTL)
+                    }
+                    else {
+                        var mvm = QGroundControl.multiVehicleManager
+                        var rowCont = mvm.vehiclesForUi.rowCount()
+                        for (var i = 0; i < rowCont; i ++) {
+                            var vehicle = mvm.vehiclesForUi.get(i)
+                            if (vehicle !== null) {
+                                vehicle.guidedModeRTL(false)
+                            }
                         }
                     }
                 }
