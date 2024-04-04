@@ -33,6 +33,8 @@
 #include "TakeoffMissionItem.h"
 #include "PlanViewSettings.h"
 
+#include <QDebug>
+
 #define UPDATE_TIMEOUT 5000 ///< How often we check for bounding box changes
 
 QGC_LOGGING_CATEGORY(MissionControllerLog, "MissionControllerLog")
@@ -540,6 +542,7 @@ void MissionController::_insertComplexMissionItemWorker(const QGeoCoordinate& ma
 
 void MissionController::removeVisualItem(int viIndex)
 {
+    qDebug() << "MissionController::removeVisualItem viIndex: " << viIndex;
     if (viIndex <= 0 || viIndex >= _visualItems->count()) {
         qWarning() << "MissionController::removeVisualItem called with bad index - count:index" << _visualItems->count() << viIndex;
         return;
@@ -2536,7 +2539,7 @@ void MissionController::setCurrentPlanViewSeqNum(int sequenceNumber, bool force)
     }
 }
 
-Q_INVOKABLE int MissionController::getCorridorScanComplexItemSeqNum(void) const
+int MissionController::getCorridorScanComplexItemSeqNum(void) const
 {
     int seqNum = -1;
     for (int i=1; i<_visualItems->count(); i++) {
@@ -2548,7 +2551,7 @@ Q_INVOKABLE int MissionController::getCorridorScanComplexItemSeqNum(void) const
     return seqNum;
 }
 
-Q_INVOKABLE int MissionController::getCorridorScanComplexItemIndex(void) const
+int MissionController::getCorridorScanComplexItemIndex(void) const
 {
     int foundIndex = -1;
     for (int i=1; i<_visualItems->count(); i++) {
@@ -2559,6 +2562,15 @@ Q_INVOKABLE int MissionController::getCorridorScanComplexItemIndex(void) const
     }
     return foundIndex;
 }
+
+bool MissionController::isCorridorScanComplexItemIndex(int index) const
+{
+    if (_visualItems->value<CorridorScanComplexItem*>(index)) {
+        return true;
+    }
+    return false;
+}
+
 
 void MissionController::_updateTimeout()
 {

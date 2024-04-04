@@ -51,6 +51,7 @@ Item {
     readonly property int eEventMissionEditResetButtonClicked: eEventMissionEditStart + 3
     readonly property int eEventMissionEditPlanFileChanged: eEventMissionEditStart + 4
     readonly property int eEventMissionEditFlyThroughCommandsAllowedChanged: eEventMissionEditStart + 5
+    readonly property int eEventMissionEditTracingItemRemoved: eEventMissionEditStart + 6
 
     property int eBlank: 0
     property int eWayPoint: 1
@@ -77,6 +78,14 @@ Item {
             console.log("onFlyThroughCommandsAllowedChanged " + missionController.flyThroughCommandsAllowed)
             missionCreator.isMissionAddEnable = missionController.flyThroughCommandsAllowed
             processMissionEditEvent(eEventMissionEditFlyThroughCommandsAllowedChanged)
+        }
+    }
+
+    function corridorScanItemRemoved() {
+        console.log("corridorScanItemRemoved")
+        if (missionEditStatus === eMissionEditCorridorScanAdd &&
+            missionController.getCorridorScanComplexItemIndex() === -1) {
+            processMissionEditEvent(eEventMissionEditTracingItemRemoved)
         }
     }
 
@@ -249,6 +258,14 @@ Item {
                 changeMissionEditStatus(eMissionEditMapControl)
             }
             break;
+        case eEventMissionEditTracingItemRemoved:
+            if (missionController.visualItems.rowCount() <= 1) {
+                changeMissionEditStatus(eMissionEditEmpty)
+            }
+            else {
+                changeMissionEditStatus(eMissionEditMapControl)
+            }
+            break;
         }
     }
 
@@ -296,7 +313,15 @@ Item {
             case eMissionEditWayPointAdd:
             case eMissionEditMapControl:
                 if (missionController.getCorridorScanComplexItemIndex() === -1) {
-                    planMasterController.planCreators.get(eCorridorScan).createPlan(mapCenter())
+                    if (missionController.visualItems.rowCount() <= 1) {
+                        planMasterController.planCreators.get(eCorridorScan).createPlan(mapCenter())
+                    }
+                    else {
+                        missionController.insertComplexMissionItem(qsTr("Corridor Scan"),
+                                                                   mapCenter(),
+                                                                   missionController.currentPlanViewSeqNum + 1,
+                                                                   true)
+                    }
                 }
                 break;
             }

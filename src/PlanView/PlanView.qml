@@ -705,6 +705,15 @@ Item {
                     currentIndex:       _missionController.currentPlanViewSeqNum
                     highlightMoveDuration: 250
                     visible:            _editingLayer == _layerMission && !planControlColapsed
+
+                    function removeItem(index) {
+                        var removeVIIndex = index
+                        var isCorridorScanComplexItemIndex = _missionController.isCorridorScanComplexItemIndex(removeVIIndex)
+                        _missionController.removeVisualItem(removeVIIndex)
+                        if (isCorridorScanComplexItemIndex) {
+                            _planViewMissionStateManager.corridorScanItemRemoved()
+                        }
+                    }
                     //-- List Elements
                     delegate: MissionItemEditor {
                         map:            editorMap
@@ -714,11 +723,12 @@ Item {
                         readOnly:       false
                         onClicked:      _missionController.setCurrentPlanViewSeqNum(object.sequenceNumber, false)
                         onRemove: {
-                            var removeVIIndex = index
+                            /*var removeVIIndex = index
                             _missionController.removeVisualItem(removeVIIndex)
                             if (removeVIIndex >= _missionController.visualItems.count) {
                                 removeVIIndex--
-                            }
+                            }*/
+                            missionItemEditorListView.removeItem(index)
                         }
                         onSelectNextNotReadyItem:   selectNextNotReady()
                     }

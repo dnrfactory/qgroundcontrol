@@ -174,8 +174,9 @@ public:
     ///     @param sequenceNumber - index for new item, -1 to clear current item
     Q_INVOKABLE void setCurrentPlanViewSeqNum(int sequenceNumber, bool force);
 
-	Q_INVOKABLE int getCorridorScanComplexItemSeqNum(void) const;
-	Q_INVOKABLE int getCorridorScanComplexItemIndex(void) const;
+    Q_INVOKABLE int getCorridorScanComplexItemSeqNum(void) const;
+    Q_INVOKABLE int getCorridorScanComplexItemIndex(void) const;
+    Q_INVOKABLE bool isCorridorScanComplexItemIndex(int index) const;
 
     enum SendToVehiclePreCheckState {
         SendToVehiclePreCheckStateOk,                       // Ok to send plan to vehicle

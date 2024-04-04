@@ -46,6 +46,7 @@ Column {
         text: qsTr("Tracing")
         pointSize: ScreenTools.mediumFontPointSize
         isSelected: eventHandler.missionEditStatus === eventHandler.eMissionEditCorridorScanAdd
+        enabled: eventHandler.missionEditStatus === eventHandler.eMissionEditEmpty || isMissionAddEnable
         onClicked: {
             console.log("Tracing Button clicked")
             buttonClicked(1)
