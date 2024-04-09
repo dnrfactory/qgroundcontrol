@@ -202,6 +202,52 @@ Item {
         height: parent.height
         anchors.left: gimbalPanel.right
 
+        states: [
+            State {
+                name: "idle"
+                when: !zoomInButton.pressed && !zoomOutButton.pressed
+                PropertyChanges { target: zoomTimer; running: false }
+            },
+            State {
+                name: "plus"
+                when: zoomInButton.pressed
+                PropertyChanges { target: zoomTimer; running: true }
+            },
+            State {
+                name: "minus"
+                when: zoomOutButton.pressed
+                PropertyChanges { target: zoomTimer; running: true }
+            }
+        ]
+
+        onStateChanged: {
+            console.log("onStatesChanged zoomPanel.state: " + zoomPanel.state)
+        }
+
+        Timer {
+            id: zoomTimer
+            interval: 100
+            repeat: true
+            onTriggered: {
+                console.log("zoomTimer onTriggered. zoomPanel.state: " + zoomPanel.state)
+
+                var cameraManager = _activeVehicle.cameraManager
+                if (_activeVehicle.cameraManager) {
+                    var camera = cameraManager.currentCameraInstance
+                    if (camera) {
+                        switch (zoomPanel.state) {
+                        case "plus":
+                            camera.stepZoom(1)
+                            break
+                        case "minus":
+                            camera.stepZoom(-1)
+                            break
+                        }
+                    }
+                }
+            }
+        }
+
         QGCLabel {
             id: zoomLabel
             text: qsTr("Zoom In/Out")
@@ -261,6 +307,14 @@ Item {
                 normalColor: "black"
                 onClicked: {
                     console.log("zoomResetButton clicked")
+
+                    var cameraManager = _activeVehicle.cameraManager
+                    if (_activeVehicle.cameraManager) {
+                        var camera = cameraManager.currentCameraInstance
+                        if (camera) {
+                            camera.stopZoom()
+                        }
+                    }
                 }
                 Rectangle {
                     anchors.centerIn: parent
