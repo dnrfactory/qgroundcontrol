@@ -144,6 +144,7 @@ Item {
         Item {
             width: parent.width * 0.9
             height: width * 0.4
+            anchors.horizontalCenter: parent.horizontalCenter
             CustomArmSwitchMulti {
                 isMultiVehicleMode: root.isMultiVehicleMode
                 vehicles: QGroundControl.multiVehicleManager.vehiclesForUi

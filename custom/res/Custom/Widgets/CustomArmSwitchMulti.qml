@@ -86,6 +86,13 @@ Item {
         height: width
         radius: height
         anchors.verticalCenter: parent.verticalCenter
+
+        Behavior on x {
+            NumberAnimation {
+                duration: 60
+                easing.type: Easing.OutQuad
+            }
+        }
     }
 
     MouseArea {
@@ -128,6 +135,7 @@ Item {
             PropertyChanges {
                 target: switchCirle
                 color: "gray"
+                x: 0
             }
             PropertyChanges {
                 target: onLabel
@@ -138,10 +146,6 @@ Item {
                 target: offLabel
                 color: "gray"
                 visible: true
-            }
-            AnchorChanges{
-                target: switchCirle;
-                anchors.left: parent.left
             }
         },
         State {
@@ -161,6 +165,7 @@ Item {
             PropertyChanges {
                 target: switchCirle
                 color: "red"
+                x: 0
             }
             PropertyChanges {
                 target: onLabel
@@ -171,10 +176,6 @@ Item {
                 target: offLabel
                 color: "black"
                 visible: true
-            }
-            AnchorChanges{
-                target: switchCirle;
-                anchors.left: parent.left
             }
         },
         State {
@@ -192,6 +193,7 @@ Item {
             PropertyChanges {
                 target: switchCirle
                 color: "#00DC30"
+                x: root.width - switchCirle.width
             }
             PropertyChanges {
                 target: onLabel
@@ -202,10 +204,6 @@ Item {
                 target: offLabel
                 color: "black"
                 visible: false
-            }
-            AnchorChanges{
-                target: switchCirle;
-                anchors.right: parent.right
             }
         }
     ]
