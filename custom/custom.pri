@@ -47,7 +47,7 @@ QGC_ORG_DOMAIN      = "com.dnrfactory"
 QGC_ANDROID_PACKAGE = "com.dnrfactory.MultiVehicleControl"
 QGC_APP_DESCRIPTION = "Open source ground control app provided by DnRFactory dev team"
 QGC_APP_COPYRIGHT   = "Copyright (C) 2023 DnRFactory Development Team. All rights reserved."
-	
+
 WindowsBuild {
     RC_ICONS = $$PWD/res/icons/sailassistantforbeyond.ico
 }
@@ -63,10 +63,12 @@ QML_IMPORT_PATH += \
 SOURCES += \
     $$PWD/src/CustomPlugin.cc \
     $$PWD/src/WeatherInfoProvider.cc \
+    $$PWD/src/MediaPlayerProxy.cc \
 
 HEADERS += \
     $$PWD/src/CustomPlugin.h \
     $$PWD/src/WeatherInfoProvider.h \
+    $$PWD/src/MediaPlayerProxy.h \
 
 INCLUDEPATH += \
     $$PWD/src \

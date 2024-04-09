@@ -27,6 +27,7 @@
 #include "HorizontalFactValueGrid.h"
 #include "InstrumentValueData.h"
 #include "WeatherInfoProvider.h"
+#include "MediaPlayerProxy.h"
 
 QGC_LOGGING_CATEGORY(CustomLog, "CustomLog")
 
@@ -132,6 +133,12 @@ void CustomPlugin::setToolbox(QGCToolbox* toolbox)
                                                  0,
                                                  "WeatherInfoProvider",
                                                  CustomPlugin::weatherInfoProviderSingletonFactory);
+
+    qmlRegisterSingletonType<MediaPlayerProxy>("MediaPlayerProxy",
+                                               1,
+                                               0,
+                                               "MediaPlayerProxy",
+                                               CustomPlugin::mediaPlayerProxySingletonFactory);
 }
 
 void CustomPlugin::_advancedChanged(bool changed)
@@ -330,5 +337,11 @@ QQmlApplicationEngine* CustomPlugin::createQmlApplicationEngine(QObject* parent)
 QObject* CustomPlugin::weatherInfoProviderSingletonFactory(QQmlEngine*, QJSEngine*)
 {
     WeatherInfoProvider* instance = new WeatherInfoProvider(qgcApp()->toolbox());
+    return instance;
+}
+
+QObject* CustomPlugin::mediaPlayerProxySingletonFactory(QQmlEngine*, QJSEngine*)
+{
+    MediaPlayerProxy* instance = new MediaPlayerProxy(qgcApp()->toolbox());
     return instance;
 }

@@ -83,6 +83,7 @@ public:
     void                    setToolbox                      (QGCToolbox* toolbox);
 
     static QObject* weatherInfoProviderSingletonFactory(QQmlEngine*, QJSEngine*);
+    static QObject* mediaPlayerProxySingletonFactory(QQmlEngine*, QJSEngine*);
 
 private slots:
     void _advancedChanged(bool advanced);

@@ -17,6 +17,7 @@ Item {
     id: root
 
     property var mediaSource: ""
+    property bool isMediaServiceMissing: false
 
     readonly property real itemMargin: 2
 
@@ -27,6 +28,15 @@ Item {
     MediaPlayer {
         id: mediaPlayer
         source: mediaSource
+
+        onError: {
+            console.log("onError %1 %2".arg(error).arg(errorString))
+
+            //QMediaPlayer::ServiceMissingError
+            if (error === 5) {
+                isMediaServiceMissing = true
+            }
+        }
     }
 
     VideoOutput {

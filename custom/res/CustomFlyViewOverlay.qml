@@ -27,6 +27,8 @@ import QGroundControl.Palette       1.0
 import QGroundControl.ScreenTools   1.0
 import QGroundControl.Vehicle       1.0
 import Custom.Widgets               1.0
+import MediaPlayerProxy             1.0
+
 
 // To implement a custom overlay copy this code to your own control in your custom code source. Then override the
 // FlyViewCustomLayer.qml resource with your own qml. See the custom example and documentation for details.
@@ -116,8 +118,13 @@ Item {
         isMultiVehicleMode: _root.isMultiVehicleMode
 
         onVideoPlayButtonClicked: {
-            videoOutPanel.mediaSource = mediaSource
-            videoOutPanel.play()
+            if (videoOutPanel.isMediaServiceMissing) {
+                MediaPlayerProxy.play(mediaSource)
+            }
+            else {
+                videoOutPanel.mediaSource = mediaSource
+                videoOutPanel.play()
+            }
         }
     }
 
@@ -127,5 +134,12 @@ Item {
         width: (16 / 9) * height
         anchors.bottom: bottomWidget.top
         anchors.right: vehicleList.left
+
+        onIsMediaServiceMissingChanged: {
+            console.log("onIsMediaServiceMissingChanged " + isMediaServiceMissing)
+            if (isMediaServiceMissing) {
+                MediaPlayerProxy.play(mediaSource)
+            }
+        }
     }
 }
