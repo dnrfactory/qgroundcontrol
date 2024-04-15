@@ -94,6 +94,7 @@ public:
     Q_PROPERTY(double               missionHoverTime                READ missionHoverTime               NOTIFY missionHoverTimeChanged)
     Q_PROPERTY(double               missionCruiseTime               READ missionCruiseTime              NOTIFY missionCruiseTimeChanged)
     Q_PROPERTY(double               missionMaxTelemetry             READ missionMaxTelemetry            NOTIFY missionMaxTelemetryChanged)
+    Q_PROPERTY(double               missionVehicleSpeed             READ missionVehicleSpeed            NOTIFY missionVehicleSpeedChanged)
     Q_PROPERTY(int                  batteryChangePoint              READ batteryChangePoint             NOTIFY batteryChangePointChanged)
     Q_PROPERTY(int                  batteriesRequired               READ batteriesRequired              NOTIFY batteriesRequiredChanged)
     Q_PROPERTY(QGCGeoBoundingCube*  travelBoundingCube              READ travelBoundingCube             NOTIFY missionBoundingCubeChanged)
@@ -252,6 +253,7 @@ public:
     double  missionCruiseDistance   (void) const { return _missionFlightStatus.cruiseDistance; }
     double  missionCruiseTime       (void) const { return _missionFlightStatus.cruiseTime; }
     double  missionMaxTelemetry     (void) const { return _missionFlightStatus.maxTelemetryDistance; }
+    double  missionVehicleSpeed     (void) const { return _missionFlightStatus.vehicleSpeed; }
 
     int  batteryChangePoint         (void) const { return _missionFlightStatus.batteryChangePoint; }    ///< -1 for not supported, 0 for not needed
     int  batteriesRequired          (void) const { return _missionFlightStatus.batteriesRequired; }     ///< -1 for not supported
@@ -274,6 +276,7 @@ signals:
     void missionCruiseDistanceChanged       (double missionCruiseDistance);
     void missionCruiseTimeChanged           (void);
     void missionMaxTelemetryChanged         (double missionMaxTelemetry);
+    void missionVehicleSpeedChanged         (double missionVehicleSpeed);
     void complexMissionItemNamesChanged     (void);
     void resumeMissionIndexChanged          (void);
     void resumeMissionReady                 (void);

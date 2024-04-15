@@ -124,6 +124,7 @@ void MissionController::_resetMissionFlightStatus(void)
     emit missionHoverTimeChanged();
     emit missionCruiseTimeChanged();
     emit missionMaxTelemetryChanged(_missionFlightStatus.maxTelemetryDistance);
+    emit missionVehicleSpeedChanged(_missionFlightStatus.vehicleSpeed);
     emit batteryChangePointChanged(_missionFlightStatus.batteryChangePoint);
     emit batteriesRequiredChanged(_missionFlightStatus.batteriesRequired);
 
@@ -1707,6 +1708,7 @@ void MissionController::_recalcMissionFlightStatus()
                 _missionFlightStatus.cruiseSpeed = newSpeed;
             }
             _missionFlightStatus.vehicleSpeed = newSpeed;
+            emit missionVehicleSpeedChanged(_missionFlightStatus.vehicleSpeed);
         }
 
         // Update VTOL state

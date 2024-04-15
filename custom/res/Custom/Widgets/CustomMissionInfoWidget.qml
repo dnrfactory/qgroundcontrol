@@ -56,6 +56,27 @@ Item {
                                                                 .unitsConversion
                                                                 .appSettingsHorizontalDistanceUnitsString
 
+    property real missionVehicleSpeed: _controllerValid ? _planMasterController.missionController.missionVehicleSpeed : NaN
+    property real _missionVehicleSpeed: _missionValid ? missionVehicleSpeed : NaN
+    property string _missionVehicleSpeedText: isNaN(_missionVehicleSpeed) ?
+                                                "-.-" : QGroundControl
+                                                        .unitsConversion
+                                                        .metersSecondToAppSettingsSpeedUnits(_missionVehicleSpeed)
+                                                        .toFixed(0)
+                                                        + " " + QGroundControl
+                                                                .unitsConversion
+                                                                .appSettingsSpeedUnitsString
+
+    property real missionHoverDistance: _controllerValid ? planMasterController.missionController.missionHoverDistance : 0
+    property real missionCruiseDistance: _controllerValid ? planMasterController.missionController.missionCruiseDistance : 0
+
+    onMissionHoverDistanceChanged: {
+        console.log("onMissionHoverDistanceChanged %1".arg(missionHoverDistance))
+    }
+    onMissionCruiseDistanceChanged: {
+        console.log("onMissionCruiseDistanceChanged %1".arg(missionCruiseDistance))
+    }
+
     function getPlanFileName() {
         if (!_controllerValid) {
             return qsTr("untitled")
@@ -146,7 +167,7 @@ Item {
             sourceComponent: rowComponent
             onLoaded: {
                 item.titleText = qsTr("Flight speed")
-                item.valueText = "0 km/h"
+                item.valueText = Qt.binding(function() { return _missionVehicleSpeedText })
             }
         }
         Loader {
