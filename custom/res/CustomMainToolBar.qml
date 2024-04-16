@@ -63,7 +63,7 @@ Rectangle {
             Layout.preferredHeight: parent.height
             Layout.preferredWidth:  parent.height
 
-            text:                   "Flight"
+            text:                   qsTr("Flight")
             icon.source:            "/res/custom/img/TitleBarFlight"
             checked:                true
             ButtonGroup.group:      toolbarButtonGroup
@@ -72,7 +72,7 @@ Rectangle {
         CustomToolBarButton {
             Layout.preferredHeight: parent.height
             Layout.preferredWidth:  parent.height
-            text:                   "Plan"
+            text:                   qsTr("Plan")
             icon.source:            "/res/custom/img/TitleBarMissionPlan"
             ButtonGroup.group:      toolbarButtonGroup
             onClicked:              mainWindow.showPlanView()
@@ -80,7 +80,7 @@ Rectangle {
         CustomToolBarButton {
             Layout.preferredHeight: parent.height
             Layout.preferredWidth:  parent.height
-            text:                   "Setting"
+            text:                   qsTr("Setting")
             icon.source:            "/res/custom/img/TitleBarVehicleSetting"
             checkable:              false
             onClicked:              mainWindow.showToolSelectDialog()

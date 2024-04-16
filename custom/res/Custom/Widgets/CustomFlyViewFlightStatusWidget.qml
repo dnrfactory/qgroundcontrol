@@ -114,7 +114,7 @@ Item {
 
             //console.log("getLocationStr lat:%1, lon:%2".arg(vehicles.get(idx).gps.lat.rawValue).arg(vehicles.get(idx).gps.lon.rawValue))
         }
-        return "%1 %2  /%3 %4".arg(qsTr("Lat.")).arg(latitudeStr).arg("Lon.").arg(longitudeStr)
+        return "%1 %2  /%3 %4".arg(qsTr("Lat.")).arg(latitudeStr).arg(qsTr("Lon.")).arg(longitudeStr)
     }
 
     QGCListView {
