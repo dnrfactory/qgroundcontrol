@@ -317,7 +317,7 @@ Item {
                         planMasterController.planCreators.get(eCorridorScan).createPlan(mapCenter())
                     }
                     else {
-                        missionController.insertComplexMissionItem(qsTr("Corridor Scan"),
+                        missionController.insertComplexMissionItem("Corridor Scan"/*qsTr("Corridor Scan")*/,
                                                                    mapCenter(),
                                                                    missionController.currentPlanViewSeqNum + 1,
                                                                    true)
