@@ -22,7 +22,7 @@ Item {
     property var activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
     property string vehicleName: "UAV 0"
     property string vehicleNameColor: "grey"
-    property real itemVerticalSpacing: ScreenTools.defaultFontPixelWidth * 1.8
+    property real itemVerticalSpacing: 10.8//ScreenTools.defaultFontPixelWidth * 1.8
     property var colorList: QGroundControl.multiVehicleManager.vehicleColorList
 
     onActiveVehicleChanged: {

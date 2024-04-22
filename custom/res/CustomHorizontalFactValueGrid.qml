@@ -36,7 +36,7 @@ T.HorizontalFactValueGrid {
                 rows: object.count
                 columns: 2
                 rowSpacing: 0
-                columnSpacing: ScreenTools.defaultFontPixelWidth * 2
+                columnSpacing: 12//ScreenTools.defaultFontPixelWidth * 2
                 flow: GridLayout.TopToBottom
 
                 Repeater {

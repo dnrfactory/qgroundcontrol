@@ -31,17 +31,16 @@ CustomPanel {
     id: _root
 
     width: parent.width
-    height: ScreenTools.defaultFontPixelWidth * 40
+    height: 240//ScreenTools.defaultFontPixelWidth * 40
 
-    readonly property real  _bottomPanelWidth:          ScreenTools.defaultFontPixelWidth * 35
+    readonly property real  _bottomPanelWidth:          210//ScreenTools.defaultFontPixelWidth * 35
 
     readonly property real  _bottomPanelButtonWidth:    _bottomPanelWidth
-    readonly property real  _bottomPanelButtonHeight:   (height - (_bottomPanelTopPadding * 5))/4   // Height       : 35
+    readonly property real  _bottomPanelButtonHeight:   (height - (_bottomPanelTopPadding * 5))/4
 
-    readonly property real  _bottomPanelLeftPadding:    ScreenTools.defaultFontPixelWidth * 2                 // LeftPadding  : 16
-    readonly property real  _bottomPanelTopPadding:     ScreenTools.defaultFontPixelWidth * 2.5                 // TopPadding   : 20
+    readonly property real  _bottomPanelLeftPadding:    12//ScreenTools.defaultFontPixelWidth * 2
+    readonly property real  _bottomPanelTopPadding:     15//ScreenTools.defaultFontPixelWidth * 2.5
 
-    readonly property real  _bottomPanelRadious:        ScreenTools.defaultFontPixelWidth * 1.25
 
     property var    _activeVehicle:         QGroundControl.multiVehicleManager.activeVehicle
     property bool   _communicationLost:     _activeVehicle ? _activeVehicle.vehicleLinkManager.communicationLost : false
@@ -55,6 +54,8 @@ CustomPanel {
 
     Component.onCompleted: {
         historyWidget.videoPlayButtonClicked.connect(_root.videoPlayButtonClicked)
+
+        console.log('!!!!!! defaultFontPixelWidth %1'.arg(ScreenTools.defaultFontPixelWidth))
     }
 
     function formatMessage(message) {

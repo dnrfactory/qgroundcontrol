@@ -167,7 +167,7 @@ Item {
         anchors.left:           parent.left
         anchors.bottom:         parent.bottom
         anchors.leftMargin:     _toolsMargin
-        anchors.bottomMargin:   ScreenTools.defaultFontPixelWidth * 40 + 40 + _toolsMargin
+        anchors.bottomMargin:   /*ScreenTools.defaultFontPixelWidth*/6 * 40 + 40 + _toolsMargin
         item1IsFullSettingsKey: "MainFlyWindowIsMap"
         item1:                  mapControl
         item2:                  QGroundControl.videoManager.hasVideo ? videoControl : null

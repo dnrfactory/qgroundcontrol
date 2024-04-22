@@ -32,13 +32,12 @@ Item {
 
     property real _bottomPanelLeftPadding
     property real _bottomPanelMargin
-    property real _bottomPanelRadious
     property var    _activeVehicle:         QGroundControl.multiVehicleManager.activeVehicle
 
     Rectangle {
         anchors.fill:       parent
         color:              qgcPal.window
-        opacity:            0.8        
+        opacity:            0.8
     }
 
     Column {

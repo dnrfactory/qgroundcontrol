@@ -47,7 +47,7 @@ Item {
 
     Row {
         id: bottomPanel
-        height: ScreenTools.defaultFontPixelWidth * 40
+        height: 240//ScreenTools.defaultFontPixelWidth * 40
         anchors.bottom: parent.bottom
         visible: root.visible
 

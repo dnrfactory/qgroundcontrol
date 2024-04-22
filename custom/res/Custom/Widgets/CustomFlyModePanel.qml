@@ -28,10 +28,10 @@ import QGroundControl.ScreenTools   1.0
 import QGroundControl.Vehicle       1.0
 
 Item {
-    id:                     root
+    id: root
 
     property real _bottomPanelLeftPadding: 16
-    property real _bottomPanelMargin: 20
+    property real _bottomPanelMargin: 12
     property var _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
     property string flightMode: _activeVehicle ? _activeVehicle.flightMode : ""
 
@@ -81,18 +81,21 @@ Item {
             anchors.leftMargin: _bottomPanelMargin
 
             Row {
-                anchors.fill:       parent
+                id: btnRow
+                anchors.fill: parent
                 spacing: _bottomPanelLeftPadding
 
                 ButtonGroup {
                     id : modeButtonGroup
                 }
 
+                property real btnRadius: 15
+
                 QGCButton {
                     id:                 manualButton
                     width :             (buttonWrap.width - _bottomPanelLeftPadding * 2)/3
                     height :            buttonWrap.height
-                    backRadius :        height
+                    backRadius :        btnRow.btnRadius
                     iconSource: "/res/custom/img/FlightModeButtonManual"
                     iconSourceScale: 1.5
                     iconLeft: true
@@ -111,7 +114,7 @@ Item {
                     id:                 autoButton
                     width :             (buttonWrap.width - _bottomPanelLeftPadding * 2)/3
                     height :            buttonWrap.height
-                    backRadius :        height
+                    backRadius :        btnRow.btnRadius
                     iconSource: "/res/custom/img/FlightModeButtonAuto"
                     iconSourceScale: 1.5
                     iconLeft: true
@@ -130,7 +133,7 @@ Item {
                     id:                 loiterButton
                     width :             (buttonWrap.width - _bottomPanelLeftPadding * 2)/3
                     height :            buttonWrap.height
-                    backRadius :        height
+                    backRadius :        btnRow.btnRadius
                     iconSource: "/res/custom/img/FlightModeButtonLoiter"
                     iconSourceScale: 1.5
                     iconLeft: true
