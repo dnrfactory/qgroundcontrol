@@ -5246,7 +5246,7 @@ Click Ok to start the auto-tuning process.
     <message>
         <location filename="../custom/res/Custom/Widgets/CustomMissionInfoWidget.qml" line="155"/>
         <source>Plan name</source>
-        <translation>기체 이름</translation>
+        <translation>계획명</translation>
     </message>
     <message>
         <location filename="../custom/res/Custom/Widgets/CustomMissionInfoWidget.qml" line="162"/>
