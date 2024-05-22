@@ -11,6 +11,8 @@ import QtQuick                  2.12
 import QtQuick.Controls         2.12
 import QtQuick.Controls.impl    2.12
 import QtQuick.Templates        2.12 as T
+import QtGraphicalEffects 1.15
+
 
 import QGroundControl.ScreenTools   1.0
 import QGroundControl.Palette       1.0
@@ -42,8 +44,25 @@ T.TabButton {
     }
 
     background: Rectangle {
+        id: bgRect
         implicitHeight: 40
         color: "#E6161C41"
+        layer.enabled: true
+        layer.effect: OpacityMask{
+            maskSource: Item {
+                width: bgRect.width
+                height: bgRect.height
+                Rectangle {
+                    anchors.fill: parent
+                    radius: 10
+                }
+                Rectangle {
+                    width: parent.width
+                    height: parent.height * 0.5
+                    anchors.bottom: parent.bottom
+                }
+            }
+        }
     }
 
     Behavior on height {
