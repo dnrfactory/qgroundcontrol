@@ -187,10 +187,11 @@ Item {
                                 width: 60
                                 height: parent.height * 0.5
                                 backRadius: 4
-                                text: qsTr("Show")
+                                text: isConnectedIndex(index) && vehicles.get(index).visibleFlightPath ? qsTr("Hide") : qsTr("Show")
                                 enabled: isConnectedIndex(index)
                                 onClicked: {
-                                    console.log("Flight Path Show Button clicked")
+                                    var vehicle = vehicles.get(index)
+                                    vehicle.visibleFlightPath = !vehicle.visibleFlightPath
                                 }
                             }
                             `,

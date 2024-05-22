@@ -345,6 +345,7 @@ public:
     Q_PROPERTY(QString  vehicleUIDStr               READ vehicleUIDStr              NOTIFY vehicleUIDChanged)
 
 	Q_PROPERTY(QColor mapItemColor READ getMapItemColor WRITE setMapItemColor NOTIFY mapItemColorChanged)
+	Q_PROPERTY(bool visibleFlightPath READ isVisibleFlightPath WRITE setVisibleFlightPath NOTIFY visibleFlightPathChanged)
 
     /// Resets link status counters
     Q_INVOKABLE void resetCounters  ();
@@ -1033,6 +1034,7 @@ signals:
     void sensorsParametersResetAck      (bool success);
 
 	void mapItemColorChanged();
+    void visibleFlightPathChanged();
 
 private slots:
     void _mavlinkMessageReceived            (LinkInterface* link, mavlink_message_t message);
@@ -1257,7 +1259,7 @@ private:
     float               _curGimbalRoll  = 0.0f;
     float               _curGimbalPitch = 0.0f;
     float               _curGimbalYaw  = 0.0f;
-    bool                _haveGimbalData = false;
+    bool                _haveGimbalData = true;
     bool                _isROIEnabled   = false;
     Joystick*           _activeJoystick = nullptr;
 
@@ -1513,11 +1515,20 @@ private:
     QGeoCoordinate              _altitudeAboveTerrLastCoord;
     float                       _altitudeAboveTerrLastRelAlt = qQNaN();
 
-	QColor _mapItemColor;
+    QColor _mapItemColor;
+    bool _visibleFlightPath = false;
 
 public:
 	QColor getMapItemColor() const { return _mapItemColor; }
-	void setMapItemColor(const QColor& color) { _mapItemColor = color; }
+	void setMapItemColor(const QColor& color) {
+        _mapItemColor = color;
+        mapItemColorChanged();
+    }
+    bool isVisibleFlightPath() const { return _visibleFlightPath; }
+    void setVisibleFlightPath(const bool visible) {
+        _visibleFlightPath = visible;
+        visibleFlightPathChanged();
+    }
 };
 
 Q_DECLARE_METATYPE(Vehicle::MavCmdResultFailureCode_t)

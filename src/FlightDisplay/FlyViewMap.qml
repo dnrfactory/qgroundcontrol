@@ -276,6 +276,26 @@ FlightMap {
         }
     }
 
+    MapItemView {
+        model: QGroundControl.multiVehicleManager.vehiclesForUi
+        z: QGroundControl.zOrderTrajectoryLines
+
+        delegate: MapPolyline {
+            id: trajectoryPolyline2
+            line.width: 5
+            line.color: object ? Qt.darker(object.mapItemColor, 1.5) : "transparent"
+            visible: !pipMode && object && object.visibleFlightPath
+            path: object ? object.trajectoryPoints.list() : []
+
+            Connections {
+                target: object ? object.trajectoryPoints : null
+                onPointAdded:trajectoryPolyline2.addCoordinate(coordinate)
+                onUpdateLastPoint: trajectoryPolyline2.replaceCoordinate(trajectoryPolyline2.pathLength() - 1, coordinate)
+                onPointsCleared: trajectoryPolyline2.path = []
+            }
+        }
+    }
+
     // Add the vehicles to the map
     MapItemView {
         model: QGroundControl.multiVehicleManager.vehicles
