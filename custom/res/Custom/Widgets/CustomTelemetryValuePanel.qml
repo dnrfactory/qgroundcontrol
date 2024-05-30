@@ -36,7 +36,7 @@ Item {
             vehicleNameColor = "grey"
         }
         else {
-            var vIndex = activeVehicle.id - QGroundControl.multiVehicleManager.vehiclesForUiStartId
+            var vIndex = QGroundControl.multiVehicleManager.getUiIndexOfVehicle(activeVehicle)
             vehicleName = "UAV %1".arg(vIndex + 1)
             if (vIndex >= 0 && vIndex < 4) {
                 vehicleNameColor = colorList[vIndex]

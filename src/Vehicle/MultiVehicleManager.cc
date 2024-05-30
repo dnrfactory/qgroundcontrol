@@ -31,7 +31,6 @@ QGC_LOGGING_CATEGORY(MultiVehicleManagerLog, "MultiVehicleManagerLog")
 const char* MultiVehicleManager::_gcsHeartbeatEnabledKey = "gcsHeartbeatEnabled";
 
 const int MultiVehicleManager::_VEHICLE_FOR_UI_COUNT = 4;
-const int MultiVehicleManager::_VEHICLE_FOR_UI_START_ID = 2;
 
 MultiVehicleManager::MultiVehicleManager(QGCApplication* app, QGCToolbox* toolbox)
     : QGCTool(app, toolbox)
@@ -148,10 +147,11 @@ void MultiVehicleManager::_vehicleHeartbeatInfo(LinkInterface* link, int vehicle
     connect(vehicle->vehicleLinkManager(),  &VehicleLinkManager::allLinksRemoved,       this, &MultiVehicleManager::_deleteVehiclePhase1);
     connect(vehicle->parameterManager(),    &ParameterManager::parametersReadyChanged,  this, &MultiVehicleManager::_vehicleParametersReadyChanged);
 
+    _setUiIndexOfVehicle(vehicle);
+
     QColor vehicleColor = vehicle->getMapItemColor();
-    if (vehicleId >= _VEHICLE_FOR_UI_START_ID
-        && vehicleId < _VEHICLE_FOR_UI_START_ID + _VEHICLE_FOR_UI_COUNT) {
-        vehicleColor = _vehicleColorList.at(vehicleId - _VEHICLE_FOR_UI_START_ID);
+    if (vehicle->getUiIndex() != -1) {
+        vehicleColor = _vehicleColorList.at(vehicle->getUiIndex());
     }
     vehicle->setMapItemColor(vehicleColor);
 
@@ -422,10 +422,7 @@ void MultiVehicleManager::_sendGCSHeartbeat(void)
 int MultiVehicleManager::getUiIndexOfVehicle(Vehicle* vehicle)
 {
     if (vehicle != nullptr) {
-        int index = vehicle->id() - _VEHICLE_FOR_UI_START_ID;
-        if (index >= 0 && index < _VEHICLE_FOR_UI_COUNT) {
-            return index;
-        }
+        return vehicle->getUiIndex();
     }
     return -1;
 }
@@ -447,6 +444,13 @@ void MultiVehicleManager::_removeConnectedIndexBitFlagForUi(Vehicle* vehicle)
         _vehiclesForUi.removeAt(index);
         _vehiclesForUi.insert(index, nullptr);
         emit vehiclesForUiChanged();
+    }
+}
+
+void MultiVehicleManager::_setUiIndexOfVehicle(Vehicle* vehicle)
+{
+    if (_uiIndexCnt < _VEHICLE_FOR_UI_COUNT && vehicle->getUiIndex() == -1) {
+        vehicle->setUiIndex(_uiIndexCnt++);
     }
 }
 

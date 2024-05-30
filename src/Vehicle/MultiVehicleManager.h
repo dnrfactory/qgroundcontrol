@@ -47,7 +47,6 @@ public:
     Q_PROPERTY(QGeoCoordinate       lastKnownLocation               READ lastKnownLocation                                              NOTIFY lastKnownLocationChanged) //< Current vehicles last know location
     Q_PROPERTY(QmlObjectListModel*  vehiclesForUi READ getVehiclesForUi NOTIFY vehiclesForUiChanged)
     Q_PROPERTY(QList<QColor>        vehicleColorList READ getVehicleColorList NOTIFY vehicleColorListChanged)
-    Q_PROPERTY(int                  vehiclesForUiStartId READ getVehiclesForUiStartId CONSTANT)
 
     // Methods
 
@@ -78,7 +77,6 @@ public:
 
 	QmlObjectListModel* getVehiclesForUi(void) { return &_vehiclesForUi; }
 	QList<QColor> getVehicleColorList(void) { return _vehicleColorList; }
-    int getVehiclesForUiStartId(void) { return _VEHICLE_FOR_UI_START_ID; }
     Q_INVOKABLE int getUiIndexOfVehicle(Vehicle* vehicle);
 
 signals:
@@ -134,9 +132,11 @@ private:
     static const char*  _gcsHeartbeatEnabledKey;
 
     static const int _VEHICLE_FOR_UI_COUNT;
-	static const int _VEHICLE_FOR_UI_START_ID;
 	QmlObjectListModel _vehiclesForUi;
 	QList<QColor> _vehicleColorList;
+    int _uiIndexCnt = 0;
+
+    void _setUiIndexOfVehicle(Vehicle* vehicle);
 };
 
 #endif

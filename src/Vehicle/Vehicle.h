@@ -1517,18 +1517,21 @@ private:
 
     QColor _mapItemColor;
     bool _visibleFlightPath = false;
+    int _uiIndex = -1;
 
 public:
-	QColor getMapItemColor() const { return _mapItemColor; }
+	QColor getMapItemColor(void) const { return _mapItemColor; }
 	void setMapItemColor(const QColor& color) {
         _mapItemColor = color;
         mapItemColorChanged();
     }
-    bool isVisibleFlightPath() const { return _visibleFlightPath; }
+    bool isVisibleFlightPath(void) const { return _visibleFlightPath; }
     void setVisibleFlightPath(const bool visible) {
         _visibleFlightPath = visible;
         visibleFlightPathChanged();
     }
+    int getUiIndex(void) const { return _uiIndex; }
+    void setUiIndex(int index) { _uiIndex = index; }
 };
 
 Q_DECLARE_METATYPE(Vehicle::MavCmdResultFailureCode_t)
